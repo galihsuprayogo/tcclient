@@ -1,5 +1,3 @@
-import ILLogoCoffe from './logocoffe.svg';
+import ILLogo from './logocoffe.svg';
 
-export {
-    ILLogoCoffe
-};
+export {ILLogo};

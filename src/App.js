@@ -1,18 +1,23 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import {Splash} from './pages';
 
 const App = () => {
   return (
-      <View style={styles.container}>
-        <Text> Lets start today </Text>
+      <View style={styles.wrapper}>
+        <Splash/>
       </View>
   )
-};
+}
 
 const styles = StyleSheet.create({
-    container : {
-      backgroundColor: '#E3D1BE',
-      flex:1
-    }
+  wrapper :{
+    flex:1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor : '#E3D1BE'
+  }
 });
 export default App;
+
