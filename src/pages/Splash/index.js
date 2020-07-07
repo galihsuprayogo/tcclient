@@ -1,11 +1,17 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import {ILLogo} from '../../assets/illustration';
+import React, {useEffect} from 'react';
+import { View, StyleSheet, Image } from 'react-native';
+import {ILUsd} from '../../assets/illustration';
+import {colors} from '../../utils';
 
-const Splash = () =>{
+const Splash = ({navigation}) =>{
+    useEffect(() => {
+        setTimeout(() => {
+            navigation.replace('Home');
+        }, 2000)
+    }, [navigation])
     return (
         <View style={styles.wrapper}>
-            <ILLogo height={260} width={225}/>
+            <Image source={ILUsd} style={{height: 165, width: 170}}/>
         </View>
     );
 };
@@ -16,7 +22,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor : '#E3D1BE'
+        backgroundColor : colors.primary
     }
 });
 export default Splash;
