@@ -1,6 +1,7 @@
 const mainColors = {
     light : '#E3D1BE',
-    dark : '#2F2519'
+    dark : '#2F2519',
+    semidark : '#919191'
 };
 
 export const colors = {
@@ -10,5 +11,9 @@ export const colors = {
         default : mainColors.dark,
         secondary: mainColors.light,
         input : mainColors.dark,
+    },
+    icon : {
+        active : mainColors.light,
+        inactive : mainColors.semidark
     }
 };

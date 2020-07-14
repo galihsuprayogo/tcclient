@@ -1,15 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {colors} from '../../../utils';
-import {Gap} from '../../atoms';
+import {colors, fonts} from '../../../utils';
 import {Button} from '../../../components';
 
-const Header = ({title}) => {
+const Header = ({title, type, icon, width, onPress}) => {
     return (
         <View style={styles.container}>
-            <Button type="icon-only" icon="icon-back"/>
+            <Button type={type} icon={icon} onPress={onPress}/>
             <Text style={styles.text}> {title} </Text>
-            <Gap width={24}/>
+            <View style={styles.wrapper(width)}/>
         </View>
     );
 };
@@ -17,7 +16,7 @@ const Header = ({title}) => {
 const styles = StyleSheet.create({
    container :{
        paddingHorizontal: 24,
-       paddingVertical: 15,
+       paddingVertical: 10,
        backgroundColor: colors.secondary,
        flexDirection: 'row',
        alignItems : 'center'
@@ -25,7 +24,12 @@ const styles = StyleSheet.create({
    text :{
        flex: 1,
        textAlign: 'center',
-       color: colors.text.secondary
-   }
+       color: colors.text.secondary,
+       fontFamily : fonts.sfProDisplay.heavy,
+       fontSize : 22
+   },
+   wrapper : (width) => ({
+       width : width
+   })
 });
 export default Header;

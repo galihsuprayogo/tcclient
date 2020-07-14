@@ -6,8 +6,8 @@ import {colors} from '../../utils';
 const Splash = ({navigation}) =>{
     useEffect(() => {
         setTimeout(() => {
-            navigation.replace('Home');
-        }, 2000)
+            navigation.replace('UnsignedApp');
+        }, 1000)
     }, [navigation])
     return (
         <View style={styles.wrapper}>

@@ -1,16 +1,29 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {IconBackLight, IconBack} from '../../../assets';
+import {TouchableOpacity, Text} from 'react-native';
+import {
+    IconBackLight,
+    IconBack,
+    IconHandRight,
+    IconEdit,
+    IconAddPhoto
+} from '../../../assets';
 
 const IconButton = ({icon, onPress}) => {
     const Icon = () =>{
-        if (icon === "icon-back-light") {
-            return <IconBackLight/>
+        switch (icon) {
+            case 'icon-back' :
+                return <IconBack/>;
+            case 'icon-back-light' :
+                return <IconBackLight/>;
+            case 'icon-hand-right':
+                return <IconHandRight/>
+            case 'edit':
+                return <IconEdit/>
+            case 'add':
+                return <IconAddPhoto/>
+            default :
+                return <Text/>;
         }
-        if (icon === "icon-back"){
-            return <IconBack/>
-        }
-        return <IconBackLight/>;
     };
     return (
         <TouchableOpacity onPress={onPress}>
