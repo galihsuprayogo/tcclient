@@ -18,6 +18,7 @@ import IconLocation from './icon-location.svg';
 import IconAddPhoto from './icon-add-photo.svg';
 import IconRemovePhoto from './icon-remove-photo.svg';
 import IconEdit from './icon-edit.svg';
+import IconAddNext from './icon-add-next.svg'
 
 
 export {
@@ -40,5 +41,6 @@ export {
     IconLocation,
     IconAddPhoto,
     IconRemovePhoto,
-    IconEdit
+    IconEdit,
+    IconAddNext
 };

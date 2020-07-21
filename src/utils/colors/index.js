@@ -11,6 +11,7 @@ export const colors = {
     text : {
         default : mainColors.dark,
         secondary: mainColors.light,
+        third : mainColors.semidark,
         input : mainColors.dark,
     },
     icon : {

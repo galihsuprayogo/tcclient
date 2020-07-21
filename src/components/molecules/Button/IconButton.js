@@ -5,7 +5,8 @@ import {
     IconBack,
     IconHandRight,
     IconEdit,
-    IconAddPhoto
+    IconAddPhoto,
+    IconAddNext
 } from '../../../assets';
 
 const IconButton = ({icon, onPress}) => {
@@ -19,8 +20,10 @@ const IconButton = ({icon, onPress}) => {
                 return <IconHandRight/>
             case 'edit':
                 return <IconEdit/>
-            case 'add':
+            case 'add-photo':
                 return <IconAddPhoto/>
+            case 'add-next' :
+                return <IconAddNext/>
             default :
                 return <Text/>;
         }

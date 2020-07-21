@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import {Profile, List, Header, Gap, Button} from '../../components';
-import {colors, fonts} from '../../utils';
+import { View, StyleSheet } from 'react-native';
+import {Profile, List, Header, Gap, ButtonNavigator} from '../../components';
+import {colors} from '../../utils';
 
 const Umkm = ({navigation}) => {
     return (
@@ -10,18 +10,15 @@ const Umkm = ({navigation}) => {
             <View style={styles.content}>
                 <Profile/>
                 <Gap height={30}/>
-                <List icon="profile" name="Nama UMKM/Usaha" value="OS Coffe"/>
-                <List icon="npwp" name="NPWP" value="xxxx-xxxx-xx"/>
-                <List icon="telp" name="No. Telp Pemilik" value="xxxxxxxxxxxx"/>
-                <List icon="loc" name="Lokasi" value="Kledung, Temanggung"/>
-                <View style={styles.editWrapper}>
-                    <Text style={styles.textWrapper}> Edit profil umkm.. </Text>
-                    <Button
-                        type="icon-button"
-                        icon="edit"
-                        onPress={() => navigation.navigate('UpdateUmkm')}
-                    />
-                </View>
+                <List type="icon" icon="profile" name="Nama UMKM/Usaha" value="OS Coffe"/>
+                <List type="icon" icon="npwp" name="NPWP" value="xxxx-xxxx-xx"/>
+                <List type="icon" icon="telp" name="No. Telp Pemilik" value="xxxxxxxxxxxx"/>
+                <List type="icon" icon="loc" name="Lokasi" value="Kledung, Temanggung"/>
+                <ButtonNavigator
+                    title={'Edit profil umkm...'}
+                    icon={'edit'}
+                    onPress={() => navigation.navigate('UpdateUmkm')}
+                />
             </View>
         </View>
     )
@@ -41,17 +38,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius : 5,
         borderBottomLeftRadius : 15,
         borderBottomRightRadius : 15
-    },
-    editWrapper : {
-        flexDirection : 'row',
-        alignItems: 'center',
-        alignSelf: 'flex-end',
-        padding : 30
-    },
-    textWrapper : {
-        fontFamily : fonts.sfProDisplay.semiBoldItalic,
-        color : colors.text.default,
-        fontSize : 16
     }
 });
 

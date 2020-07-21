@@ -9,6 +9,7 @@ import {
     Product,
     Umkm,
     UpdateUmkm,
+    InputProduct,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -70,6 +71,11 @@ const Router = () => {
             <Stack.Screen
                 name="UpdateUmkm"
                 component={UpdateUmkm}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="InputProduct"
+                component={InputProduct}
                 options={{ headerShown:false}}
             />
         </Stack.Navigator>

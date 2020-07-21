@@ -15,7 +15,7 @@ const UpdateUmkm = ({navigation}) => {
             />
             <View style={styles.content}>
                 <View style={{alignItems : 'center'}}>
-                    <Profile icon="add"/>
+                    <Profile icon="add-photo"/>
                 </View>
                 <Gap height={50}/>
                 <Input keyboardType="default" label="Nama UMKM/Usaha"/>

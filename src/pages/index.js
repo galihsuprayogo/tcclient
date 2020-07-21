@@ -6,6 +6,7 @@ import SignUp from './SignUp';
 import Product from './Product';
 import Umkm from './Umkm';
 import UpdateUmkm from './UpdateUmkm';
+import InputProduct from './InputProduct';
 
 export {
     Splash,
@@ -15,5 +16,6 @@ export {
     SignUp,
     Product,
     Umkm,
-    UpdateUmkm
+    UpdateUmkm,
+    InputProduct
 };
