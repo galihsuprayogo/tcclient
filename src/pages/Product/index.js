@@ -5,7 +5,7 @@ import {colors} from '../../utils';
 import IsUmkm from '../Umkm/IsUmkm.js';
 
 const Product = ({navigation}) => {
-    const [umkm] = useState('Os Coffe');
+    const [umkm] = useState('OS Coffe');
 
     return (
         <View style={styles.container}>

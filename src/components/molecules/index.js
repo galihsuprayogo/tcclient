@@ -5,6 +5,7 @@ import BottomNavigator from './ButtomNavigator';
 import Profile from './Profile';
 import List from './List';
 import ButtonNavigator from './ButtonNavigator';
+import InputPicker from './InputPicker';
 
 export {
     Header,
@@ -13,5 +14,6 @@ export {
     BottomNavigator,
     Profile,
     List,
-    ButtonNavigator
+    ButtonNavigator,
+    InputPicker
 };

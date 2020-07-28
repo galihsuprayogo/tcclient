@@ -8,15 +8,19 @@ const List = ({type, icon, image, name, value}) => {
         if(type==='icon'){
             return <Icon icon={icon}/>
         }
-       return <ImageResource image={image} />
+       return (
+           <View>
+               <ImageResource image={image} />
+           </View>
+       )
     }
 
     return (
         <View style={styles.container}>
                 <Type/>
                 <View style={styles.wrapperText}>
-                        <Text style={styles.nameText(type)}> {name} </Text>
-                        <Text style={styles.valueText(type)}> {value} </Text>
+                        <Text numberOfLines={2} style={styles.nameText(type)}> {name} </Text>
+                        <Text numberOfLines={1} style={styles.valueText(type)}> {value} </Text>
                 </View>
         </View>
     )
@@ -29,19 +33,20 @@ const styles = StyleSheet.create({
         paddingVertical : 13,
         paddingLeft: 30,
         borderBottomWidth : 1,
-        borderColor : colors.secondary
+        borderColor : colors.secondary,
     },
     wrapperText :{
         flex : 1,
         flexDirection: 'column',
-        marginLeft: 10
+        marginLeft: 10,
+        alignItems: 'flex-start',
     },
     nameText : (type) => (
         {
             fontFamily : type === 'icon' ? fonts.sfProDisplay.heavy : fonts.sfProDisplay.medium,
             fontSize : type === 'icon' ? 13 : 17,
             color : colors.text.default,
-            maxWidth : type === 'icon' ? 135 : 200,
+            maxWidth : type === 'icon' ? 200 :208,
         }
     ),
     valueText : (type) => (
@@ -49,7 +54,8 @@ const styles = StyleSheet.create({
             fontFamily : type === 'icon' ? fonts.sfProDisplay.semiBoldItalic : fonts.sfProDisplay.light,
             fontSize : type === 'icon' ? 14 : 12,
             color : type === 'icon' ? 'white' : colors.text.third,
-            marginTop : 2
+            paddingTop : 3,
+            maxWidth : type === 'icon' ? 200 : 128
         }
     )
 });
