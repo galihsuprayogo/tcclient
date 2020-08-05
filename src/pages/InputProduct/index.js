@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, StyleSheet } from 'react-native';
 import {colors} from '../../utils';
-import {Gap, Header, InputPicker} from '../../components';
+import {Gap, Header, InputNumber, InputPicker} from '../../components';
 
 const InputProduct = ({navigation}) => {
     const [coffees] = useState([
@@ -78,34 +78,36 @@ const InputProduct = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Header
-                title="Tambah Produk"
-                type="icon-button"
-                icon="icon-back-light"
-                width={24}
-                onPress={() => navigation.goBack()}
-            />
-            <View style={styles.content}>
-                <InputPicker
-                    title={'Jenis Kopi (Arabica/Robusta)'}
-                    coffees={listCoffee('type')}
+                <Header
+                    title="Tambah Produk"
+                    type="icon-button"
+                    icon="icon-back-light"
+                    width={24}
+                    onPress={() => navigation.goBack()}
                 />
-                <Gap height={10}/>
-                <InputPicker
-                    title={'Cara Pengolahan'}
-                    coffees={listCoffee('procedure')}
-                />
-                <Gap height={10}/>
-                <InputPicker
-                    title={'Hasil Pengolahan'}
-                    coffees={listCoffee('output')}
-                />
-                <Gap height={10} />
-                <InputPicker
-                    title={'Grade'}
-                    coffees={listCoffee('grade')}
-                />
-            </View>
+                <View style={styles.content}>
+                    <InputPicker
+                        title={'Jenis Kopi (Arabica/Robusta)'}
+                        coffees={listCoffee('type')}
+                    />
+                    <Gap height={10}/>
+                    <InputPicker
+                        title={'Cara Pengolahan'}
+                        coffees={listCoffee('procedure')}
+                    />
+                    {/*<Gap height={10}/>*/}
+                    {/*<InputPicker*/}
+                    {/*    title={'Hasil Pengolahan'}*/}
+                    {/*    coffees={listCoffee('output')}*/}
+                    {/*/>*/}
+                    {/*<Gap height={10} />*/}
+                    {/*<InputPicker*/}
+                    {/*    title={'Grade'}*/}
+                    {/*    coffees={listCoffee('grade')}*/}
+                    {/*/>*/}
+                    <Gap height={10} />
+                    <InputNumber title={'Harga'} data={123456}/>
+                </View>
         </View>
     )
 }

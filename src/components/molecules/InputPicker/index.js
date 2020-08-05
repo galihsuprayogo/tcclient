@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         paddingHorizontal : 15,
     },
     picker : {
-        height: 30,
+        height: 35,
         width: 280,
         color : 'blue',
         borderWidth : 2,
