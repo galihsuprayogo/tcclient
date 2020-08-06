@@ -11,5 +11,5 @@ export {
     Input,
     Icon,
     ImageResource,
-    InputNumber
+    InputNumber,
 };

@@ -106,7 +106,7 @@ const InputProduct = ({navigation}) => {
                     {/*    coffees={listCoffee('grade')}*/}
                     {/*/>*/}
                     <Gap height={10} />
-                    <InputNumber title={'Harga'} data={123456}/>
+                    <InputNumber title={'Harga'} />
                 </View>
         </View>
     )

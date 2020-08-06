@@ -3,26 +3,54 @@ import {TextInput, StyleSheet, View, Text} from 'react-native';
 import {colors, fonts} from '../../../utils';
 import numbro from 'numbro';
 
-const InputNumber = ({title, data}) => {
-    const [price, setPrice] = useState(data);
+const InputNumber = ({title}) => {
+    const [price, setPrice] = useState(0);
+
+    numbro.registerLanguage({
+        languageTag: "en-US",
+        delimiters: {
+            thousands: ".",
+            decimal: ","
+        },
+        abbreviations: {
+            thousand: "k",
+            million: "m",
+            billion: "b",
+            trillion: "t"
+        },
+        ordinal: () => {
+            return "";
+        },
+        currency: {
+            symbol: "Rp",
+            position: "prefix",
+            code: "INA",
+        }
+    });
 
     const formatPrice = (price) => {
+        console.log(price)
         if(price !== ''){
-          return numbro(price).format({
-                thousandSeparated : true
+            return numbro(price).formatCurrency({
+                thousandSeparated: true,
+                spaceSeparated: true,
+                mantissa: 2,
+                optionalMantissa: true,
             })
         }
     }
 
     const setValue = (price) => {
-        if(typeof price === 'number'){
-            return price.toString()
-        }
-        if(typeof price === 'undefined'){
-            return setPrice(0)
-        }
+        console.log(typeof price, 'value')
+            if(typeof price === 'number'){
+                return price.toString()
+            }
+            if(typeof price === 'undefined'){
+                return setPrice(0)
+            }
         return formatPrice(price)
     }
+
     return (
         <View>
             <Text style={styles.label}> {title} </Text>
