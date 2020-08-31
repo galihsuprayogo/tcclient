@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
        textAlign: 'center',
        color: colors.text.secondary,
        fontFamily : fonts.sfProDisplay.heavy,
-       fontSize : 22
+       fontSize : 20
    },
    wrapper : (width) => ({
        width : width

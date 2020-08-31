@@ -3,13 +3,13 @@ import {StyleSheet, View, Text} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import {colors, fonts} from '../../../utils';
 
-const InputPicker = ({title, coffees}) => {
+const InputPicker = ({title, selectedCoffees, labelType}) => {
 
     const [picked, setPicked] = useState('');
 
     return (
         <View>
-            <Text style={styles.label}> {title} </Text>
+            <Text style={styles.label(labelType)}> {title} </Text>
             <View style={styles.content}>
                 <Picker
                     selectedValue={picked}
@@ -18,7 +18,7 @@ const InputPicker = ({title, coffees}) => {
                         setPicked(itemValue)
                     }>
                     {
-                        coffees.map( (coffee) =>
+                        selectedCoffees.map((coffee) =>
                         {
                             return <Picker.Item key={coffee.id} label={coffee.value} value={coffee.value} />
                         })
@@ -34,24 +34,24 @@ const styles = StyleSheet.create({
         borderWidth : 2,
         borderRadius : 10,
         borderColor : colors.secondary,
-        backgroundColor : 'white',
+        backgroundColor : colors.text.secondary,
         paddingVertical : 5,
         paddingHorizontal : 15,
     },
     picker : {
         height: 35,
         width: 280,
-        color : 'blue',
+        color : colors.text.default,
         borderWidth : 2,
         borderRadius : 10,
         borderColor : colors.secondary,
     },
-    label : {
+    label : (labelType) => ({
         fontFamily : fonts.sfProDisplay.heavy,
-        color : colors.text.default,
+        color : labelType === 'dss' ? colors.text.secondary : colors.text.default,
         fontSize : 16,
         marginBottom : 6
-    }
+    })
 });
 
 export default InputPicker;

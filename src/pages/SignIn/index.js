@@ -22,7 +22,7 @@ const SignIn = ({navigation}) =>{
                     placeholder="No. HP kamu"
                     keyboardType={'phone-pad'}
                 />
-                <Gap height={30}/>
+                <Gap height={25}/>
                 <Button
                     title="Masuk"
                     onPress={() => navigation.replace('SignedApp')}

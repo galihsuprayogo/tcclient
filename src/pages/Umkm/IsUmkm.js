@@ -35,6 +35,12 @@ const IsUmkm = ({umkm, navigation}) => {
                     name="Header nama coffe"
                     value="Random, Temanggung, Jawa Tengah, 27777"
                 />
+                {/*<List*/}
+                {/*    type="image"*/}
+                {/*    image="dummycoffe3"*/}
+                {/*    name="Header nama coffe"*/}
+                {/*    value="Tanon, Temanggung, Jawa Tengah, 27777"*/}
+                {/*/>*/}
                 <ButtonNavigator
                     title={'Tambah Kopi? Klik...'}
                     icon={'add-next'}
@@ -54,7 +60,7 @@ const IsUmkm = ({umkm, navigation}) => {
     };
 
     return (
-        <Content/>
+            <Content/>
     )
 }
 export default IsUmkm;

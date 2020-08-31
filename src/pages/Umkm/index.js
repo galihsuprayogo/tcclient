@@ -9,7 +9,7 @@ const Umkm = ({navigation}) => {
             <Header title={'Profil UMKM'}/>
             <View style={styles.content}>
                 <Profile/>
-                <Gap height={30}/>
+                <Gap height={25}/>
                 <List type="icon" icon="profile" name="Nama UMKM/Usaha" value="OS Coffe"/>
                 <List type="icon" icon="npwp" name="NPWP" value="xxxx-xxxx-xx"/>
                 <List type="icon" icon="telp" name="No. Telp Pemilik" value="xxxxxxxxxxxx"/>

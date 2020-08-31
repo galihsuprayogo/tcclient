@@ -3,7 +3,7 @@ import {TextInput, StyleSheet, View, Text} from 'react-native';
 import {colors, fonts} from '../../../utils';
 import numbro from 'numbro';
 
-const InputNumber = ({title}) => {
+const InputNumber = ({title, priceFormat}) => {
     const [price, setPrice] = useState(0);
 
     numbro.registerLanguage({
@@ -24,7 +24,7 @@ const InputNumber = ({title}) => {
         currency: {
             symbol: "Rp",
             position: "prefix",
-            code: "INA",
+            code: "EUR",
         }
     });
 
@@ -40,6 +40,7 @@ const InputNumber = ({title}) => {
         }
     }
 
+
     const setValue = (price) => {
         console.log(typeof price, 'value')
             if(typeof price === 'number'){
@@ -48,24 +49,33 @@ const InputNumber = ({title}) => {
             if(typeof price === 'undefined'){
                 return setPrice(0)
             }
-        return formatPrice(price)
+       return formatPrice(price)
+    }
+
+    const Content = (price, priceFormat) => {
+        if(typeof priceFormat !== 'undefined'){
+            return formatPrice(priceFormat)
+        }
+        return (
+            <View>
+                <Text style={styles.label}> {title} </Text>
+                <View style={styles.content}>
+                    <TextInput
+                        style={styles.input}
+                        value={setValue(price)}
+                        onChangeText={
+                            price => setPrice(
+                                formatPrice(price)
+                            )
+                        }
+                    />
+                </View>
+            </View>
+        )
     }
 
     return (
-        <View>
-            <Text style={styles.label}> {title} </Text>
-            <View style={styles.content}>
-                <TextInput
-                    style={styles.input}
-                    value={setValue(price)}
-                    onChangeText={
-                        price => setPrice(
-                            formatPrice(price)
-                        )
-                    }
-                />
-            </View>
-        </View>
+        Content(price, priceFormat)
     )
 };
 
@@ -76,12 +86,12 @@ const styles = StyleSheet.create({
         borderColor : colors.secondary,
         paddingVertical : 5,
         paddingHorizontal : 15,
-        backgroundColor : 'white',
+        backgroundColor : colors.text.secondary,
     },
     input : {
         height: 35,
         width: 280,
-        color : 'blue',
+        color : colors.text.default,
     },
     label : {
         fontFamily : fonts.sfProDisplay.heavy,

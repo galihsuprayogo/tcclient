@@ -6,6 +6,7 @@ import Profile from './Profile';
 import List from './List';
 import ButtonNavigator from './ButtonNavigator';
 import InputPicker from './InputPicker';
+import CoffeePicker from './CoffeePicker';
 
 export {
     Header,
@@ -15,5 +16,6 @@ export {
     Profile,
     List,
     ButtonNavigator,
-    InputPicker
+    InputPicker,
+    CoffeePicker
 };

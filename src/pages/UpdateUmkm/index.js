@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import {colors} from '../../utils';
 import {Button, Gap, Header, Input, Profile} from '../../components';
 
@@ -13,21 +13,25 @@ const UpdateUmkm = ({navigation}) => {
                 width={24}
                 onPress={() => navigation.goBack()}
             />
-            <View style={styles.content}>
-                <View style={{alignItems : 'center'}}>
-                    <Profile icon="add-photo"/>
+            <ScrollView showVerticalScrollIndicator={false}>
+                <View style={styles.content}>
+                    <View style={{alignItems : 'center'}}>
+                        <Profile icon="add-photo"/>
+                    </View>
+                    <Gap height={25}/>
+                    <Input keyboardType="default" label="Nama UMKM/Usaha" type="inputForm"/>
+                    <Gap height={10}/>
+                    <Input keyboardType="phone-pad" label="NPWP" type="inputForm"/>
+                    <Gap height={10}/>
+                    <Input keyboardType="phone-pad" label="No. Telp Pemilik" type="inputForm"/>
+                    <Gap height={10}/>
+                    <Input keyboardType="default" label="lokasi" type="inputForm"/>
+                    <Gap height={30}/>
+                    <View style={styles.buttonWrapper}>
+                        <Button title="Simpan" onPress={() => alert('boleh-boleh')}/>
+                    </View>
                 </View>
-                <Gap height={50}/>
-                <Input keyboardType="default" label="Nama UMKM/Usaha"/>
-                <Gap height={10}/>
-                <Input keyboardType="phone-pad" label="NPWP"/>
-                <Gap height={10}/>
-                <Input keyboardType="phone-pad" label="No. Telp Pemilik"/>
-                <Gap height={10}/>
-                <Input keyboardType="default" label="lokasi"/>
-                <Gap height={30}/>
-                <Button title="Simpan" onPress={() => alert('boleh-boleh')}/>
-            </View>
+            </ScrollView>
         </View>
     )
 };
@@ -41,6 +45,9 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent : 'center',
         padding : 40
+    },
+    buttonWrapper : {
+        paddingHorizontal : 15
     }
 });
 export default UpdateUmkm;

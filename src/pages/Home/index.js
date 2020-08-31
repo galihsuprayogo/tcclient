@@ -5,7 +5,7 @@ import {colors, fonts} from '../../utils';
 import {ILLogo} from '../../assets';
 
 
-const Home = () => {
+const Home = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Header title={'Beranda'} type="icon-button" icon="no-icon"/>
@@ -20,7 +20,7 @@ const Home = () => {
                             katalog di Temanggung, klik di bawah ini
                         </Text>
                         <Button type="icon-button" icon="icon-hand-right" onPress={() =>
-                        alert('memek')}/>
+                        navigation.navigate('ChooseCoffee')}/>
                     </View>
                 </View>
         </View>

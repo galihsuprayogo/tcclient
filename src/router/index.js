@@ -10,6 +10,7 @@ import {
     Umkm,
     UpdateUmkm,
     InputProduct,
+    ChooseCoffee
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -37,7 +38,7 @@ const SignedApp = () => {
 
 const Router = () => {
     return(
-        <Stack.Navigator initialRouteName="SignedApp" >
+        <Stack.Navigator initialRouteName="UnsignedApp" >
             <Stack.Screen
                 name="Splash"
                 component={Splash}
@@ -76,6 +77,11 @@ const Router = () => {
             <Stack.Screen
                 name="InputProduct"
                 component={InputProduct}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="ChooseCoffee"
+                component={ChooseCoffee}
                 options={{ headerShown:false}}
             />
         </Stack.Navigator>

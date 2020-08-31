@@ -34,7 +34,7 @@ const SignUp = ({navigation}) =>{
                     placeholder="NPWP"
                     keyboardType={'phone-pad'}
                 />
-                <Gap height={30}/>
+                <Gap height={25}/>
                 <Button title="Daftar" onPress={() => navigation.replace('SignIn')}/>
             </View>
         </View>

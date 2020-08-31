@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
             flex : 1,
             backgroundColor: colors.primary,
             alignItems : 'center',
-            justifyContent : umkm ? 'space-between' : 'center',
+            justifyContent : umkm ? 'center' : 'center',
             borderTopLeftRadius : 5,
             borderTopRightRadius : 5,
             borderBottomLeftRadius : 15,

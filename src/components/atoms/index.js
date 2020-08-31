@@ -4,6 +4,8 @@ import Input from './Input';
 import Icon from './Icon';
 import ImageResource from './ImageResource';
 import InputNumber from './InputNumber';
+import PriceSlider from './PriceSlider';
+import PriceFormat from './PriceFormat';
 
 export {
     Gap,
@@ -12,4 +14,6 @@ export {
     Icon,
     ImageResource,
     InputNumber,
+    PriceSlider,
+    PriceFormat
 };

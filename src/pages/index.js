@@ -7,6 +7,7 @@ import Product from './Product';
 import Umkm from './Umkm';
 import UpdateUmkm from './UpdateUmkm';
 import InputProduct from './InputProduct';
+import ChooseCoffee from './ChooseCoffee';
 
 export {
     Splash,
@@ -17,5 +18,6 @@ export {
     Product,
     Umkm,
     UpdateUmkm,
-    InputProduct
+    InputProduct,
+    ChooseCoffee
 };

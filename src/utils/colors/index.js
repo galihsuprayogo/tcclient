@@ -8,6 +8,7 @@ const mainColors = {
 export const colors = {
     primary : mainColors.light,
     secondary : mainColors.dark,
+    third : mainColors.semidark,
     text : {
         default : mainColors.dark,
         secondary: mainColors.light,
