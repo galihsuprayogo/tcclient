@@ -66,7 +66,7 @@ const ChooseCoffee = ({navigation}) => {
                             labelType={'dss'}
                         />
                         <Gap height={10}/>
-                        <PriceSlider/>
+                        <PriceSlider type={'minimum'}/>
                     </View>
                 </View>
             </ScrollView>
