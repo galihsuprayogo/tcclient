@@ -6,6 +6,8 @@ import ImageResource from './ImageResource';
 import InputNumber from './InputNumber';
 import PriceSlider from './PriceSlider';
 import PriceFormat from './PriceFormat';
+import InputLocation from './InputLocation';
+import ButtonModal from './ButtonModal';
 
 export {
     Gap,
@@ -15,5 +17,7 @@ export {
     ImageResource,
     InputNumber,
     PriceSlider,
-    PriceFormat
+    PriceFormat,
+    InputLocation,
+    ButtonModal
 };

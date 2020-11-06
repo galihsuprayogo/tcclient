@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native';
 import {colors, fonts} from '../../utils';
-import {Header, CoffeePicker, Gap, PriceSlider} from '../../components';
+import {
+    Header,
+    CoffeePicker,
+    Gap,
+    PriceSlider,
+    InputLocation,
+    Button
+} from '../../components';
 
 const ChooseCoffee = ({navigation}) => {
 
@@ -67,7 +74,17 @@ const ChooseCoffee = ({navigation}) => {
                         />
                         <Gap height={10}/>
                         <PriceSlider type={'minimum'}/>
+                        <Gap height={10}/>
+                        <View style={styles.locWrapper}>
+                            <TouchableOpacity onPress={() => navigation.navigate('TL')}>
+                                <InputLocation type={'text1'} icon={'near'} text={'Pilih lewat peta [klik]'}/>
+                            </TouchableOpacity>
+                            <InputLocation type={'text2'} icon={'loc2'} text={'[Lokasi belum dipin, klik di atas]'}/>
+                        </View>
+                        <Gap height={20}/>
+                        <Button title="DSS Result [Klik]" scope={'dss'} onPress={ () => navigation.navigate('DSS')}/>
                     </View>
+                    <Gap height={20}/>
                 </View>
             </ScrollView>
         </View>
@@ -83,6 +100,16 @@ const styles = StyleSheet.create({
         flex : 1,
         justifyContent : 'center',
         alignItems : 'center',
+    },
+    locWrapper : {
+        flexDirection : 'column',
+        alignItems : 'flex-start',
+        backgroundColor : colors.primary,
+        paddingVertical: 10,
+        paddingHorizontal : 15,
+        borderWidth : 2,
+        borderRadius : 10,
+        borderColor : colors.secondary
     },
     divWrapper : {
         paddingVertical : 20,

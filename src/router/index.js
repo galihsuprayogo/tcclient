@@ -10,8 +10,10 @@ import {
     Umkm,
     UpdateUmkm,
     InputProduct,
-    ChooseCoffee
+    ChooseCoffee,
+    DecisionSupportSystem
 } from '../pages';
+import { Map, MapCls, MapDirection, TrackLocation} from '../components';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
 
@@ -82,6 +84,31 @@ const Router = () => {
             <Stack.Screen
                 name="ChooseCoffee"
                 component={ChooseCoffee}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="DSS"
+                component={DecisionSupportSystem}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="Map"
+                component={Map}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="MapCls"
+                component={MapCls}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="MapDirect"
+                component={MapDirection}
+                options={{ headerShown:false}}
+            />
+            <Stack.Screen
+                name="TL"
+                component={TrackLocation}
                 options={{ headerShown:false}}
             />
         </Stack.Navigator>

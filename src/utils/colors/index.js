@@ -2,7 +2,9 @@ const mainColors = {
     light : '#E3D1BE',
     dark : '#2F2519',
     semidark : '#919191',
-    semired : '#E06379'
+    semired : '#E06379',
+    black : '#453c43',
+    blue : '#047CFC'
 };
 
 export const colors = {
@@ -21,5 +23,9 @@ export const colors = {
     },
     message : {
         error : mainColors.semired
+    },
+    map : {
+        header :mainColors.black,
+        button : mainColors.blue
     }
 };

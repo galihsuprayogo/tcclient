@@ -8,6 +8,7 @@ import Umkm from './Umkm';
 import UpdateUmkm from './UpdateUmkm';
 import InputProduct from './InputProduct';
 import ChooseCoffee from './ChooseCoffee';
+import DecisionSupportSystem from './DecisionSupportSystem';
 
 export {
     Splash,
@@ -19,5 +20,6 @@ export {
     Umkm,
     UpdateUmkm,
     InputProduct,
-    ChooseCoffee
+    ChooseCoffee,
+    DecisionSupportSystem
 };

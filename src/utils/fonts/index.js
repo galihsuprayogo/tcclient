@@ -18,5 +18,13 @@ export const fonts = {
         thinItalic : 'SF-Pro-Display-ThinItalic',
         ultraLight : 'SF-Pro-Display-Ultralight',
         ultraLightItalic : 'SF-Pro-Display-UltralightItalic'
+    },
+    Akkurat : {
+        bold : 'Akkurat-Bold',
+        boldItalic: 'Akkurat-Bold-Italic',
+        light: 'Akkurat-Light',
+        lightItalic: 'Akkurat-Light-Italic',
+        normal : 'Akkurat-Normal',
+        normalItalic : 'Akkurat-Normal-Italic'
     }
 };

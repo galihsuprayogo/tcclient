@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor : colors.text.secondary,
         paddingVertical : 5,
         paddingHorizontal : 15,
+
     },
     picker : {
         height: 35,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         borderColor : colors.secondary,
     },
     label : (labelType) => ({
-        fontFamily : fonts.sfProDisplay.heavy,
+        fontFamily : fonts.Akkurat.boldItalic,
         color : labelType === 'dss' ? colors.text.secondary : colors.text.default,
         fontSize : 16,
         marginBottom : 6

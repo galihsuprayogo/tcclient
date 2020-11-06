@@ -4,7 +4,7 @@ import {
     dummycoffe1,
     dummycoffe2,
     dummycoffe3,
-    dummycoffe4
+    dummycoffe4,
 }
 from '../../../assets';
 
@@ -18,7 +18,6 @@ const ImageResource = ({image}) => {
             return <Image source={dummycoffe3} style={styles.imageWrapper}/>
         case 'dummycoffe4' :
             return <Image source={dummycoffe4} style={styles.imageWrapper}/>
-
     }
 };
 

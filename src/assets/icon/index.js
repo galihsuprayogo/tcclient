@@ -19,6 +19,14 @@ import IconAddPhoto from './icon-add-photo.svg';
 import IconRemovePhoto from './icon-remove-photo.svg';
 import IconEdit from './icon-edit.svg';
 import IconAddNext from './icon-add-next.svg'
+import IconNearMe from './icon-near-me.svg';
+import IconMarker from './icon-marker.svg';
+import IconRight from './icon-arrow-right.svg';
+import IconX from './icon-x.svg';
+import IconDirection from './icon-direction.svg';
+import IconNavigation from './icon-navigation.svg';
+import IconBeenhere from './icon-savepinhere.svg';
+import IconNearMeLight from './icon-near-me-light.svg';
 
 
 export {
@@ -42,5 +50,13 @@ export {
     IconAddPhoto,
     IconRemovePhoto,
     IconEdit,
-    IconAddNext
+    IconAddNext,
+    IconNearMe,
+    IconMarker,
+    IconRight,
+    IconX,
+    IconDirection,
+    IconNavigation,
+    IconBeenhere,
+    IconNearMeLight
 };

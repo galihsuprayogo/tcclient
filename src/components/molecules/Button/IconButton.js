@@ -6,7 +6,9 @@ import {
     IconHandRight,
     IconEdit,
     IconAddPhoto,
-    IconAddNext
+    IconAddNext,
+    IconX,
+    IconNearMeLight
 } from '../../../assets';
 
 const IconButton = ({icon, onPress}) => {
@@ -24,6 +26,10 @@ const IconButton = ({icon, onPress}) => {
                 return <IconAddPhoto/>
             case 'add-next' :
                 return <IconAddNext/>
+            case 'x' :
+                return <IconX height={20} width={20}/>
+            case 'nearme' :
+                return <IconNearMeLight/>
             default :
                 return <Text/>;
         }
