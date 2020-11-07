@@ -41,7 +41,8 @@ class MapCls extends React.Component {
             addressPosition : '',
             iconValue : '',
             modalVisible : false,
-            propSwipe : false
+            propSwipe : false,
+            error : null
         };
     }
 
@@ -80,7 +81,7 @@ class MapCls extends React.Component {
                 this.setState({initialPosition : initialRegion})
                 this.setState({markerPosition : initialMarker})
             },
-            error => Alert.alert(error.message),
+            error => this.setState({error : error.message}),
             {enableHighAccuracy : true, timeout : 10000, maximumAge : 1000},
         )
     }
@@ -214,6 +215,7 @@ MapCls.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
+        flex : 1,
         ...StyleSheet.absoluteFillObject,
     },
     map: {

@@ -28,5 +28,5 @@ export {
     Map,
     MapCls,
     MapDirection,
-    TrackLocation
+    TrackLocation,
 };

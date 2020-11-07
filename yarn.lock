@@ -3424,11 +3424,6 @@ gensync@^1.0.0-beta.1:
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
   integrity sha512-r8EC6NO1sngH/zdD9fiRDLdcgnbayXah+mLgManTaIZJqEC1MZstmnox8KpnI2/fxQwrp5OpCOYWLp4rBl4Jcg==
 
-geolib@^2.0.24:
-  version "2.0.24"
-  resolved "https://registry.yarnpkg.com/geolib/-/geolib-2.0.24.tgz#eb3d7fbc65f5ea3354a5af6054563ebe9f33e5f4"
-  integrity sha512-NR0AyYyEnGrFS9JvSFmmotQDxVCORJgDHdvBwSatxl5aHarOLMh3KuGI83bCvCfObjfoEiDe8Ung8GGLGAtthw==
-
 get-caller-file@^2.0.1:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
@@ -4751,11 +4746,6 @@ lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.3.
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
-
-lodash@^4.17.4:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@^2.2.0:
   version "2.2.0"
@@ -6178,15 +6168,6 @@ react-native-maps-directions@^1.8.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.6.0"
 
-react-native-maps-navigation@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/react-native-maps-navigation/-/react-native-maps-navigation-0.0.14.tgz#f51bada3269ca81ea256fb6201a04037441a5488"
-  integrity sha512-B2mDzyjHdjzelXtI/ovPysrbVq/M5vjmYDWdmHj3w8j93n//zpVMICLGurz390kysdvxjxxs/zAN2RlZmbkq/g==
-  dependencies:
-    geolib "^2.0.24"
-    prop-types "^15.6.2"
-    react-native-optiongroup "^0.0.7"
-
 react-native-maps@^0.27.1:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
@@ -6199,14 +6180,6 @@ react-native-modal@^11.5.6:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
-
-react-native-optiongroup@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-optiongroup/-/react-native-optiongroup-0.0.7.tgz#05144c577dae849efa7877002df8546836503b47"
-  integrity sha512-y1uqlgzqId/YNSooHSBVM5MkFnrhnRKK/0Vjumoh/Pk7EjB7P2bFYaq4/9NJpH9XpJuGcIickmt62Rk3kzSUHg==
-  dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.6.0"
 
 react-native-permissions@^2.2.0:
   version "2.2.0"

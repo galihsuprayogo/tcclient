@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Dimensions} from 'react-native';
-import Mapview, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import Mapview, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import MapViewDirections from 'react-native-maps-directions';
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -74,18 +73,8 @@ class TrackLocation extends Component{
                     followUserLocation={true}
                     loadingEnabled={true}
                 >
-                    <Marker coordinate={{"latitude":this.state.latitude,"longitude":this.state.longitude}}/>
-                    <Marker coordinate={this.state.destination}/>
-                    {
-                        console.log(typeof this.state.destination)
-                    }
-                    <MapViewDirections
-                        origin={{"latitude":this.state.latitude,"longitude":this.state.longitude}}
-                        destination={this.state.destination}
-                        apikey={'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA'}
-                        strokeWidth={3}
-                        strokeColor={'hotpink'}
-                    />
+                    <Polyline coordinates={this.state.routeCoordinates} strokeWidth={2} />
+                    <Marker coordinate={this.getMapRegion()} />
                 </Mapview>
             </View>
         )
