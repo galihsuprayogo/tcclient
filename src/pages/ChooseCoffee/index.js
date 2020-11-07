@@ -76,7 +76,7 @@ const ChooseCoffee = ({navigation}) => {
                         <PriceSlider type={'minimum'}/>
                         <Gap height={10}/>
                         <View style={styles.locWrapper}>
-                            <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
+                            <TouchableOpacity onPress={() => navigation.navigate('TL')}>
                                 <InputLocation type={'text1'} icon={'near'} text={'Pilih lewat peta [klik]'}/>
                             </TouchableOpacity>
                             <InputLocation type={'text2'} icon={'loc2'} text={'[Lokasi belum dipin, klik di atas]'}/>
