@@ -11,15 +11,15 @@ import ChooseCoffee from './ChooseCoffee';
 import DecisionSupportSystem from './DecisionSupportSystem';
 
 export {
-    Splash,
-    Home,
-    GetIn,
-    SignIn,
-    SignUp,
-    Product,
-    Umkm,
-    UpdateUmkm,
-    InputProduct,
-    ChooseCoffee,
-    DecisionSupportSystem
+  Splash,
+  Home,
+  GetIn,
+  SignIn,
+  SignUp,
+  Product,
+  Umkm,
+  UpdateUmkm,
+  InputProduct,
+  ChooseCoffee,
+  DecisionSupportSystem,
 };

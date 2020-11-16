@@ -10,14 +10,14 @@ import InputLocation from './InputLocation';
 import ButtonModal from './ButtonModal';
 
 export {
-    Gap,
-    TabItem,
-    Input,
-    Icon,
-    ImageResource,
-    InputNumber,
-    PriceSlider,
-    PriceFormat,
-    InputLocation,
-    ButtonModal
+  Gap,
+  TabItem,
+  Input,
+  Icon,
+  ImageResource,
+  InputNumber,
+  PriceSlider,
+  PriceFormat,
+  InputLocation,
+  ButtonModal,
 };

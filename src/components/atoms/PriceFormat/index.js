@@ -1,10 +1,8 @@
 import React from 'react';
-import {InputNumber} from '../../../components';
+import { InputNumber } from '../..';
 
-const PriceFormat = ({price}) => {
-    return (
-            <InputNumber priceFormat={price}/>
-    )
-}
+const PriceFormat = ({ price }) => (
+  <InputNumber priceFormat={price} />
+);
 
 export default PriceFormat;

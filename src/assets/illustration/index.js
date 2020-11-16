@@ -4,4 +4,6 @@ import ILCamera from './logocamera.png';
 import ILSamplePict from './samplepict.jpg';
 import ILPhotoFrame from './photoframe.svg';
 
-export {ILLogo, ILUsd, ILCamera, ILSamplePict, ILPhotoFrame}
+export {
+  ILLogo, ILUsd, ILCamera, ILSamplePict, ILPhotoFrame,
+};
