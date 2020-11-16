@@ -15,9 +15,9 @@ import {
   DecisionSupportSystem,
 } from '../pages';
 import {
-  Map, MapCls, MapDirection, TrackLocation, 
-, BottomNavigator } from '../components';
-
+  Map, MapCls, MapDirection, TrackLocation,
+  BottomNavigator,
+} from '../components';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

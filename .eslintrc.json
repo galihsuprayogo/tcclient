@@ -1,9 +1,10 @@
 {
+  "extends": ["plugin:react/recommended", "airbnb"],
   "env": {
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb"],
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -13,9 +14,37 @@
   },
   "plugins": ["react"],
   "rules": {
+    "array-callback-return": "off",
+    "consistent-return": "off",
+    "default-case": "off",
     "linebreak-style": "off",
+    "no-var": "off",
+    "no-unused-vars": "off",
+    "no-unused-expressions": "off",
+    "no-unused-labels": "off",
+    "no-undef": "off",
+    "no-redeclare": "off",
+    "no-console": "off",
+    "no-alert": "off",
+    "no-use-before-define": ["error", {"variables": false}],
+    "no-return-assign": "off",
+    "no-shadow": "off",
+    "no-nested-ternary": "off",
+    "block-scoped-var": "off",
+    "vars-on-top": "off",
+    "react/require-default-props": [0],
+    "react/no-unused-state": [0],
+    "react/no-access-state-in-setstate": [0],
+    "react/no-array-index-key": [0],
+    "react/sort-comp": [0],
+    "react/jsx-props-no-spreading": [0],
     "react/jsx-filename-extension": [1, {"extensions": [".js", ".jsx"]}],
     "react/prop-types": [0],
-    "no-use-before-define": ["error", {"variables": false}]
+    "react/destructuring-assignment": "off",
+    "import/no-cycle": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "max-len": "off"
   }
 }
