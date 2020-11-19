@@ -191,9 +191,8 @@ class MapCls extends React.Component {
             showUserLocation
             showsMyLocationButton
             zoomEnabled
-            zoomControlEnabled
             minZoomLevel={15}
-            maxZoomLevel={20}
+            maxZoomLevel={30}
             style={styles.map}
             region={this.state.initialPosition}
             scrollEnabled
@@ -218,12 +217,13 @@ MapCls.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     ...StyleSheet.absoluteFillObject,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
+    width: '100%'
   },
   textInput: {
     color: colors.text.default,

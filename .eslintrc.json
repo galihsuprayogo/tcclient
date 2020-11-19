@@ -16,7 +16,10 @@
   "rules": {
     "array-callback-return": "off",
     "consistent-return": "off",
+    "comma-dangle": "off",
+    "camelcase": "off",
     "default-case": "off",
+    "function-paren-newline": "off",
     "linebreak-style": "off",
     "no-var": "off",
     "no-unused-vars": "off",
@@ -32,6 +35,7 @@
     "no-nested-ternary": "off",
     "block-scoped-var": "off",
     "vars-on-top": "off",
+    "radix": "off",
     "react/require-default-props": [0],
     "react/no-unused-state": [0],
     "react/no-access-state-in-setstate": [0],
@@ -39,12 +43,15 @@
     "react/sort-comp": [0],
     "react/jsx-props-no-spreading": [0],
     "react/jsx-filename-extension": [1, {"extensions": [".js", ".jsx"]}],
+    "react/jsx-indent": [0],
     "react/prop-types": [0],
     "react/destructuring-assignment": "off",
     "import/no-cycle": "off",
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
     "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "implicit-arrow-linebreak": "off",
     "max-len": "off"
   }
 }
