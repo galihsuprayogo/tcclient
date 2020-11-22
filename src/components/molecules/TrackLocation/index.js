@@ -21,17 +21,11 @@ class TrackLocation extends Component {
         latitude: 0,
         longitude: 0,
       },
+      destinationCoordinate: {
+        latitude: -7.398565,
+        longitude: 110.911993,
+      },
       routeCoordinates: [],
-      initialCoordinates: [
-        {
-          latitude: -7.400206,
-          longitude: 110.913001,
-        },
-        {
-          latitude: -7.398565,
-          longitude: 110.911993,
-        },
-      ],
       error: null,
     };
     this.mapView = null;
@@ -39,6 +33,7 @@ class TrackLocation extends Component {
 
   componentDidMount() {
     this.watchPosition();
+    this.currentLocation();
   }
 
     getMapRegion = () => ({
@@ -59,9 +54,8 @@ class TrackLocation extends Component {
           // const { latitude, longitude } = position.coords;
           const { routeCoordinates } = this.state;
           const newCoordinate = changeOriginCoordinate;
-
+          console.log('route coordinate ', this.state.routeCoordinates);
           this.setState({ routeCoordinates: routeCoordinates.concat([newCoordinate]) });
-          console.log('array of moving', this.state.routeCoordinates);
         },
         (error) => this.setState({ error: error.message }),
         { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 },
@@ -87,20 +81,21 @@ class TrackLocation extends Component {
     currentLocation = () => {
       Geolocation.getCurrentPosition(
         (position) => {
-          console.log(JSON.stringify(position));
-          const newCoordinate = {
+          const xCoordinate = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           };
+          this.setState({ originCoordinate: xCoordinate });
         }
       );
     }
 
-    onMapViewPress = (msg, e) => {
-      this.currentLocation();
-      console.log('before slicing', this.state.initialCoordinates);
-      console.log('after slicing', this.state.initialCoordinates.splice(0, 1));
-      console.log('new coordinate 0', this.state.initialCoordinates);
+    onMapViewPress = async (e) => {
+      const yCoordinate = {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+      };
+      this.setState({ originCoordinate: yCoordinate });
     }
 
     render() {
@@ -123,14 +118,14 @@ class TrackLocation extends Component {
             maxZoomLevel={30}
             followUserLocation
             loadingEnabled
-            onLongPress={(e) => this.onMapViewPress('moving a new loc', e)}
+            onLongPress={(e) => this.onMapViewPress(e)}
           >
             <Marker coordinate={this.state.originCoordinate} />
-            <Marker coordinate={this.state.initialCoordinates[1]} />
+            <Marker coordinate={this.state.destinationCoordinate} />
             <MapViewDirections
-              origin={this.state.initialCoordinates[0]}
-              destination={this.state.initialCoordinates[1]}
-              waypoints={this.state.initialCoordinates.slice(1, -1)}
+              origin={this.state.originCoordinate}
+              destination={this.state.destinationCoordinate}
+              waypoints={this.state.routeCoordinates.slice(1, -1)}
               mode="DRIVING"
               apikey={GOOGLE_MAPS_APIKEY}
               language="en"
