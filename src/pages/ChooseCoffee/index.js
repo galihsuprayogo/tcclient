@@ -78,13 +78,13 @@ const ChooseCoffee = ({ navigation }) => {
             <Gap height={10} />
             <View style={styles.locWrapper}>
 
-              <TouchableOpacity onPress={() => navigation.navigate('TL')}>
+              <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
                 <InputLocation type="text1" icon="near" text="Pilih lewat peta [klik]" />
               </TouchableOpacity>
               <InputLocation type="text2" icon="loc2" text="[Lokasi belum dipin, klik di atas]" />
             </View>
             <Gap height={20} />
-            <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.navigate('DSS')} />
+            <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.navigate('Map')} />
           </View>
           <Gap height={20} />
         </View>

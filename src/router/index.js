@@ -12,10 +12,9 @@ import {
   UpdateUmkm,
   InputProduct,
   ChooseCoffee,
-  DecisionSupportSystem,
 } from '../pages';
 import {
-  Map, MapCls, MapDirection, TrackLocation,
+  Map, MapCls,
   BottomNavigator,
 } from '../components';
 
@@ -84,11 +83,6 @@ const Router = () => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="DSS"
-      component={DecisionSupportSystem}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
       name="Map"
       component={Map}
       options={{ headerShown: false }}
@@ -96,16 +90,6 @@ const Router = () => (
     <Stack.Screen
       name="MapCls"
       component={MapCls}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="MapDirect"
-      component={MapDirection}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="TL"
-      component={TrackLocation}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

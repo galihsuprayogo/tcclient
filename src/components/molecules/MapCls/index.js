@@ -135,9 +135,9 @@ class MapCls extends React.Component {
                 <Gap width={10} />
                 <ButtonModal icon="beenhere" title="Simpan Lokasi" />
                 <Gap width={10} />
-                <ButtonModal icon="direction" title="Petunjuk Arah" />
+                <ButtonModal icon="direction" title="Petunjuk Arah" height={21} width={21} />
                 <Gap width={10} />
-                <ButtonModal icon="navigation" title="Mulai" />
+                <ButtonModal icon="navigation" title="Mulai" height={18} width={23} />
               </View>
             </ScrollView>
           </View>

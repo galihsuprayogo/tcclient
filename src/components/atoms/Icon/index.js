@@ -14,7 +14,7 @@ import {
   ILPhotoFrame,
 } from '../../../assets';
 
-const Icon = ({ icon }) => {
+const Icon = ({ icon, height, width }) => {
   switch (icon) {
     case 'profile':
       return <IconPersonUmkm />;
@@ -33,9 +33,9 @@ const Icon = ({ icon }) => {
     case 'aright':
       return <IconRight height={20} width={20} />;
     case 'direction':
-      return <IconDirection />;
+      return <IconDirection height={height} width={width} />;
     case 'navigation':
-      return <IconNavigation height={18} width={23} />;
+      return <IconNavigation height={height} width={width} />;
     case 'beenhere':
       return <IconBeenhere height={21} width={25} />;
     case 'frame':

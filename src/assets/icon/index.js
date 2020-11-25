@@ -20,7 +20,7 @@ import IconRemovePhoto from './icon-remove-photo.svg';
 import IconEdit from './icon-edit.svg';
 import IconAddNext from './icon-add-next.svg';
 import IconNearMe from './icon-near-me.svg';
-import IconMarker from './icon-marker.svg';
+import IconMarker from './icon-marker.png';
 import IconRight from './icon-arrow-right.svg';
 import IconX from './icon-x.svg';
 import IconDirection from './icon-direction.svg';
