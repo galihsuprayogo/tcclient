@@ -65,6 +65,8 @@ const Map = () => {
   const [time, setTime] = useState(0);
   const [distance, setDistance] = useState(0);
   const [zoom, setZoom] = useState(15);
+  const [boxOne, setBoxOne] = useState(true);
+  const [boxTwo, setBoxTwo] = useState(false);
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
 
@@ -187,6 +189,8 @@ const Map = () => {
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
+    setBoxOne(false);
+    setBoxTwo(true);
     setZoom(22);
     setTimeTraveler();
   };
@@ -195,6 +199,8 @@ const Map = () => {
     setCardFooter(true);
     setCardHeader(true);
     setCardButton(false);
+    setBoxOne(true);
+    setBoxTwo(false);
     setZoom(15);
   };
   const setTimeTraveler = () => {
@@ -259,11 +265,20 @@ const Map = () => {
             onMapViewDirection()
           )}
       </MapView>
-      <View style={styles.labelBox}>
-          <Text style={styles.labelBoxTitle}>
-             skor hasil perhitungan menggunakan promethee
-          </Text>
-      </View>
+      {boxOne && (
+        <View style={styles.labelBox}>
+            <Text style={styles.labelBoxTitle}>
+              skor hasil perhitungan menggunakan promethee
+            </Text>
+        </View>
+      )}
+      {boxTwo && (
+        <View style={styles.labelBoxSecond}>
+            <Text style={styles.labelBoxTitleSecond}>
+              Petunjuk Arah
+            </Text>
+        </View>
+      )}
       {cardHeader && (
       <ScrollView
         ref={_scrollViewHeader}
@@ -491,6 +506,31 @@ const styles = StyleSheet.create({
   labelBoxTitle: {
     fontSize: 15,
     fontFamily: fonts.sfProDisplay.boldItalic,
+  },
+  labelBoxSecond: {
+    position: 'absolute',
+    marginTop: Platform.OS === 'ios' ? 10 : 5,
+    marginLeft: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: 'green',
+    width: '95%',
+    height: '14%',
+    alignItems: 'center',
+    borderTopLeftRadius: 7,
+    borderTopRightRadius: 7,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  labelBoxTitleSecond: {
+    fontSize: 25,
+    fontFamily: fonts.sfProDisplay.heavy,
+    color: 'white'
   },
   labelBoxBottom: {
     position: 'absolute',
