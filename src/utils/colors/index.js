@@ -11,6 +11,7 @@ export const colors = {
   primary: mainColors.light,
   secondary: mainColors.dark,
   third: mainColors.semidark,
+  fourth: mainColors.black,
   text: {
     default: mainColors.dark,
     secondary: mainColors.light,

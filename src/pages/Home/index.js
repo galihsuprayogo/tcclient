@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View, Text, Image, StyleSheet,
 } from 'react-native';
-import { Button, Gap, Header } from '../../components';
+import AwesomeButton from 'react-native-really-awesome-button';
+import { Gap, Header } from '../../components';
 import { colors, fonts } from '../../utils';
 import { ILLogo } from '../../assets';
 
@@ -12,18 +13,29 @@ const Home = ({ navigation }) => (
     <View style={styles.content}>
       <Gap height={20} />
       <Image source={ILLogo} style={styles.image} />
-      <Gap height={30} />
+      <Gap height={5} />
       <View style={styles.textWrapper}>
         <Text style={styles.text}> Selamat Datang </Text>
         <Text style={styles.detailText}>
           Silahkan pilih kopi kesukaanmu dari berbagai
           katalog di Temanggung, klik di bawah ini
         </Text>
-        <Button
-          type="icon-button"
-          icon="icon-hand-right"
-          onPress={() => navigation.navigate('ChooseCoffee')}
-        />
+        <Gap height={10} />
+        <AwesomeButton
+          width={150}
+          height={45}
+          backgroundColor={colors.secondary}
+          backgroundDarker={colors.fourth}
+          backgroundShadow={colors.primary}
+          backgroundProgress={colors.primary}
+          progress
+          onPress={(next) => {
+            navigation.navigate('ChooseCoffee');
+            next();
+          }}
+        >
+        <Text style={styles.textButton}> Click it! </Text>
+        </AwesomeButton>
       </View>
     </View>
   </View>
@@ -57,10 +69,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sfProDisplay.blackItalic,
     color: colors.text.default,
   },
+  textButton: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: fonts.Akkurat.bold
+  },
   detailText: {
-    fontFamily: fonts.sfProDisplay.ultraLight,
-    fontSize: 20,
-    maxWidth: 280,
+    fontFamily: fonts.Akkurat.lightItalic,
+    fontSize: 18,
+    maxWidth: 285,
     textAlign: 'center',
   },
 });

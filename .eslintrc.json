@@ -35,6 +35,7 @@
     "no-nested-ternary": "off",
     "no-use-before-define": "off",
     "no-underscore-dangle": "off",
+    "no-mixed-operators": "off",
     "block-scoped-var": "off",
     "vars-on-top": "off",
     "radix": "off",

@@ -5,9 +5,10 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
-import { fonts } from '../../../utils';
-import { IconMarker } from '../../../assets';
-import { Gap, ButtonModal } from '../../atoms';
+import { fonts, colors } from '../../../utils';
+import { IconMarker, IconGoogle } from '../../../assets';
+import { Gap, ButtonModal } from '../..';
+import { Button } from '..';
 import { markers } from '../../atoms/MapData';
 
 const { width, height } = Dimensions.get('window');
@@ -53,15 +54,24 @@ const Map = () => {
     latitude: 0,
     longitude: 0
   });
+
   const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [fit, setFit] = useState([]);
   const [error, setError] = useState('');
   const [direct, setDirect] = useState(false);
+  const [cardFooter, setCardFooter] = useState(true);
+  const [cardHeader, setCardHeader] = useState(true);
+  const [cardButton, setCardButton] = useState(false);
+  const [time, setTime] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [zoom, setZoom] = useState(15);
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
 
   useEffect(() => {
     onScrollCardToMarker();
     watchPosition();
+    console.log('route coordinate ', routeCoordinates);
   });
 
   const getMapRegion = () => ({
@@ -79,9 +89,7 @@ const Map = () => {
           longitude: position.coords.longitude
         };
         setOriginCoordinate(changeOriginCoordinate);
-        const newCoordinate = changeOriginCoordinate;
-        console.log('route coordinate ', routeCoordinates);
-        setRouteCoordinates(routeCoordinates.concat([newCoordinate]));
+        // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
       },
       (error) => setError(error.message),
       { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 },
@@ -90,6 +98,7 @@ const Map = () => {
   };
 
   const onReady = (result) => {
+    setFit(result);
     _map.current.fitToCoordinates(result.coordinates, {
       edgePadding: {
         right: (width / 10),
@@ -98,13 +107,14 @@ const Map = () => {
         top: (height / 10),
       },
     });
+    setTime(result.duration);
   };
 
   const onMapViewDirection = () => (
     <MapViewDirections
       origin={originCoordinate}
       destination={destinationCoordinate}
-      waypoints={routeCoordinates.slice(1, -1)}
+      waypoints={routeCoordinates.slice(1, 0)}
       mode="DRIVING"
       apikey={GOOGLE_MAPS_APIKEY}
       language="en"
@@ -173,6 +183,33 @@ const Map = () => {
     setDestinationCoordinate(destination);
   };
 
+  const onStart = () => {
+    setCardFooter(false);
+    setCardHeader(false);
+    setCardButton(true);
+    setZoom(22);
+    setTimeTraveler();
+  };
+
+  const offStart = () => {
+    setCardFooter(true);
+    setCardHeader(true);
+    setCardButton(false);
+    setZoom(15);
+  };
+  const setTimeTraveler = () => {
+    var d = Number(time);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
+    var mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : '';
+    var sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : '';
+
+    console.log(console.log(hDisplay, mDisplay, sDisplay));
+  };
+
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
   const _scrollViewHeader = React.useRef(null);
@@ -183,16 +220,11 @@ const Map = () => {
         ref={_map}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        initialRegion={{
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
+        region={getMapRegion()}
         showUserLocation
         showsMyLocationButton
         zoomEnabled
-        minZoomLevel={15}
+        minZoomLevel={zoom}
         maxZoomLevel={30}
         followUserLocation
         loadingEnabled
@@ -224,20 +256,7 @@ const Map = () => {
           </View>
       </Marker>
           {direct && (
-          <MapViewDirections
-            origin={originCoordinate}
-            destination={destinationCoordinate}
-            waypoints={routeCoordinates.slice(1, -1)}
-            mode="DRIVING"
-            apikey={GOOGLE_MAPS_APIKEY}
-            language="en"
-            strokeWidth={4}
-            strokeColor="blue"
-            onStart={(params) => {
-              console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-            }}
-            onReady={onReady}
-          />
+            onMapViewDirection()
           )}
       </MapView>
       <View style={styles.labelBox}>
@@ -245,6 +264,7 @@ const Map = () => {
              skor hasil perhitungan menggunakan promethee
           </Text>
       </View>
+      {cardHeader && (
       <ScrollView
         ref={_scrollViewHeader}
         horizontal
@@ -268,6 +288,8 @@ const Map = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      )}
+      {cardFooter && (
       <Animated.ScrollView
         ref={_scrollView}
         horizontal
@@ -325,12 +347,25 @@ const Map = () => {
                   <View style={styles.button}>
                     <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(marker.coordinate)} />
                     <Gap width={10} />
-                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} />
+                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart()} />
                   </View>
                 </View>
               </View>
             ))}
       </Animated.ScrollView>
+      )}
+      { cardButton && (
+      <View style={styles.labelBoxBottom}>
+          <IconGoogle />
+        <View style={styles.labelBoxBottomTextWrapper}>
+          <Text style={styles.labelBoxBottomTextTime}> Mins </Text>
+          <Text style={styles.labelBoxBottomTextDuration}> Km </Text>
+        </View>
+        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={() => offStart()}>
+            <Button type="icon-button" icon="x" onPress={() => offStart()} />
+        </TouchableOpacity>
+      </View>
+      )}
     </View>
   );
 };
@@ -456,6 +491,44 @@ const styles = StyleSheet.create({
   labelBoxTitle: {
     fontSize: 15,
     fontFamily: fonts.sfProDisplay.boldItalic,
+  },
+  labelBoxBottom: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    width: '100%',
+    height: '9%',
+    alignItems: 'center',
+    borderTopRightRadius: 17,
+    borderTopLeftRadius: 17,
+    padding: 20,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  labelBoxBottomButton: {
+    borderWidth: 2,
+    height: 40,
+    width: 40,
+    borderRadius: 40 / 2,
+    borderColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  labelBoxBottomTextWrapper: {
+    alignItems: 'center'
+  },
+  labelBoxBottomTextTime: {
+    fontSize: 18,
+    fontFamily: fonts.Akkurat.bold
+  },
+  labelBoxBottomTextDuration: {
+    fontSize: 15,
+    fontFamily: fonts.Akkurat.normal
   },
   scrollView: {
     position: 'absolute',
