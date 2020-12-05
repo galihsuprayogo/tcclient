@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, StyleSheet, Dimensions, Text, Animated, Image, ScrollView, TouchableOpacity
+  View, StyleSheet, Dimensions, Text, Animated, Image, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -56,7 +56,6 @@ const Map = () => {
   });
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [fit, setFit] = useState([]);
   const [error, setError] = useState('');
   const [direct, setDirect] = useState(false);
   const [cardFooter, setCardFooter] = useState(true);
@@ -70,10 +69,26 @@ const Map = () => {
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
 
+  const onDisable = () => {
+    if (cardButton === false && direct === false) {
+      return false;
+    }
+    if (cardButton === true) {
+      offStart();
+      return true;
+    }
+    if (direct === true) {
+      setDirect(false);
+      return true;
+    }
+  };
+
   useEffect(() => {
     onScrollCardToMarker();
     watchPosition();
-    console.log('route coordinate ', routeCoordinates);
+    BackHandler.addEventListener('backPress', onDisable);
+    return () =>
+      BackHandler.removeEventListener('backPress', onDisable);
   });
 
   const getMapRegion = () => ({
@@ -100,7 +115,6 @@ const Map = () => {
   };
 
   const onReady = (result) => {
-    setFit(result);
     _map.current.fitToCoordinates(result.coordinates, {
       edgePadding: {
         right: (width / 10),
@@ -110,6 +124,7 @@ const Map = () => {
       },
     });
     setTime(result.duration);
+    setDistance(parseFloat(result.distance).toFixed(1));
   };
 
   const onMapViewDirection = () => (
@@ -129,7 +144,7 @@ const Map = () => {
     />
   );
 
-  onScrollCardToMarker = () => {
+  const onScrollCardToMarker = () => {
     mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3);
       if (index >= coffeeCoordinates.length) {
@@ -185,10 +200,12 @@ const Map = () => {
     setDestinationCoordinate(destination);
   };
 
-  const onStart = () => {
+  const onStart = (destination) => {
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
+    setDirect(true);
+    setDestinationCoordinate(destination);
     setBoxOne(false);
     setBoxTwo(true);
     setZoom(22);
@@ -204,16 +221,25 @@ const Map = () => {
     setZoom(15);
   };
   const setTimeTraveler = () => {
-    var d = Number(time);
+    // var d = Number(time);
+    var d = Math.round(time * 100);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
 
-    var hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
-    var mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : '';
+    var hDisplay = h > 0 ? h + (h === 1 ? ' hour : ' : ' hours : ') : '';
+    var mDisplay = m > 0 ? m + (m === 1 ? ' minute : ' : ' minutes : ') : '';
     var sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : '';
 
-    console.log(console.log(hDisplay, mDisplay, sDisplay));
+    if (distance >= 1.0) {
+      var dDisplay = `${distance} Km.`;
+    }
+    if (distance < 1.0) {
+      var dDisplay = `${distance} meter`;
+    }
+    return {
+      hDisplay, mDisplay, sDisplay, dDisplay
+    };
   };
 
   const _map = React.useRef(null);
@@ -362,7 +388,7 @@ const Map = () => {
                   <View style={styles.button}>
                     <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(marker.coordinate)} />
                     <Gap width={10} />
-                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart()} />
+                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart(marker.coordinate)} />
                   </View>
                 </View>
               </View>
@@ -373,8 +399,15 @@ const Map = () => {
       <View style={styles.labelBoxBottom}>
           <IconGoogle />
         <View style={styles.labelBoxBottomTextWrapper}>
-          <Text style={styles.labelBoxBottomTextTime}> Mins </Text>
-          <Text style={styles.labelBoxBottomTextDuration}> Km </Text>
+          <Text style={styles.labelBoxBottomTextDuration}>
+              {' '}
+              { setTimeTraveler().dDisplay}
+              {' '}
+          </Text>
+          <Gap height={5} />
+          <Text style={styles.labelBoxBottomTextTime}>
+            { setTimeTraveler().hDisplay + setTimeTraveler().mDisplay + setTimeTraveler().sDisplay }
+          </Text>
         </View>
         <TouchableOpacity style={styles.labelBoxBottomButton} onPress={() => offStart()}>
             <Button type="icon-button" icon="x" onPress={() => offStart()} />
@@ -563,12 +596,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   labelBoxBottomTextTime: {
-    fontSize: 18,
-    fontFamily: fonts.Akkurat.bold
-  },
-  labelBoxBottomTextDuration: {
     fontSize: 15,
     fontFamily: fonts.Akkurat.normal
+  },
+  labelBoxBottomTextDuration: {
+    fontSize: 18,
+    fontFamily: fonts.Akkurat.bold
   },
   scrollView: {
     position: 'absolute',
