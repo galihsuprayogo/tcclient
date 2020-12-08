@@ -1,7 +1,7 @@
 import Header from './Header';
 import Button from './Button';
 import TextButton from './Button/TextButton.js';
-import BottomNavigator from './ButtomNavigator';
+import BottomNavigator from './BottomNavigator';
 import Profile from './Profile';
 import List from './List';
 import ButtonNavigator from './ButtonNavigator';
@@ -9,6 +9,7 @@ import InputPicker from './InputPicker';
 import CoffeePicker from './CoffeePicker';
 import Map from './Map';
 import MapCls from './MapCls';
+import DrawerContent from './DrawerContent';
 
 export {
   Header,
@@ -22,4 +23,5 @@ export {
   CoffeePicker,
   Map,
   MapCls,
+  DrawerContent
 };

@@ -41,10 +41,7 @@ const ChooseCoffee = ({ navigation }) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          <Text style={styles.text}>
-            Silahkan pilih kopi kesukaanmu...
-            masukkan kategori yang kamu inginkan
-          </Text>
+        <Gap height={65} />
           <View style={styles.divWrapper}>
             <CoffeePicker
               title="Jenis Kopi (Arabica/Robusta"
@@ -77,7 +74,6 @@ const ChooseCoffee = ({ navigation }) => {
             <PriceSlider type="minimum" />
             <Gap height={10} />
             <View style={styles.locWrapper}>
-
               <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
                 <InputLocation type="text1" icon="near" text="Pilih lewat peta [klik]" />
               </TouchableOpacity>
@@ -119,15 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     backgroundColor: colors.secondary,
-  },
-  text: {
-    fontFamily: fonts.sfProDisplay.lightItalic,
-    fontSize: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
-    textAlign: 'center',
-    maxWidth: 350,
-  },
+  }
 });
 
 export default ChooseCoffee;

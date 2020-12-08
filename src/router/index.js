@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   Home,
   Splash,
@@ -15,11 +16,12 @@ import {
 } from '../pages';
 import {
   Map, MapCls,
-  BottomNavigator,
+  BottomNavigator, DrawerContent
 } from '../components';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 const UnsignedApp = () => (
   <Tab.Navigator tabBar={(props) => <BottomNavigator {...props} />}>
@@ -33,6 +35,12 @@ const SignedApp = () => (
     <Tab.Screen name="Produk" component={Product} />
     <Tab.Screen name="Keluar" component={Splash} />
   </Tab.Navigator>
+);
+
+const DrawerApp = () => (
+    <Drawer.Navigator initialRouteName="UMKM" drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen name="UMKM" component={Umkm} />
+    </Drawer.Navigator>
 );
 
 const Router = () => (
@@ -64,6 +72,11 @@ const Router = () => (
     />
     <Stack.Screen
       name="SignedApp"
+      component={DrawerApp}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Tab"
       component={SignedApp}
       options={{ headerShown: false }}
     />

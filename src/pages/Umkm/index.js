@@ -7,7 +7,13 @@ import { colors } from '../../utils';
 
 const Umkm = ({ navigation }) => (
   <View style={styles.container}>
-    <Header title="Profil UMKM" />
+    <Header
+      title="Profil UMKM"
+      type="icon-button"
+      icon="open-drawer"
+      width={24}
+      onPress={() => navigation.openDrawer()}
+    />
     <View style={styles.content}>
       <Profile />
       <Gap height={25} />

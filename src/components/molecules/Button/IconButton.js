@@ -9,6 +9,7 @@ import {
   IconAddNext,
   IconX,
   IconNearMeLight,
+  IconOpenDrawer
 } from '../../../assets';
 
 const IconButton = ({ icon, onPress }) => {
@@ -30,6 +31,8 @@ const IconButton = ({ icon, onPress }) => {
         return <IconX height={20} width={20} />;
       case 'nearme':
         return <IconNearMeLight />;
+      case 'open-drawer':
+        return <IconOpenDrawer height={20} width={20} />;
       default:
         return <Text />;
     }
