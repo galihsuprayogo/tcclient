@@ -16,7 +16,7 @@ import {
 } from '../pages';
 import {
   Map, MapCls,
-  BottomNavigator, DrawerContent
+  BottomNavigator, DrawerContent, DrawItem
 } from '../components';
 
 const Stack = createStackNavigator();
@@ -38,8 +38,31 @@ const SignedApp = () => (
 );
 
 const DrawerApp = () => (
-    <Drawer.Navigator initialRouteName="UMKM" drawerContent={(props) => <DrawerContent {...props} />}>
-      <Drawer.Screen name="UMKM" component={Umkm} />
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen
+        name="UMKM"
+        component={SignedApp}
+        options={{
+          drawerLabel: 'UMKM',
+          drawerIcon: ({ focused }) => <DrawItem icon="UMKM" active={focused} />
+        }}
+      />
+      <Drawer.Screen
+        name="Produk"
+        component={Umkm}
+        options={{
+          drawerLabel: 'Produk',
+          drawerIcon: ({ focused }) => <DrawItem icon="Produk" active={focused} />
+        }}
+      />
+      <Drawer.Screen
+        name="Bantuan"
+        component={Umkm}
+        options={{
+          drawerLabel: 'Bantuan',
+          drawerIcon: ({ focused }) => <DrawItem icon="Help" active={focused} />
+        }}
+      />
     </Drawer.Navigator>
 );
 
@@ -73,11 +96,6 @@ const Router = () => (
     <Stack.Screen
       name="SignedApp"
       component={DrawerApp}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Tab"
-      component={SignedApp}
       options={{ headerShown: false }}
     />
     <Stack.Screen

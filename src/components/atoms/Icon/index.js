@@ -14,7 +14,9 @@ import {
   ILPhotoFrame,
 } from '../../../assets';
 
-const Icon = ({ icon, height, width }) => {
+const Icon = ({
+  icon, height, width
+}) => {
   switch (icon) {
     case 'profile':
       return <IconPersonUmkm />;

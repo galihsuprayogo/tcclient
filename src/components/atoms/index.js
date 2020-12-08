@@ -8,6 +8,7 @@ import PriceSlider from './PriceSlider';
 import PriceFormat from './PriceFormat';
 import InputLocation from './InputLocation';
 import ButtonModal from './ButtonModal';
+import DrawItem from './DrawItem';
 
 export {
   Gap,
@@ -20,4 +21,5 @@ export {
   PriceFormat,
   InputLocation,
   ButtonModal,
+  DrawItem
 };

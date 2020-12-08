@@ -29,6 +29,8 @@ import IconBeenhere from './icon-savepinhere.svg';
 import IconNearMeLight from './icon-near-me-light.svg';
 import IconGoogle from './icon-google.svg';
 import IconOpenDrawer from './icon-open-drawer.svg';
+import IconHelp from './icon-help.svg';
+import IconHelpActive from './icon-help-active.svg';
 
 export {
   IconBack,
@@ -61,5 +63,7 @@ export {
   IconBeenhere,
   IconNearMeLight,
   IconGoogle,
-  IconOpenDrawer
+  IconOpenDrawer,
+  IconHelp,
+  IconHelpActive
 };
