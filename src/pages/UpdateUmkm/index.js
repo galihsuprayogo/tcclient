@@ -14,36 +14,42 @@ const UpdateUmkm = ({ navigation }) => (
       width={24}
       onPress={() => navigation.goBack()}
     />
-    <ScrollView showVerticalScrollIndicator={false}>
+
       <View style={styles.content}>
-        <View style={{ alignItems: 'center' }}>
-          <Profile icon="add-photo" />
-        </View>
-        <Gap height={25} />
-        <Input keyboardType="default" label="Nama UMKM/Usaha" type="inputForm" />
-        <Gap height={10} />
-        <Input keyboardType="phone-pad" label="NPWP" type="inputForm" />
-        <Gap height={10} />
-        <Input keyboardType="phone-pad" label="No. Telp Pemilik" type="inputForm" />
-        <Gap height={10} />
-        <Input keyboardType="default" label="lokasi" type="inputForm" />
-        <Gap height={30} />
-        <View style={styles.buttonWrapper}>
-          <Button title="Simpan" onPress={() => alert('boleh-boleh')} />
-        </View>
+          <ScrollView showVerticalScrollIndicator={false}>
+            <View style={{ alignItems: 'center' }}>
+              <Profile icon="add-photo" />
+            </View>
+            <Gap height={25} />
+            <Input keyboardType="default" label="Nama UMKM/Usaha" type="inputForm" />
+            <Gap height={10} />
+            <Input keyboardType="phone-pad" label="NPWP" type="inputForm" />
+            <Gap height={10} />
+            <Input keyboardType="phone-pad" label="No. Telp Pemilik" type="inputForm" />
+            <Gap height={10} />
+            <Input keyboardType="default" label="lokasi" type="inputForm" />
+            <Gap height={30} />
+            <View style={styles.buttonWrapper}>
+              <Button title="Simpan" onPress={() => alert('boleh-boleh')} />
+            </View>
+          </ScrollView>
       </View>
-    </ScrollView>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
   },
   content: {
     flex: 1,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     padding: 40,
   },
   buttonWrapper: {

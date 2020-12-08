@@ -26,7 +26,7 @@ const SignIn = ({ navigation }) => (
       <Gap height={25} />
       <Button
         title="Masuk"
-        onPress={() => navigation.replace('SignedApp')}
+        onPress={() => navigation.replace('DrawerApp')}
       />
     </View>
   </View>

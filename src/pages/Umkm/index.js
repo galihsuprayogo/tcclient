@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  Profile, List, Header, Gap, ButtonNavigator,
+  Profile, List, Header, Gap
 } from '../../components';
 import { colors } from '../../utils';
 
@@ -21,11 +21,6 @@ const Umkm = ({ navigation }) => (
       <List type="icon" icon="npwp" name="NPWP" value="xxxx-xxxx-xx" />
       <List type="icon" icon="telp" name="No. Telp Pemilik" value="xxxxxxxxxxxx" />
       <List type="icon" icon="loc" name="Lokasi" value="Kledung, Temanggung" />
-      <ButtonNavigator
-        title="Edit profil umkm..."
-        icon="edit"
-        onPress={() => navigation.navigate('UpdateUmkm')}
-      />
     </View>
   </View>
 );

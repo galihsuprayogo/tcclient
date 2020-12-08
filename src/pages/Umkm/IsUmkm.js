@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { showMessage } from 'react-native-flash-message';
-import { ButtonNavigator, TextButton, List } from '../../components';
+import { TextButton, List } from '../../components';
 import { colors } from '../../utils';
 
 const IsUmkm = ({ umkm, navigation }) => {
@@ -40,11 +40,6 @@ const IsUmkm = ({ umkm, navigation }) => {
         {/*    name="Header nama coffe" */}
         {/*    value="Tanon, Temanggung, Jawa Tengah, 27777" */}
         {/* /> */}
-        <ButtonNavigator
-          title="Tambah Kopi? Klik..."
-          icon="add-next"
-          onPress={() => navigation.navigate('InputProduct')}
-        />
       </>
     );
   };

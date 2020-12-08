@@ -7,11 +7,12 @@ import {
   IconLoginActive,
   IconUmkm,
   IconUmkmActive,
+  IconEdit,
+  IconEditActive,
   IconProduct,
   IconProductActive,
-  IconLogout,
-  IconLogoutActive,
-
+  IconAdd,
+  IconAddActive
 } from '../../../assets';
 import { colors, fonts } from '../../../utils';
 
@@ -26,10 +27,12 @@ const TabItem = ({
         return active ? <IconLoginActive /> : <IconLogin />;
       case 'UMKM':
         return active ? <IconUmkmActive /> : <IconUmkm />;
+      case 'Ubah Profil':
+        return active ? <IconEditActive /> : <IconEdit />;
       case 'Produk':
         return active ? <IconProductActive /> : <IconProduct />;
-      case 'Keluar':
-        return active ? <IconLogoutActive /> : <IconLogout />;
+      case 'Add Produk':
+        return active ? <IconAddActive /> : <IconAdd />;
       default:
         return <IconHome />;
     }

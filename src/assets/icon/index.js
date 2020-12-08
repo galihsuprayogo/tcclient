@@ -10,7 +10,6 @@ import IconUmkmActive from './icon-umkm-active.svg';
 import IconProduct from './icon-product.svg';
 import IconProductActive from './icon-product-active.svg';
 import IconLogout from './icon-logout.svg';
-import IconLogoutActive from './icon-logout-active.svg';
 import IconPersonUmkm from './icon-person-umkm.svg';
 import IconNpwp from './icon-npwp.svg';
 import IconTelp from './icon-telp.svg';
@@ -18,7 +17,9 @@ import IconLocation from './icon-location.svg';
 import IconAddPhoto from './icon-add-photo.svg';
 import IconRemovePhoto from './icon-remove-photo.svg';
 import IconEdit from './icon-edit.svg';
-import IconAddNext from './icon-add-next.svg';
+import IconEditActive from './icon-edit-active.svg';
+import IconAdd from './icon-add.svg';
+import IconAddActive from './icon-add-active.svg';
 import IconNearMe from './icon-near-me.svg';
 import IconMarker from './icon-marker.png';
 import IconRight from './icon-arrow-right.svg';
@@ -45,7 +46,6 @@ export {
   IconProduct,
   IconProductActive,
   IconLogout,
-  IconLogoutActive,
   IconPersonUmkm,
   IconNpwp,
   IconTelp,
@@ -53,7 +53,9 @@ export {
   IconAddPhoto,
   IconRemovePhoto,
   IconEdit,
-  IconAddNext,
+  IconEditActive,
+  IconAdd,
+  IconAddActive,
   IconNearMe,
   IconMarker,
   IconRight,

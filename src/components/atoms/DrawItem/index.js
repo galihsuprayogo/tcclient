@@ -15,7 +15,7 @@ const DrawItem = ({ icon, active }) => {
       case 'Logout':
         return <IconLogout />;
       case 'Help':
-        return active ? <IconHelpActive width={20} /> : <IconHelp width={20} />;
+        return active ? <IconHelpActive width={18} /> : <IconHelp width={20} />;
       default:
         return <IconHome />;
     }

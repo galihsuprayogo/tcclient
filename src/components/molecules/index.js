@@ -4,7 +4,6 @@ import TextButton from './Button/TextButton.js';
 import BottomNavigator from './BottomNavigator';
 import Profile from './Profile';
 import List from './List';
-import ButtonNavigator from './ButtonNavigator';
 import InputPicker from './InputPicker';
 import CoffeePicker from './CoffeePicker';
 import Map from './Map';
@@ -18,7 +17,6 @@ export {
   BottomNavigator,
   Profile,
   List,
-  ButtonNavigator,
   InputPicker,
   CoffeePicker,
   Map,

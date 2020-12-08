@@ -9,7 +9,13 @@ const Product = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Header title="Produk" />
+      <Header
+        title="Produk"
+        type="icon-button"
+        icon="open-drawer"
+        width={24}
+        onPress={() => navigation.openDrawer()}
+      />
       <View style={styles.content(umkm)}>
         <IsUmkm umkm={umkm} navigation={navigation} />
       </View>

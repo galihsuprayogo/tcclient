@@ -4,9 +4,7 @@ import {
   IconBackLight,
   IconBack,
   IconHandRight,
-  IconEdit,
   IconAddPhoto,
-  IconAddNext,
   IconX,
   IconNearMeLight,
   IconOpenDrawer
@@ -21,12 +19,8 @@ const IconButton = ({ icon, onPress }) => {
         return <IconBackLight />;
       case 'icon-hand-right':
         return <IconHandRight />;
-      case 'edit':
-        return <IconEdit />;
       case 'add-photo':
         return <IconAddPhoto />;
-      case 'add-next':
-        return <IconAddNext />;
       case 'x':
         return <IconX height={20} width={20} />;
       case 'nearme':

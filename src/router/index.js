@@ -29,11 +29,18 @@ const UnsignedApp = () => (
     <Tab.Screen name="Masuk" component={GetIn} />
   </Tab.Navigator>
 );
-const SignedApp = () => (
+
+const ProfilePage = () => (
   <Tab.Navigator tabBar={(props) => <BottomNavigator {...props} />}>
     <Tab.Screen name="UMKM" component={Umkm} />
+    <Tab.Screen name="Ubah Profil" component={UpdateUmkm} />
+  </Tab.Navigator>
+);
+
+const ProductPage = () => (
+  <Tab.Navigator tabBar={(props) => <BottomNavigator {...props} />}>
     <Tab.Screen name="Produk" component={Product} />
-    <Tab.Screen name="Keluar" component={Splash} />
+    <Tab.Screen name="Add Produk" component={InputProduct} />
   </Tab.Navigator>
 );
 
@@ -41,7 +48,7 @@ const DrawerApp = () => (
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen
         name="UMKM"
-        component={SignedApp}
+        component={ProfilePage}
         options={{
           drawerLabel: 'UMKM',
           drawerIcon: ({ focused }) => <DrawItem icon="UMKM" active={focused} />
@@ -49,7 +56,7 @@ const DrawerApp = () => (
       />
       <Drawer.Screen
         name="Produk"
-        component={Umkm}
+        component={ProductPage}
         options={{
           drawerLabel: 'Produk',
           drawerIcon: ({ focused }) => <DrawItem icon="Produk" active={focused} />
@@ -94,18 +101,8 @@ const Router = () => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="SignedApp"
+      name="DrawerApp"
       component={DrawerApp}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="UpdateUmkm"
-      component={UpdateUmkm}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="InputProduct"
-      component={InputProduct}
       options={{ headerShown: false }}
     />
     <Stack.Screen
