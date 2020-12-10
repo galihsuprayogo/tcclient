@@ -13,6 +13,7 @@ import {
   UpdateUmkm,
   InputProduct,
   ChooseCoffee,
+  Help
 } from '../pages';
 import {
   Map, MapCls,
@@ -64,7 +65,7 @@ const DrawerApp = () => (
       />
       <Drawer.Screen
         name="Bantuan"
-        component={Umkm}
+        component={Help}
         options={{
           drawerLabel: 'Bantuan',
           drawerIcon: ({ focused }) => <DrawItem icon="Help" active={focused} />
@@ -86,6 +87,11 @@ const Router = () => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
+      name="DrawerApp"
+      component={DrawerApp}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
       name="UnsignedApp"
       component={UnsignedApp}
       options={{ headerShown: false }}
@@ -98,11 +104,6 @@ const Router = () => (
     <Stack.Screen
       name="SignUp"
       component={SignUp}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="DrawerApp"
-      component={DrawerApp}
       options={{ headerShown: false }}
     />
     <Stack.Screen

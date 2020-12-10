@@ -28,7 +28,7 @@ const TabItem = ({
       case 'UMKM':
         return active ? <IconUmkmActive /> : <IconUmkm />;
       case 'Ubah Profil':
-        return active ? <IconEditActive /> : <IconEdit />;
+        return active ? <IconEditActive height={23} width={23} /> : <IconEdit height={23} width={23} />;
       case 'Produk':
         return active ? <IconProductActive /> : <IconProduct />;
       case 'Add Produk':

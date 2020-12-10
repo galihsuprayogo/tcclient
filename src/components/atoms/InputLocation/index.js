@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: (type) => ({
-    fontFamily: type === 'text1' ? fonts.sfProDisplay.heavy : fonts.sfProDisplay.mediumItalic,
+    fontFamily: type === 'text1' ? fonts.sfProDisplay.heavy : fonts.sfProDisplay.medium,
     color: type === 'text1' ? colors.text.default : colors.text.third,
     fontSize: type === 'text1' ? 15 : 13,
     paddingVertical: 7,
-    maxWidth: 200,
+    maxWidth: 300,
     borderTopWidth: type === 'text1' ? 0 : 1 / 2,
   }),
 });

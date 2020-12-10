@@ -20,7 +20,7 @@ const Home = ({ navigation }) => (
           Silahkan pilih kopi kesukaanmu dari berbagai
           katalog di Temanggung, klik di bawah ini
         </Text>
-        <Gap height={10} />
+        <Gap height={15} />
         <AwesomeButton
           width={150}
           height={45}
@@ -34,7 +34,7 @@ const Home = ({ navigation }) => (
             next();
           }}
         >
-        <Text style={styles.textButton}> Click it! </Text>
+        <Text style={styles.textButton}> Klik Ya ! </Text>
         </AwesomeButton>
       </View>
     </View>
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
   },
   image: {
-    height: 190,
-    width: 250,
+    height: 230,
+    width: 300,
   },
   textWrapper: {
     alignItems: 'center',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    fontFamily: fonts.sfProDisplay.blackItalic,
+    fontFamily: fonts.sfProDisplay.black,
     color: colors.text.default,
   },
   textButton: {
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.Akkurat.bold
   },
   detailText: {
-    fontFamily: fonts.Akkurat.lightItalic,
+    fontFamily: fonts.Akkurat.light,
     fontSize: 18,
-    maxWidth: 285,
+    maxWidth: 300,
     textAlign: 'center',
   },
 });

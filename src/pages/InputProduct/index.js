@@ -37,44 +37,43 @@ const InputProduct = ({ navigation }) => {
         width={24}
         onPress={() => navigation.goBack()}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Gap height={35} />
-        <View style={{ alignItems: 'center' }}>
-          <Profile icon="add-photo" />
-        </View>
-        <Gap height={25} />
-        <View style={styles.content}>
-          <CoffeePicker
-            title="Jenis Kopi (Arabica/Robusta)"
-            datacoffees={coffees}
-            target="type"
-          />
-          <Gap height={10} />
-          <CoffeePicker
-            title="Cara Pengolahan"
-            datacoffees={coffees}
-            target="procedure"
-          />
-          <Gap height={10} />
-          <CoffeePicker
-            title="Hasil Pengolahan"
-            datacoffees={coffees}
-            target="output"
-          />
-          <Gap height={10} />
-          <CoffeePicker
-            title="Grade"
-            datacoffees={coffees}
-            target="grade"
-          />
-          <Gap height={10} />
-          <InputNumber title="Harga" />
-        </View>
-        <Gap height={25} />
-        <View style={styles.buttonWrapper}>
-          <Button title="Simpan" onPress={() => alert('meki')} />
-        </View>
-      </ScrollView>
+      <View style={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ alignItems: 'center' }}>
+              <Profile icon="add-photo" />
+            </View>
+            <Gap height={25} />
+              <CoffeePicker
+                title="Jenis Kopi (Arabica/Robusta)"
+                datacoffees={coffees}
+                target="type"
+              />
+              <Gap height={10} />
+              <CoffeePicker
+                title="Cara Pengolahan"
+                datacoffees={coffees}
+                target="procedure"
+              />
+              <Gap height={10} />
+              <CoffeePicker
+                title="Hasil Pengolahan"
+                datacoffees={coffees}
+                target="output"
+              />
+              <Gap height={10} />
+              <CoffeePicker
+                title="Grade"
+                datacoffees={coffees}
+                target="grade"
+              />
+              <Gap height={10} />
+              <InputNumber title="Harga" />
+            <Gap height={25} />
+            <View>
+              <Button title="Simpan" onPress={() => alert('meki')} />
+            </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -82,17 +81,18 @@ const InputProduct = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonWrapper: {
-    paddingHorizontal: 55,
-    paddingBottom: 30,
-  },
+    backgroundColor: colors.primary,
+    paddingHorizontal: 50,
+    paddingVertical: 50,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+  }
 });
 
 export default InputProduct;

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View, Text, StyleSheet, Image,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { ILLogo } from '../../assets';
 import { Button, Gap } from '../../components';
 import { colors, fonts } from '../../utils';
@@ -9,19 +10,28 @@ import { colors, fonts } from '../../utils';
 const GetIn = ({ navigation }) => (
   <View style={styles.container}>
     <View style={styles.content}>
-      <View>
-        <Gap height={75} />
-        <Image source={ILLogo} style={styles.image} />
+      <View style={styles.headerContent}>
+        <Animatable.Image
+          animation="fadeInDownBig"
+          duration={1500}
+          source={ILLogo}
+          style={styles.image}
+        />
       </View>
-      <Gap height={50} />
-      <View style={styles.button}>
-        <Text style={styles.textOne}> Silahkan Masuk </Text>
-        <Text style={styles.textTwo}> mulai kenalkan kopi anda kepada Nusantara </Text>
+      <Gap height={200} />
+      <Animatable.View
+        style={styles.footerContent}
+        animation="fadeInUpBig"
+      >
+        <Text style={styles.textOne}>Mulai kenalkan kopi anda kepada Nusantara</Text>
+        <Text style={styles.textTwo}>Silahkan Masuk</Text>
         <Gap height={30} />
-        <Button title="Masuk" onPress={() => navigation.navigate('SignIn')} />
-        <Gap height={15} />
-        <Button title="Daftar" onPress={() => navigation.navigate('SignUp')} />
-      </View>
+        <View style={{ flexDirection: 'row' }}>
+          <Button title="Masuk" scope="get-in" onPress={() => navigation.navigate('SignIn')} />
+          <Gap width={15} />
+          <Button title="Daftar" scope="get-in" onPress={() => navigation.navigate('SignUp')} />
+        </View>
+      </Animatable.View>
     </View>
   </View>
 );
@@ -35,26 +45,36 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
   image: {
-    height: 220,
-    width: 280,
+    height: 250,
+    width: 320,
   },
   textOne: {
-    fontFamily: fonts.sfProDisplay.semiBoldItalic,
-    fontSize: 20,
-    color: colors.text.default,
+    fontFamily: fonts.Akkurat.bold,
+    fontSize: 30,
+    color: colors.text.primary,
   },
   textTwo: {
-    fontFamily: fonts.sfProDisplay.lightItalic,
+    fontFamily: fonts.sfProDisplay.light,
     fontSize: 16,
-    color: colors.text.default,
+    color: colors.text.primary,
   },
-  button: {
-    paddingBottom: 40,
+  headerContent: {
+    // flex: 1
+  },
+  footerContent: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    paddingVertical: 70,
+    paddingHorizontal: 40,
+    borderRadius: 15,
   },
 });
 

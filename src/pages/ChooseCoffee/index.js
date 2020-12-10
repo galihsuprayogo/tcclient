@@ -41,7 +41,6 @@ const ChooseCoffee = ({ navigation }) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-        <Gap height={65} />
           <View style={styles.divWrapper}>
             <CoffeePicker
               title="Jenis Kopi (Arabica/Robusta"
@@ -75,14 +74,13 @@ const ChooseCoffee = ({ navigation }) => {
             <Gap height={10} />
             <View style={styles.locWrapper}>
               <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
-                <InputLocation type="text1" icon="near" text="Pilih lewat peta [klik]" />
+                <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
               </TouchableOpacity>
-              <InputLocation type="text2" icon="loc2" text="[Lokasi belum dipin, klik di atas]" />
+              <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
             </View>
             <Gap height={20} />
-            <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.navigate('Map')} />
+            <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.replace('Map')} />
           </View>
-          <Gap height={20} />
         </View>
       </ScrollView>
     </View>
@@ -98,6 +96,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 65
+  },
+  divWrapper: {
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    borderWidth: 2,
+    borderRadius: 15,
+    backgroundColor: colors.secondary,
   },
   locWrapper: {
     flexDirection: 'column',
@@ -108,13 +114,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.secondary,
-  },
-  divWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderWidth: 2,
-    borderRadius: 15,
-    backgroundColor: colors.secondary,
   }
 });
 

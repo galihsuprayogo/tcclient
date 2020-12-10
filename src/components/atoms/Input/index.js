@@ -7,7 +7,7 @@ import { colors, fonts } from '../../../utils';
 const Input = ({
   placeholder, keyboardType, label, type,
 }) => (
-  <View style={styles.content(type)}>
+  <View>
     {label && (
     <Text style={styles.label}>
       {' '}
@@ -26,9 +26,6 @@ const Input = ({
 );
 
 const styles = StyleSheet.create({
-  content: (type) => ({
-    paddingHorizontal: type === 'inputForm' ? 15 : 0,
-  }),
   input: (type) => ({
     borderWidth: 2,
     borderRadius: 10,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import {
   IconUmkm, IconUmkmActive, IconProduct, IconProductActive,
   IconHome, IconLogout, IconHelp, IconHelpActive

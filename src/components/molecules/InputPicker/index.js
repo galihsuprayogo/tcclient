@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderColor: colors.secondary,
   },
   label: (labelType) => ({
-    fontFamily: fonts.Akkurat.boldItalic,
+    fontFamily: fonts.Akkurat.bold,
     color: labelType === 'dss' ? colors.text.secondary : colors.text.default,
     fontSize: 16,
     marginBottom: 6,

@@ -17,8 +17,7 @@ const SignUp = ({ navigation }) => (
     <View style={styles.content}>
       <Text style={styles.text}>
         Daftarkan nomor HP kamu untuk
-        mulai masuk ke Aplikasi,
-        jangan lupa NPWP ya!
+        mulai masuk ke Aplikasi !
       </Text>
       <Gap height={20} />
       <Input
@@ -28,11 +27,6 @@ const SignUp = ({ navigation }) => (
       <Gap height={10} />
       <Input
         placeholder="Nomor HP Kamu"
-        keyboardType="phone-pad"
-      />
-      <Gap height={10} />
-      <Input
-        placeholder="NPWP"
         keyboardType="phone-pad"
       />
       <Gap height={25} />
@@ -52,7 +46,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   text: {
-    fontFamily: fonts.sfProDisplay.lightItalic,
+    fontFamily: fonts.Akkurat.normal,
     fontSize: 18,
   },
 });
