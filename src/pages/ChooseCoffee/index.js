@@ -96,11 +96,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 65
+    paddingVertical: 50
   },
   divWrapper: {
     paddingVertical: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
     borderWidth: 2,
     borderRadius: 15,
     backgroundColor: colors.secondary,

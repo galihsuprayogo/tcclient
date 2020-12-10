@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../utils';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { colors } from '../../utils';
 import {
   Button, Gap, Header, Input,
 } from '../../components';
@@ -14,21 +14,22 @@ const SignIn = ({ navigation }) => (
       width={24}
       onPress={() => navigation.goBack()}
     />
-    <View style={styles.content}>
-      <Text style={styles.text}>
-        Silahkan masuk dengan nomor HP kamu yang terdaftar
-      </Text>
-      <Gap height={20} />
-      <Input
-        placeholder="No. HP kamu"
-        keyboardType="phone-pad"
-      />
-      <Gap height={25} />
-      <Button
-        title="Masuk"
-        onPress={() => navigation.replace('DrawerApp')}
-      />
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <Input
+          placeholder="No. HP kamu"
+          keyboardType="phone-pad"
+          scope="sign-up"
+          icon="telp"
+        />
+        <Gap height={15} />
+        <Button
+          title="silahkan masuk"
+          onPress={() => navigation.replace('DrawerApp')}
+          scope="sign-in"
+        />
+      </View>
+    </ScrollView>
   </View>
 );
 
@@ -39,12 +40,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 40,
-  },
-  text: {
-    fontFamily: fonts.sfProDisplay.lightItalic,
-    fontSize: 20,
-  },
+    justifyContent: 'flex-start',
+    paddingHorizontal: 35,
+    paddingVertical: '20%'
+  }
 });
 export default SignIn;

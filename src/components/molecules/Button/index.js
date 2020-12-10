@@ -12,14 +12,14 @@ const Button = ({
   }
 
   const getButton = () => {
-    if (scope === 'get-in') {
+    if (scope === 'get-in' || scope === 'sign-in') {
       return (
         <TouchableOpacity onPress={onPress}>
           <LinearGradient
             colors={['#c5a880', '#f9e0ae']}
-            style={styles.optionalButton}
+            style={styles.optionalButton(scope)}
           >
-            <Text style={styles.optionalText}>
+            <Text style={styles.optionalText(scope)}>
               {' '}
               {title}
               {' '}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: (scope) => (
     {
       backgroundColor: scope === 'dss' ? colors.primary : colors.secondary,
-      paddingVertical: 10,
+      paddingVertical: 12,
       borderRadius: 10,
       alignItems: 'center',
     }
@@ -58,18 +58,18 @@ const styles = StyleSheet.create({
       fontSize: 18,
     }
   ),
-  optionalText: {
+  optionalText: (scope) => ({
     color: 'white',
     fontFamily: fonts.sfProDisplay.medium,
-    fontSize: 15
-  },
-  optionalButton: {
-    width: 150,
-    height: 40,
+    fontSize: scope === 'get-in' ? 15 : 17
+  }),
+  optionalButton: (scope) => ({
+    width: scope === 'get-in' ? 150 : '100%',
+    height: scope === 'get-in' ? 40 : 45,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     flexDirection: 'row'
-  }
+  })
 });
 export default Button;

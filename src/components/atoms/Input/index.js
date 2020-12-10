@@ -2,38 +2,51 @@ import React from 'react';
 import {
   View, Text, TextInput, StyleSheet,
 } from 'react-native';
+import { Icon, Gap } from '../..';
 import { colors, fonts } from '../../../utils';
 
 const Input = ({
-  placeholder, keyboardType, label, type,
-}) => (
-  <View>
-    {label && (
-    <Text style={styles.label}>
-      {' '}
-      {label}
-      {' '}
-    </Text>
-    )}
-    <TextInput
-      style={styles.input(type)}
-      placeholder={placeholder}
-      placeholderTextColor={colors.primary}
-      keyboardType={keyboardType}
-      maxLength={12}
-    />
-  </View>
-);
+  placeholder, keyboardType, label, type, scope, icon
+}) => {
+  const IconI = () => <Icon icon={icon} />;
+  return (
+    <View>
+      {label && (
+      <Text style={styles.label}>
+        {' '}
+        {label}
+        {' '}
+      </Text>
+      )}
+      <View style={styles.divInput(type)}>
+        <IconI />
+        <Gap width={10} />
+        <TextInput
+          style={styles.input(scope)}
+          placeholder={placeholder}
+          placeholderTextColor={colors.primary}
+          keyboardType={keyboardType}
+          maxLength={12}
+        />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  input: (type) => ({
+  input: (scope) => ({
+    flex: 1,
+    paddingVertical: scope === 'sign-up' ? 9 : 5,
+    color: colors.text.default,
+  }),
+  divInput: (type) => ({
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: type === 'inputForm' ? colors.text.secondary : 'white',
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.secondary,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    backgroundColor: type === 'inputForm' ? colors.text.secondary : 'white',
-    color: colors.text.default,
+    paddingHorizontal: 20,
   }),
   label: {
     fontFamily: fonts.sfProDisplay.heavy,

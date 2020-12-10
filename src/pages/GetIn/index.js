@@ -28,7 +28,7 @@ const GetIn = ({ navigation }) => (
         <Gap height={30} />
         <View style={{ flexDirection: 'row' }}>
           <Button title="Masuk" scope="get-in" onPress={() => navigation.navigate('SignIn')} />
-          <Gap width={15} />
+          <Gap width={10} />
           <Button title="Daftar" scope="get-in" onPress={() => navigation.navigate('SignUp')} />
         </View>
       </Animatable.View>
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
   },
   image: {
-    height: 250,
-    width: 320,
+    height: 230,
+    width: 300,
   },
   textOne: {
     fontFamily: fonts.Akkurat.bold,

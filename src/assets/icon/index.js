@@ -10,10 +10,13 @@ import IconUmkmActive from './icon-umkm-active.svg';
 import IconProduct from './icon-product.svg';
 import IconProductActive from './icon-product-active.svg';
 import IconLogout from './icon-logout.svg';
-import IconPersonUmkm from './icon-person-umkm.svg';
+import IconProfile from './icon-profile.svg';
+import IconProfileLight from './icon-profile-light.svg';
 import IconNpwp from './icon-npwp.svg';
 import IconTelp from './icon-telp.svg';
+import IconTelpLight from './icon-telp-light.svg';
 import IconLocation from './icon-location.svg';
+import IconLocationLight from './icon-location-light.svg';
 import IconAddPhoto from './icon-add-photo.svg';
 import IconRemovePhoto from './icon-remove-photo.svg';
 import IconEdit from './icon-edit.svg';
@@ -46,10 +49,13 @@ export {
   IconProduct,
   IconProductActive,
   IconLogout,
-  IconPersonUmkm,
+  IconProfile,
+  IconProfileLight,
   IconNpwp,
   IconTelp,
+  IconTelpLight,
   IconLocation,
+  IconLocationLight,
   IconAddPhoto,
   IconRemovePhoto,
   IconEdit,

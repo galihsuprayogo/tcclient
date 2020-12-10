@@ -10,9 +10,7 @@ const UpdateUmkm = ({ navigation }) => (
     <Header
       title="Edit profil UMKM"
       type="icon-button"
-      icon="icon-back-light"
       width={24}
-      onPress={() => navigation.goBack()}
     />
       <View style={styles.content}>
           <ScrollView showVerticalScrollIndicator={false}>
@@ -21,8 +19,6 @@ const UpdateUmkm = ({ navigation }) => (
                 </View>
                 <Gap height={25} />
                 <Input keyboardType="default" label="Nama UMKM/Usaha" type="inputForm" />
-                <Gap height={10} />
-                <Input keyboardType="phone-pad" label="NPWP" type="inputForm" />
                 <Gap height={10} />
                 <Input keyboardType="phone-pad" label="No. Telp Pemilik" type="inputForm" />
                 <Gap height={10} />

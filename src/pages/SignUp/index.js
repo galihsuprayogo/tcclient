@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, ScrollView
+} from 'react-native';
 import { colors, fonts } from '../../utils';
 import {
   Button, Gap, Header, Input,
@@ -11,43 +13,67 @@ const SignUp = ({ navigation }) => (
       title="Daftar"
       type="icon-button"
       icon="icon-back-light"
+      scope="sign-up"
       width={24}
       onPress={() => navigation.goBack()}
     />
-    <View style={styles.content}>
-      <Text style={styles.text}>
-        Daftarkan nomor HP kamu untuk
-        mulai masuk ke Aplikasi !
-      </Text>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.header}>
+        <Text style={styles.text}>
+            Daftarkan nomor HP kamu untuk
+            mulai masuk ke Aplikasi !
+        </Text>
+      </View>
       <Gap height={20} />
-      <Input
-        placeholder="Nama Lengkap Kamu"
-        keyboardType="default"
-      />
-      <Gap height={10} />
-      <Input
-        placeholder="Nomor HP Kamu"
-        keyboardType="phone-pad"
-      />
-      <Gap height={25} />
-      <Button title="Daftar" onPress={() => navigation.replace('SignIn')} />
-    </View>
+      <View style={styles.footer}>
+        <View>
+          <Gap height={20} />
+          <Input
+            placeholder="Nama Lengkap Kamu"
+            scope="sign-up"
+            keyboardType="default"
+            icon="profile"
+          />
+          <Gap height={10} />
+          <Input
+            placeholder="Nomor HP Kamu"
+            scope="sign-up"
+            keyboardType="phone-pad"
+            icon="telp"
+          />
+          <Gap height={25} />
+          <Button title="Daftar" onPress={() => navigation.replace('SignIn')} />
+        </View>
+      </View>
+    </ScrollView>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
   },
-  content: {
+  header: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    paddingTop: '20%',
+  },
+  footer: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    justifyContent: 'flex-start',
     paddingHorizontal: 40,
+    paddingTop: '6%',
+    paddingBottom: '200%',
+    borderRadius: 15
   },
   text: {
-    fontFamily: fonts.Akkurat.normal,
-    fontSize: 18,
+    textAlign: 'left',
+    fontFamily: fonts.Akkurat.bold,
+    color: colors.text.secondary,
+    fontSize: 28,
   },
 });
 export default SignUp;

@@ -2,9 +2,12 @@ import React from 'react';
 import { Text } from 'react-native';
 import {
   IconLocation,
+  IconLocationLight,
   IconNpwp,
-  IconPersonUmkm,
+  IconProfile,
+  IconProfileLight,
   IconTelp,
+  IconTelpLight,
   IconNearMe,
   IconMarker,
   IconRight,
@@ -19,13 +22,19 @@ const Icon = ({
 }) => {
   switch (icon) {
     case 'profile':
-      return <IconPersonUmkm />;
+      return <IconProfile height={30} width={30} />;
+    case 'profile-light':
+      return <IconProfileLight height={30} width={30} />;
     case 'npwp':
       return <IconNpwp />;
     case 'telp':
-      return <IconTelp />;
+      return <IconTelp height={30} width={30} />;
+    case 'telp-light':
+      return <IconTelpLight height={30} width={30} />;
     case 'loc':
       return <IconLocation />;
+    case 'loc-light':
+      return <IconLocationLight height={30} width={30} />;
     case 'loc2':
       return <IconLocation height={18} width={18} />;
     case 'near':
