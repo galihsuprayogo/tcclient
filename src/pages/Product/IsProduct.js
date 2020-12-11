@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
-import { showMessage } from 'react-native-flash-message';
 import { TextButton, List } from '../../components';
-import { colors } from '../../utils';
 
-const IsUmkm = ({ umkm, navigation }) => {
+const IsProduct = ({ product, navigation }) => {
   const Content = () => {
-    if (!umkm) {
-      return <TextButton title="Masukkan Produk Kamu" onPress={onMessage} />;
+    if (!product) {
+      return <TextButton title="Masukkan Produk Kamu" onPress={() => alert('not yet')} />;
     }
     return (
       <>
@@ -34,27 +32,18 @@ const IsUmkm = ({ umkm, navigation }) => {
           name="Header nama coffe"
           value="Random, Temanggung, Jawa Tengah, 27777"
         />
-        {/* <List */}
-        {/*    type="image" */}
-        {/*    image="dummycoffe3" */}
-        {/*    name="Header nama coffe" */}
-        {/*    value="Tanon, Temanggung, Jawa Tengah, 27777" */}
-        {/* /> */}
+        <List
+          type="image"
+          image="dummycoffe3"
+          name="Header nama coffe"
+          value="Tanon, Temanggung, Jawa Tengah, 27777"
+        />
       </>
     );
-  };
-
-  const onMessage = () => {
-    showMessage({
-      message: 'Ooops, Sepertinya kamu belum melengkapi profil UMKM!! ',
-      type: 'default',
-      backgroundColor: colors.message.error,
-      color: 'white',
-    });
   };
 
   return (
     <Content />
   );
 };
-export default IsUmkm;
+export default IsProduct;

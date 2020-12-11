@@ -18,7 +18,7 @@ const List = ({
   };
 
   return (
-    <View style={styles.container(type)}>
+    <View style={styles.container}>
       <Type />
       <View style={styles.wrapperText}>
         <Text numberOfLines={2} style={styles.nameText(type)}>
@@ -37,14 +37,14 @@ const List = ({
 };
 
 const styles = StyleSheet.create({
-  container: (type) => ({
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 13,
     paddingLeft: 30,
     borderBottomWidth: 1,
-    borderColor: type === 'icon' ? colors.primary : colors.secondary,
-  }),
+    borderColor: colors.primary,
+  },
   wrapperText: {
     flex: 1,
     flexDirection: 'column',
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
   },
   nameText: (type) => (
     {
-      fontFamily: type === 'icon' ? fonts.sfProDisplay.heavy : fonts.sfProDisplay.medium,
+      fontFamily: fonts.sfProDisplay.heavy,
       fontSize: type === 'icon' ? 13 : 17,
-      color: type === 'icon' ? colors.primary : colors.text.default,
+      color: colors.primary,
       maxWidth: type === 'icon' ? 200 : 208,
     }
   ),
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     {
       fontFamily: type === 'icon' ? fonts.sfProDisplay.semiBold : fonts.sfProDisplay.light,
       fontSize: type === 'icon' ? 14 : 12,
-      color: type === 'icon' ? 'white' : colors.text.third,
+      color: 'white',
       paddingTop: 3,
       maxWidth: type === 'icon' ? 200 : 128,
     }

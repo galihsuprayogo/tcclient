@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Header } from '../../components';
 import { colors } from '../../utils';
-import IsUmkm from '../Umkm/IsUmkm.js';
+import IsProduct from './IsProduct';
 
 const Product = ({ navigation }) => {
-  const [umkm] = useState('Os coffe');
+  const [product] = useState('Os Coffe');
 
   return (
     <View style={styles.container}>
@@ -16,8 +16,10 @@ const Product = ({ navigation }) => {
         width={24}
         onPress={() => navigation.openDrawer()}
       />
-      <View style={styles.content(umkm)}>
-        <IsUmkm umkm={umkm} navigation={navigation} />
+      <View style={styles.content(product)}>
+        <View style={styles.subDivContent}>
+          <IsProduct product={product} navigation={navigation} />
+        </View>
       </View>
     </View>
   );
@@ -28,18 +30,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.secondary,
   },
-  content: (umkm) => (
+  content: (product) => (
     {
-      paddingTop: umkm ? 30 : 0,
+      paddingTop: product ? 0 : 0,
       flex: 1,
       backgroundColor: colors.primary,
-      alignItems: 'center',
-      justifyContent: umkm ? 'center' : 'center',
+      justifyContent: product ? 'center' : 'center',
+      paddingHorizontal: 30,
       borderTopLeftRadius: 5,
       borderTopRightRadius: 5,
       borderBottomLeftRadius: 15,
       borderBottomRightRadius: 15,
     }
   ),
+  subDivContent: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 45,
+    borderRadius: 10
+  }
 });
 export default Product;
