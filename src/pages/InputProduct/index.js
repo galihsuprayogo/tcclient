@@ -32,13 +32,8 @@ const InputProduct = ({ navigation }) => {
     <View style={styles.container}>
       <Header
         title="Tambah Produk"
-        type="icon-button"
-        icon="icon-back-light"
-        width={24}
-        onPress={() => navigation.goBack()}
       />
-      <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
             <View style={{ alignItems: 'center' }}>
               <Profile icon="add-photo" />
             </View>
@@ -73,7 +68,6 @@ const InputProduct = ({ navigation }) => {
               <Button title="Simpan" onPress={() => alert('meki')} />
             </View>
         </ScrollView>
-      </View>
     </View>
   );
 };
@@ -87,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     paddingHorizontal: 50,
-    paddingVertical: 50,
+    paddingVertical: 40,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 15,

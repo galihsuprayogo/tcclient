@@ -20,7 +20,8 @@ const Umkm = ({ navigation }) => (
           <Profile />
         </View>
         <Gap height={25} />
-        <List type="icon" icon="profile-light" name="Nama UMKM/Usaha" value="OS Coffe" />
+        <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value="OS Coffe" />
+        <List type="icon" icon="profile-light" name="Nama Pemilik" value="David Bowie" />
         <List type="icon" icon="telp-light" name="No. Telp Pemilik" value="xxxxxxxxxxxx" />
         <List type="icon" icon="loc-light" name="Lokasi" value="Kledung, Temanggung" />
       </View>
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   subDivContent: {
     backgroundColor: colors.secondary,
     paddingVertical: 50,
-    marginHorizontal: 30,
+    marginHorizontal: 40,
     borderRadius: 10
   }
 });

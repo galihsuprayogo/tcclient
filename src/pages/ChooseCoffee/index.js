@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, ScrollView, Text, TouchableOpacity,
+  View, StyleSheet, ScrollView, TouchableOpacity,
 } from 'react-native';
 import { colors, fonts } from '../../utils';
 import {

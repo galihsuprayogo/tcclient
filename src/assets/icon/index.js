@@ -7,6 +7,7 @@ import IconLogin from './icon-login.svg';
 import IconLoginActive from './icon-login-active.svg';
 import IconUmkm from './icon-umkm.svg';
 import IconUmkmActive from './icon-umkm-active.svg';
+import IconUmkmDark from './icon-umkm-dark.svg';
 import IconProduct from './icon-product.svg';
 import IconProductActive from './icon-product-active.svg';
 import IconLogout from './icon-logout.svg';
@@ -46,6 +47,7 @@ export {
   IconLoginActive,
   IconUmkm,
   IconUmkmActive,
+  IconUmkmDark,
   IconProduct,
   IconProductActive,
   IconLogout,

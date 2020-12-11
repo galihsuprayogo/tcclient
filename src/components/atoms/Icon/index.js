@@ -15,12 +15,18 @@ import {
   IconNavigation,
   IconBeenhere,
   ILPhotoFrame,
+  IconUmkmActive,
+  IconUmkmDark
 } from '../../../assets';
 
 const Icon = ({
   icon, height, width
 }) => {
   switch (icon) {
+    case 'umkm':
+      return <IconUmkmActive height={30} width={30} />;
+    case 'umkm-dark':
+      return <IconUmkmDark height={30} width={30} />;
     case 'profile':
       return <IconProfile height={30} width={30} />;
     case 'profile-light':

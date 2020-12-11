@@ -12,7 +12,7 @@ const Input = ({
   return (
     <View>
       {label && (
-      <Text style={styles.label}>
+      <Text style={styles.label(scope)}>
         {' '}
         {label}
         {' '}
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.secondary,
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
   }),
-  label: {
+  label: (scope) => ({
     fontFamily: fonts.sfProDisplay.heavy,
-    color: colors.text.default,
+    color: scope === 'umkm' ? colors.primary : colors.text.default,
     fontSize: 16,
     marginBottom: 6,
-  },
+  }),
 });
 export default Input;
