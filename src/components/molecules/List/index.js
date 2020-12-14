@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { fonts, colors } from '../../../utils';
-import { Icon, ImageResource } from '../..';
+import { Icon, ImageResource, Gap } from '../..';
 
 const List = ({
   type, icon, image, name, value,
@@ -32,6 +34,15 @@ const List = ({
           {' '}
         </Text>
       </View>
+      { image && (
+        <TouchableOpacity style={styles.wrapperButton} onPress={() => alert('hai')}>
+          <View style={{ alignSelf: 'center' }}>
+            <Text style={styles.buttonText}> detail </Text>
+          </View>
+          <Gap width={2} />
+          <Icon icon="forward" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -50,6 +61,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 10,
     alignItems: 'flex-start',
+  },
+  wrapperButton: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    paddingRight: 7
+  },
+  buttonText: {
+    fontFamily: fonts.Akkurat.bold,
+    fontSize: 12,
+    color: colors.primary,
   },
   nameText: (type) => (
     {

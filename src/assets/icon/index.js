@@ -36,6 +36,7 @@ import IconGoogle from './icon-google.svg';
 import IconOpenDrawer from './icon-open-drawer.svg';
 import IconHelp from './icon-help.svg';
 import IconHelpActive from './icon-help-active.svg';
+import IconForward from './icon-forward.svg';
 
 export {
   IconBack,
@@ -75,5 +76,6 @@ export {
   IconGoogle,
   IconOpenDrawer,
   IconHelp,
-  IconHelpActive
+  IconHelpActive,
+  IconForward
 };

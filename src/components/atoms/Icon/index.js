@@ -16,7 +16,8 @@ import {
   IconBeenhere,
   ILPhotoFrame,
   IconUmkmActive,
-  IconUmkmDark
+  IconUmkmDark,
+  IconForward
 } from '../../../assets';
 
 const Icon = ({
@@ -57,6 +58,8 @@ const Icon = ({
       return <IconBeenhere height={21} width={25} />;
     case 'frame':
       return <ILPhotoFrame height={110} width={85} />;
+    case 'forward':
+      return <IconForward height={19} width={19} />;
     default:
       return <Text />;
   }
