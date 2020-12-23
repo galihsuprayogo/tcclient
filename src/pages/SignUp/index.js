@@ -2,52 +2,71 @@ import React from 'react';
 import {
   View, Text, StyleSheet, ScrollView
 } from 'react-native';
-import { colors, fonts } from '../../utils';
+import { postAuth, Auth, APIRoot } from '../../config';
+import { colors, fonts, useForm } from '../../utils';
 import {
   Button, Gap, Header, Input,
 } from '../../components';
 
-const SignUp = ({ navigation }) => (
-  <View style={styles.container}>
-    <Header
-      title="Daftar"
-      type="icon-button"
-      icon="icon-back-light"
-      scope="sign-up"
-      width={24}
-      onPress={() => navigation.goBack()}
-    />
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
-        <Text style={styles.text}>
-            Daftarkan nomor HP kamu untuk
-            mulai masuk ke Aplikasi !
-        </Text>
-      </View>
-      <Gap height={20} />
-      <View style={styles.footer}>
-        <View>
+const SignUp = ({ navigation }) => {
+  const [form, setForm] = useForm({
+    name: '',
+    phone_number: ''
+  });
+
+  const onContinue = () => {
+    // postAuth(form);
+    Auth('post', form);
+    // const a = 'http://192.168.10.105:8000';
+    // const b = '/api/auth/signup';
+    // console.log(a + b);
+  };
+  return (
+    <View style={styles.container}>
+        <Header
+          title="Daftar"
+          type="icon-button"
+          icon="icon-back-light"
+          scope="sign-up"
+          width={24}
+          onPress={() => navigation.goBack()}
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.header}>
+            <Text style={styles.text}>
+                Daftarkan nomor HP kamu untuk
+                mulai masuk ke Aplikasi !
+            </Text>
+          </View>
           <Gap height={20} />
-          <Input
-            placeholder="Nama Lengkap Kamu"
-            scope="sign-up"
-            keyboardType="default"
-            icon="profile"
-          />
-          <Gap height={10} />
-          <Input
-            placeholder="Nomor HP Kamu"
-            scope="sign-up"
-            keyboardType="phone-pad"
-            icon="telp"
-          />
-          <Gap height={25} />
-          <Button title="Daftar" onPress={() => navigation.replace('SignIn')} />
-        </View>
-      </View>
-    </ScrollView>
-  </View>
-);
+          <View style={styles.footer}>
+            <View>
+              <Gap height={20} />
+              <Input
+                placeholder="Nama Lengkap Kamu"
+                scope="sign-up"
+                keyboardType="default"
+                icon="profile"
+                value={form.name}
+                onChangeText={(value) => setForm('name', value)}
+              />
+              <Gap height={10} />
+              <Input
+                placeholder="Nomor HP Kamu"
+                scope="sign-up"
+                keyboardType="phone-pad"
+                icon="telp"
+                value={form.phone_number}
+                onChangeText={(value) => setForm('phone_number', value)}
+              />
+              <Gap height={25} />
+              <Button title="Daftar" onPress={onContinue} />
+            </View>
+          </View>
+        </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

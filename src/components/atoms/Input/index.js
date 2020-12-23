@@ -6,7 +6,7 @@ import { Icon, Gap } from '../..';
 import { colors, fonts } from '../../../utils';
 
 const Input = ({
-  placeholder, keyboardType, label, type, scope, icon
+  placeholder, keyboardType, label, type, scope, icon, value, onChangeText
 }) => {
   const IconI = () => <Icon icon={icon} />;
   return (
@@ -27,6 +27,8 @@ const Input = ({
           placeholderTextColor={colors.primary}
           keyboardType={keyboardType}
           maxLength={12}
+          value={value}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
