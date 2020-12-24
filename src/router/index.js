@@ -13,7 +13,8 @@ import {
   UpdateUmkm,
   InputProduct,
   ChooseCoffee,
-  Help
+  Help,
+  Verify
 } from '../pages';
 import {
   Map, MapCls,
@@ -104,6 +105,11 @@ const Router = () => (
     <Stack.Screen
       name="SignUp"
       component={SignUp}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Verify"
+      component={Verify}
       options={{ headerShown: false }}
     />
     <Stack.Screen

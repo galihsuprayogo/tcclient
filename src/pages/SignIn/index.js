@@ -1,12 +1,23 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { colors } from '../../utils';
+import { colors, useForm } from '../../utils';
+import { AuthIn } from '../../config';
 import {
   Button, Gap, Header, Input,
 } from '../../components';
 
-const SignIn = ({ navigation }) => (
-  <View style={styles.container}>
+const SignIn = ({ navigation }) => {
+  const [form, setForm] = useForm({
+    phone_number: ''
+  });
+
+  const onContinue = () => {
+    AuthIn('post', '/api/auth/login', form);
+    // navigation.navigate('Verify');
+  };
+
+  return (
+    <View style={styles.container}>
     <Header
       title="Masuk"
       type="icon-button"
@@ -21,17 +32,20 @@ const SignIn = ({ navigation }) => (
           keyboardType="phone-pad"
           scope="sign-up"
           icon="telp"
+          value={form.phone_number}
+          onChangeText={(value) => setForm('phone_number', value)}
         />
         <Gap height={15} />
         <Button
           title="silahkan masuk"
-          onPress={() => navigation.replace('DrawerApp')}
+          onPress={onContinue}
           scope="sign-in"
         />
       </View>
     </ScrollView>
-  </View>
-);
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

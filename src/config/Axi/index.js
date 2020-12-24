@@ -1,15 +1,19 @@
 import axios from 'axios';
 
 const origin = 'http://192.168.10.105:8000';
-export const APIRoot = axios.create({
-  baseURL: 'http://192.168.10.105:8000',
-  timeout: 10000
-});
+// export const service = axios.create({
+//   baseURL: origin,
+//   timeout: 10000
+// });
 
-export const postAuth = (form) => {
-  APIRoot.post('/api/auth/signup', {
-    name: form.name,
-    phone_number: form.phone_number
+export const AuthUp = (method, url, form) => {
+  axios({
+    method,
+    url: `${origin}${url}`,
+    data: {
+      name: form.name,
+      phone_number: form.phone_number
+    }
   }).then((response) => {
     console.log(response);
   }).catch((error) => {
@@ -17,13 +21,16 @@ export const postAuth = (form) => {
   });
 };
 
-export const Auth = (method, form) => {
+export const AuthIn = (method, url, form) => {
   axios({
     method,
-    url: 'http://192.168.10.105:8000/api/auth/signup',
+    url: `${origin}${url}`,
     data: {
-      name: form.name,
       phone_number: form.phone_number
     }
+  }).then((response) => {
+    console.log(response);
+  }).catch((error) => {
+    console.log(error);
   });
 };

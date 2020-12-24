@@ -9,6 +9,7 @@ import UpdateUmkm from './UpdateUmkm';
 import InputProduct from './InputProduct';
 import ChooseCoffee from './ChooseCoffee';
 import Help from './Help';
+import Verify from './Verify';
 
 export {
   Splash,
@@ -21,5 +22,6 @@ export {
   UpdateUmkm,
   InputProduct,
   ChooseCoffee,
-  Help
+  Help,
+  Verify
 };

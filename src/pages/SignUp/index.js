@@ -2,7 +2,7 @@ import React from 'react';
 import {
   View, Text, StyleSheet, ScrollView
 } from 'react-native';
-import { postAuth, Auth, APIRoot } from '../../config';
+import { AuthUp } from '../../config';
 import { colors, fonts, useForm } from '../../utils';
 import {
   Button, Gap, Header, Input,
@@ -15,11 +15,7 @@ const SignUp = ({ navigation }) => {
   });
 
   const onContinue = () => {
-    // postAuth(form);
-    Auth('post', form);
-    // const a = 'http://192.168.10.105:8000';
-    // const b = '/api/auth/signup';
-    // console.log(a + b);
+    AuthUp('post', '/api/auth/signup', form);
   };
   return (
     <View style={styles.container}>
