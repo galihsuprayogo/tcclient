@@ -12,8 +12,8 @@ const SignIn = ({ navigation }) => {
   });
 
   const onContinue = () => {
-    AuthIn('post', '/api/auth/login', form);
-    // navigation.navigate('Verify');
+    // AuthIn('post', '/api/auth/login', form);
+    navigation.navigate('Verify');
   };
 
   return (

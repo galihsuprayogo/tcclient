@@ -21,5 +21,5 @@ export {
   PriceFormat,
   InputLocation,
   ButtonModal,
-  DrawItem
+  DrawItem,
 };
