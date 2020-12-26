@@ -1,11 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../../utils';
+import {
+  View, StyleSheet, AsyncStorage
+} from 'react-native';
+import { colors, useForm } from '../../utils';
+import { getToken, setToken } from '../../config';
 import { Button, Input, Gap } from '../../components';
 
 const Verify = () => {
+  const [form, setForm] = useForm({
+    phone_otp: ''
+  });
   const onContinue = () => {
-    alert('hai');
+    setToken('post', form);
+    getToken();
   };
   return (
         <View style={styles.container}>
@@ -15,6 +22,8 @@ const Verify = () => {
                   keyboardType="phone-pad"
                   scope="sign-up"
                   maxLength={4}
+                  value={form.phone_otp}
+                  onChangeText={(value) => setForm('phone_otp', value)}
                   // icon="telp"
                 />
                 <Gap height={15} />

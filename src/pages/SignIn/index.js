@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import {
+  View, StyleSheet, ScrollView, AsyncStorage
+} from 'react-native';
 import { colors, useForm } from '../../utils';
 import { AuthIn } from '../../config';
 import {
@@ -12,7 +14,7 @@ const SignIn = ({ navigation }) => {
   });
 
   const onContinue = () => {
-    // AuthIn('post', '/api/auth/login', form);
+    AuthIn('post', '/api/auth/login', form);
     navigation.navigate('Verify');
   };
 
