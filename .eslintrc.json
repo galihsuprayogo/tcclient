@@ -51,6 +51,7 @@
     "react/jsx-indent": [0],
     "react/prop-types": [0],
     "react/destructuring-assignment": "off",
+    "react/react-in-jsx-scope": [0],
     "import/no-cycle": "off",
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",

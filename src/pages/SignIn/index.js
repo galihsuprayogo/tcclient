@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  View, StyleSheet, ScrollView, AsyncStorage
+  View, StyleSheet, ScrollView
 } from 'react-native';
-import { colors, useForm } from '../../utils';
-import { AuthIn } from '../../config';
+import { colors, useForm, showError } from '../../utils';
+import { service } from '../../config';
 import {
   Button, Gap, Header, Input,
 } from '../../components';
@@ -14,8 +14,17 @@ const SignIn = ({ navigation }) => {
   });
 
   const onContinue = () => {
-    AuthIn('post', '/api/auth/login', form);
-    navigation.navigate('Verify');
+    if (form.phone_number === '') {
+      showError('Tidak boleh kosong');
+    } else {
+      service.post('/api/auth/login', {
+        phone_number: form.phone_number
+      }).then(() => {
+        navigation.navigate('Verify');
+      }).catch(() => {
+        showError('Nomor salah atau belum terdaftar');
+      });
+    }
   };
 
   return (

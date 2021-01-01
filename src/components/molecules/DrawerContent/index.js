@@ -7,10 +7,16 @@ import {
   DrawerItem
 } from '@react-navigation/drawer';
 import { colors, fonts } from '../../../utils';
+import { deleteId } from '../../../config';
 import { DrawItem, Gap } from '../..';
 import { dummycoffe1 } from '../../../assets';
 
-const DrawerContent = (props) => (
+const DrawerContent = (props) => {
+  const onClose = () => {
+    deleteId();
+    props.navigation.replace('Splash');
+  };
+  return (
     <View style={styles.container}>
         <View style={styles.content}>
         <View>
@@ -46,12 +52,13 @@ const DrawerContent = (props) => (
               label="Keluar"
               inactiveTintColor={colors.secondary}
               icon={() => <DrawItem icon="Logout" />}
-              onPress={() => props.navigation.replace('UnsignedApp')}
+              onPress={onClose}
             />
           </View>
         </View>
     </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

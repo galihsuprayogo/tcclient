@@ -76,7 +76,7 @@ const DrawerApp = () => (
 );
 
 const Router = () => (
-  <Stack.Navigator initialRouteName="UnsignedApp">
+  <Stack.Navigator initialRouteName="Splash">
     <Stack.Screen
       name="Splash"
       component={Splash}

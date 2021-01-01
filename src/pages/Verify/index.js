@@ -2,17 +2,28 @@ import React from 'react';
 import {
   View, StyleSheet, AsyncStorage
 } from 'react-native';
-import { colors, useForm } from '../../utils';
-import { getToken, setToken } from '../../config';
+import { colors, useForm, showError } from '../../utils';
+import { service } from '../../config';
 import { Button, Input, Gap } from '../../components';
 
-const Verify = () => {
+const Verify = ({ navigation }) => {
   const [form, setForm] = useForm({
     phone_otp: ''
   });
   const onContinue = () => {
-    setToken('post', form);
-    getToken();
+    if (form.phone_otp === '') {
+      showError('Tidak boleh kosong');
+    } else {
+      service.post('/api/auth/verify', {
+        phone_otp: form.phone_otp
+      }).then((response) => {
+        AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
+        navigation.replace('Splash');
+        // navigation.replace('Splash', { user_id: id });
+      }).catch(() => {
+        showError('kode otp tidak cocok');
+      });
+    }
   };
   return (
         <View style={styles.container}>
