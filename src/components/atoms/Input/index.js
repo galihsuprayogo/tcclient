@@ -7,7 +7,7 @@ import { colors, fonts } from '../../../utils';
 
 const Input = ({
   placeholder, keyboardType, label, type, scope, icon, value, onChangeText,
-  maxLength
+  maxLength, phoneCode
 }) => {
   const IconI = () => <Icon icon={icon} />;
   return (
@@ -20,6 +20,13 @@ const Input = ({
       </Text>
       )}
       <View style={styles.divInput(type)}>
+      { phoneCode && (
+        <Text style={styles.phoneCodeDiv}>
+          {' '}
+          {phoneCode}
+          {' '}
+        </Text>
+      )}
         <IconI />
         <Gap width={10} />
         <TextInput
@@ -57,5 +64,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 6,
   }),
+  phoneCodeDiv: {
+    fontSize: 14,
+    fontFamily: fonts.sfProDisplay.medium,
+  }
 });
 export default Input;

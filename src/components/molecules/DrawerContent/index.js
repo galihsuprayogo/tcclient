@@ -1,20 +1,34 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, Image
+  View, Text, StyleSheet, Image, AsyncStorage
 } from 'react-native';
 import {
   DrawerItemList,
   DrawerItem
 } from '@react-navigation/drawer';
-import { colors, fonts } from '../../../utils';
-import { deleteId } from '../../../config';
+import {
+  colors, fonts, showError, showSuccess
+} from '../../../utils';
+import { deleteId, deleteToken, service } from '../../../config';
 import { DrawItem, Gap } from '../..';
 import { dummycoffe1 } from '../../../assets';
 
 const DrawerContent = (props) => {
-  const onClose = () => {
-    deleteId();
-    props.navigation.replace('Splash');
+  const onClose = async () => {
+    const token = await AsyncStorage.getItem('@token');
+    service.get('/api/auth/logout', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }).then((response) => {
+      deleteId();
+      deleteToken();
+      showSuccess('Anda berhasil keluar');
+      props.navigation.replace('Splash');
+    }).catch(() => {
+      showError('Terjadi kesalahan jaringan');
+    });
   };
   return (
     <View style={styles.container}>

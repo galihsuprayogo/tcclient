@@ -2,7 +2,9 @@ import React from 'react';
 import {
   View, StyleSheet, ScrollView
 } from 'react-native';
-import { colors, useForm, showError } from '../../utils';
+import {
+  colors, useForm, showError, showSuccess
+} from '../../utils';
 import { service } from '../../config';
 import {
   Button, Gap, Header, Input,
@@ -15,15 +17,25 @@ const SignIn = ({ navigation }) => {
 
   const onContinue = () => {
     if (form.phone_number === '') {
-      showError('Tidak boleh kosong');
+      setForm('reset');
+      showError('nomor HP tidak boleh kosong');
     } else {
-      service.post('/api/auth/login', {
-        phone_number: form.phone_number
-      }).then(() => {
-        navigation.navigate('Verify');
-      }).catch(() => {
-        showError('Nomor salah atau belum terdaftar');
-      });
+      const firstIndex = form.phone_number.substring(0, 1);
+      if (firstIndex === '0') {
+        setForm('reset');
+        showError('Tidak perlu menggunakan 0 diawal');
+      } else {
+        service.post('/api/auth/login', {
+          phone_number: form.phone_number
+        }).then(() => {
+          setForm('reset');
+          showSuccess('Berhasil masuk, silahkan masukkan kode otp');
+          navigation.replace('Verify');
+        }).catch(() => {
+          setForm('reset');
+          showError('nomor HP salah atau belum terdaftar');
+        });
+      }
     }
   };
 
@@ -42,7 +54,7 @@ const SignIn = ({ navigation }) => {
           placeholder="No. HP kamu"
           keyboardType="phone-pad"
           scope="sign-up"
-          icon="telp"
+          phoneCode="+62"
           value={form.phone_number}
           onChangeText={(value) => setForm('phone_number', value)}
         />

@@ -2,7 +2,9 @@ import React from 'react';
 import {
   View, StyleSheet, AsyncStorage
 } from 'react-native';
-import { colors, useForm, showError } from '../../utils';
+import {
+  colors, useForm, showError, showSuccess
+} from '../../utils';
 import { service } from '../../config';
 import { Button, Input, Gap } from '../../components';
 
@@ -12,15 +14,19 @@ const Verify = ({ navigation }) => {
   });
   const onContinue = () => {
     if (form.phone_otp === '') {
-      showError('Tidak boleh kosong');
+      setForm('reset');
+      showError('kode otp tidak boleh kosong');
     } else {
       service.post('/api/auth/verify', {
         phone_otp: form.phone_otp
       }).then((response) => {
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
+        AsyncStorage.setItem('@token', response.data.token);
+        setForm('reset');
+        showSuccess('Berhasil masuk ke akun anda');
         navigation.replace('Splash');
-        // navigation.replace('Splash', { user_id: id });
       }).catch(() => {
+        setForm('reset');
         showError('kode otp tidak cocok');
       });
     }
@@ -35,7 +41,6 @@ const Verify = ({ navigation }) => {
                   maxLength={4}
                   value={form.phone_otp}
                   onChangeText={(value) => setForm('phone_otp', value)}
-                  // icon="telp"
                 />
                 <Gap height={15} />
                   <Button
@@ -55,8 +60,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingHorizontal: 50,
+    paddingVertical: '20%'
   }
 });
 export default Verify;

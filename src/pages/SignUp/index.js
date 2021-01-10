@@ -2,8 +2,10 @@ import React from 'react';
 import {
   View, Text, StyleSheet, ScrollView
 } from 'react-native';
-import { AuthUp } from '../../config';
-import { colors, fonts, useForm } from '../../utils';
+import { service } from '../../config';
+import {
+  colors, fonts, useForm, showError, showSuccess
+} from '../../utils';
 import {
   Button, Gap, Header, Input,
 } from '../../components';
@@ -15,7 +17,28 @@ const SignUp = ({ navigation }) => {
   });
 
   const onContinue = () => {
-    AuthUp('post', '/api/auth/signup', form);
+    if (form.name === '' || form.phone_number === '') {
+      setForm('reset');
+      showError('form tidak boleh kosong');
+    } else {
+      const firstIndex = form.phone_number.substring(0, 1);
+      if (firstIndex === '0') {
+        setForm('reset');
+        showError('Tidak perlu menggunakan 0 diawal');
+      } else {
+        service.post('/api/auth/signup', {
+          name: form.name,
+          phone_number: form.phone_number
+        }).then(() => {
+          setForm('reset');
+          showSuccess('nomor HP anda berhasil didaftarkan');
+          navigation.replace('SignIn');
+        }).catch(() => {
+          setForm('reset');
+          showError('Terjadi kesalahan jaringan');
+        });
+      }
+    }
   };
   return (
     <View style={styles.container}>
@@ -51,7 +74,7 @@ const SignUp = ({ navigation }) => {
                 placeholder="Nomor HP Kamu"
                 scope="sign-up"
                 keyboardType="phone-pad"
-                icon="telp"
+                phoneCode="+62"
                 value={form.phone_number}
                 onChangeText={(value) => setForm('phone_number', value)}
               />
