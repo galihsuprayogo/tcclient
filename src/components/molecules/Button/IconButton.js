@@ -5,6 +5,7 @@ import {
   IconBack,
   IconHandRight,
   IconAddPhoto,
+  IconRemovePhoto,
   IconX,
   IconNearMeLight,
   IconOpenDrawer
@@ -21,6 +22,8 @@ const IconButton = ({ icon, onPress }) => {
         return <IconHandRight />;
       case 'add-photo':
         return <IconAddPhoto />;
+      case 'remove-photo':
+        return <IconRemovePhoto />;
       case 'x':
         return <IconX height={20} width={20} />;
       case 'nearme':

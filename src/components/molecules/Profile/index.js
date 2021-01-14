@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { ILCamera } from '../../../assets';
+import { ILNullPhoto } from '../../../assets';
 import { colors } from '../../../utils';
 import { Button } from '../..';
 
-const Profile = ({ icon }) => (
+const Profile = ({ icon, onPress }) => (
   <View style={styles.imageWrapper}>
-    <Image source={ILCamera} style={styles.image} />
+    <Image source={ILNullPhoto} style={styles.image} />
     {icon && (
     <View style={styles.actionPhoto}>
       <Button
         type="icon-button"
         icon={icon}
-        onPress={() => alert('What ?')}
+        onPress={onPress}
       />
     </View>
     )}
@@ -26,13 +26,13 @@ const styles = StyleSheet.create({
     width: 130,
     borderWidth: 2,
     borderRadius: 130 / 2,
-    borderColor: 'white',
+    // borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    height: 80,
-    width: 80,
+    height: 155,
+    width: 155,
   },
   actionPhoto: {
     position: 'absolute',

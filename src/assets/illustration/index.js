@@ -1,9 +1,9 @@
 import ILLogo from './logocoffe.png';
 import ILUsd from './logousd.png';
-import ILCamera from './logocamera.png';
 import ILSamplePict from './samplepict.jpg';
 import ILPhotoFrame from './photoframe.svg';
+import ILNullPhoto from './person.png';
 
 export {
-  ILLogo, ILUsd, ILCamera, ILSamplePict, ILPhotoFrame,
+  ILLogo, ILUsd, ILNullPhoto, ILSamplePict, ILPhotoFrame,
 };

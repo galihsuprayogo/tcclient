@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
@@ -8,15 +8,21 @@ import {
   InputLocation
 } from '../../components';
 
-const UpdateUmkm = ({ navigation }) => (
-  <View style={styles.container}>
+const UpdateUmkm = ({ navigation }) => {
+  const [hasPhoto, setHasPhoto] = useState(false);
+  const onContinue = () => {
+    alert('not yet');
+  };
+  return (
+    <View style={styles.container}>
     <Header
       title="Edit profil UMKM"
     />
     <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
           <View style={{ alignItems: 'center' }}>
-              <Profile icon="add-photo" />
+            {hasPhoto && <Profile icon="remove-photo" onPress={() => alert('not yet')} />}
+            {!hasPhoto && <Profile icon="add-photo" onPress={() => alert('remove')} />}
           </View>
               <Gap height={25} />
               <Input keyboardType="default" label="Nama UMKM/Usaha" icon="umkm-dark" type="inputForm" scope="umkm" />
@@ -31,16 +37,13 @@ const UpdateUmkm = ({ navigation }) => (
               </TouchableOpacity>
                 <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
           </View>
-              <Gap height={20} />
-          <View style={{ flexDirection: 'row' }}>
-              <Button title="Simpan" scope="get-in" onPress={() => alert('meki')} />
-                <Gap width={10} />
-              <Button title="Batal" scope="get-in" onPress={() => alert('meki')} />
-          </View>
+          <Gap height={20} />
+          <Button title="Simpan" scope="sign-in" onPress={onContinue} />
       </View>
     </ScrollView>
-  </View>
-);
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -51,15 +54,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     paddingHorizontal: 40,
-    paddingVertical: 50,
+    paddingVertical: 5,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
   subDivContent: {
+    flex: 1,
     backgroundColor: colors.secondary,
-    paddingVertical: 50,
+    paddingVertical: 30,
+    marginVertical: 30,
     paddingHorizontal: 15,
     borderRadius: 10
   },
