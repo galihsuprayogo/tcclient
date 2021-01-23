@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import {
   Profile, List, Header, Gap
 } from '../../components';
@@ -14,7 +14,7 @@ const Umkm = ({ navigation }) => (
       width={24}
       onPress={() => navigation.openDrawer()}
     />
-    <View style={styles.content}>
+    <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
         <View style={{ alignItems: 'center' }}>
           <Profile />
@@ -25,7 +25,7 @@ const Umkm = ({ navigation }) => (
         <List type="icon" icon="telp-light" name="No. Telp Pemilik" value="xxxxxxxxxxxx" />
         <List type="icon" icon="loc-light" name="Lokasi" value="Kledung, Temanggung" />
       </View>
-    </View>
+    </ScrollView>
   </View>
 );
 
@@ -37,16 +37,18 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
+    paddingHorizontal: 30,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
   subDivContent: {
+    justifyContent: 'center',
+    flex: 1,
     backgroundColor: colors.secondary,
     paddingVertical: 50,
-    marginHorizontal: 40,
+    marginVertical: 30,
     borderRadius: 10
   }
 });

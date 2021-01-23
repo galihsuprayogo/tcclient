@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { ILNullPhoto } from '../../../assets';
 import { colors } from '../../../utils';
 import { Button } from '../..';
 
-const Profile = ({ icon, onPress }) => (
+const Profile = ({ icon, onPress, source }) => (
   <View style={styles.imageWrapper}>
-    <Image source={ILNullPhoto} style={styles.image} />
+    <Image source={source} style={styles.image} />
     {icon && (
     <View style={styles.actionPhoto}>
       <Button
@@ -26,13 +25,14 @@ const styles = StyleSheet.create({
     width: 130,
     borderWidth: 2,
     borderRadius: 130 / 2,
-    // borderColor: 'white',
+    borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    height: 155,
-    width: 155,
+    height: 125,
+    width: 125,
+    borderRadius: 125 / 2
   },
   actionPhoto: {
     position: 'absolute',

@@ -1,17 +1,63 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity
+  View, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage
 } from 'react-native';
-import { colors } from '../../utils';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { colors, showError, useForm } from '../../utils';
+import { service } from '../../config';
+import { ILNullPhoto } from '../../assets';
 import {
   Button, Gap, Header, Input, Profile,
   InputLocation
 } from '../../components';
 
 const UpdateUmkm = ({ navigation }) => {
+  const [form, setForm] = useForm({
+    name: ''
+  });
+
+  const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
-  const onContinue = () => {
-    alert('not yet');
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  const getImage = () => {
+    launchImageLibrary({ includeBase64: true }, (response) => {
+      console.log('response', response);
+      if (response.didCancel || response.error) {
+        showError('oops, sepertinya anda tidak memilih photo');
+      } else {
+        setPhotoDB(response.base64);
+        const source = { uri: response.uri };
+        setPhoto(source);
+        setHasPhoto(true);
+      }
+    });
+  };
+  const removeImage = () => {
+    setPhoto(ILNullPhoto);
+    setHasPhoto(false);
+  };
+  const onContinue = async () => {
+    if (hasPhoto) {
+      const token = await AsyncStorage.getItem('@token');
+      const data = {
+        name: form.name,
+        photo: photoDB
+      };
+      service.post('/api/auth/decode', data, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      showError('photo tidak boleh kosong');
+    }
   };
   return (
     <View style={styles.container}>
@@ -21,15 +67,23 @@ const UpdateUmkm = ({ navigation }) => {
     <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
           <View style={{ alignItems: 'center' }}>
-            {hasPhoto && <Profile icon="remove-photo" onPress={() => alert('not yet')} />}
-            {!hasPhoto && <Profile icon="add-photo" onPress={() => alert('remove')} />}
+            {hasPhoto && <Profile icon="remove-photo" onPress={removeImage} source={photo} />}
+            {!hasPhoto && <Profile icon="add-photo" onPress={getImage} source={photo} />}
           </View>
               <Gap height={25} />
-              <Input keyboardType="default" label="Nama UMKM/Usaha" icon="umkm-dark" type="inputForm" scope="umkm" />
+              <Input
+                keyboardType="default"
+                label="Nama UMKM/Usaha"
+                icon="umkm-dark"
+                type="inputForm"
+                scope="umkm"
+                value={form.name}
+                onChangeText={(value) => setForm('name', value)}
+              />
               <Gap height={10} />
               <Input keyboardType="default" label="Nama Pemilik" icon="profile" type="inputForm" scope="umkm" />
               <Gap height={10} />
-              <Input keyboardType="phone-pad" label="No. Telp Pemilik" icon="telp" type="inputForm" scope="umkm" />
+              <Input keyboardType="phone-pad" label="No. Telp Pemilik" phoneCode="+62" type="inputForm" scope="umkm" />
               <Gap height={10} />
           <View style={styles.locWrapper}>
               <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
@@ -53,7 +107,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.primary,
-    paddingHorizontal: 40,
+    paddingHorizontal: 30,
     paddingVertical: 5,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
