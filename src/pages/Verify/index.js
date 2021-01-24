@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  View, StyleSheet, AsyncStorage
+  View, StyleSheet
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   colors, useForm, showError, showSuccess
 } from '../../utils';

@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, Image, AsyncStorage
+  View, Text, StyleSheet, Image
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   DrawerItemList,
   DrawerItem

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage
+  View, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { colors, showError, useForm } from '../../utils';
 import { service } from '../../config';

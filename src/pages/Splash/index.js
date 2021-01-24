@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, StyleSheet, Image, AsyncStorage
+  View, StyleSheet, Image
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ILUsd } from '../../assets/illustration';
 import { colors } from '../../utils';
 import { service } from '../../config';
