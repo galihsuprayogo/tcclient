@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import {
   Profile, List, Header, Gap
 } from '../../components';
+import { ILNullPhoto } from '../../assets';
 import { colors } from '../../utils';
 
 const Umkm = ({ navigation }) => (
@@ -17,7 +18,7 @@ const Umkm = ({ navigation }) => (
     <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
         <View style={{ alignItems: 'center' }}>
-          <Profile />
+          <Profile source={ILNullPhoto} />
         </View>
         <Gap height={25} />
         <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value="OS Coffe" />
@@ -37,15 +38,15 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.primary,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
   subDivContent: {
-    justifyContent: 'center',
     flex: 1,
+    justifyContent: 'center',
     backgroundColor: colors.secondary,
     paddingVertical: 50,
     marginVertical: 30,

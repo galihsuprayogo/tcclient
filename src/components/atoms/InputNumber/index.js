@@ -66,11 +66,7 @@ const InputNumber = ({ title, priceFormat }) => {
           <TextInput
             style={styles.input}
             value={setValue(price)}
-            onChangeText={
-                            (price) => setPrice(
-                              formatPrice(price),
-                            )
-                        }
+            onChangeText={(price) => setPrice(formatPrice(price))}
           />
         </View>
       </View>
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: fonts.sfProDisplay.heavy,
-    color: colors.text.default,
+    color: colors.text.secondary,
     fontSize: 16,
     marginBottom: 6,
   },

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 35,
-    width: 280,
+    width: '100%',
     color: colors.text.default,
     borderWidth: 2,
     borderRadius: 10,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   label: (labelType) => ({
     fontFamily: fonts.Akkurat.bold,
-    color: labelType === 'dss' ? colors.text.secondary : colors.text.default,
+    color: labelType === 'dss' ? colors.text.secondary : colors.primary,
     fontSize: 16,
     marginBottom: 6,
   }),

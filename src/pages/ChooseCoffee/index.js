@@ -39,9 +39,8 @@ const ChooseCoffee = ({ navigation }) => {
         width={24}
         onPress={() => navigation.goBack()}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <View style={styles.divWrapper}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
+          <View style={styles.subDivContent}>
             <CoffeePicker
               title="Jenis Kopi (Arabica/Robusta"
               datacoffees={coffees}
@@ -81,7 +80,6 @@ const ChooseCoffee = ({ navigation }) => {
             <Gap height={20} />
             <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.replace('Map')} />
           </View>
-        </View>
       </ScrollView>
     </View>
   );
@@ -94,13 +92,14 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 50
+    paddingVertical: 5,
+    paddingHorizontal: 20
   },
-  divWrapper: {
+  subDivContent: {
+    flex: 1,
     paddingVertical: 30,
-    paddingHorizontal: 12,
+    marginVertical: 30,
+    paddingHorizontal: 15,
     borderWidth: 2,
     borderRadius: 15,
     backgroundColor: colors.secondary,

@@ -21,6 +21,7 @@ const Verify = ({ navigation }) => {
       service.post('/api/auth/verify', {
         phone_otp: form.phone_otp
       }).then((response) => {
+        console.log(response.data.user);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
         setForm('reset');

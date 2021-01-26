@@ -82,17 +82,31 @@ const UpdateUmkm = ({ navigation }) => {
                 onChangeText={(value) => setForm('name', value)}
               />
               <Gap height={10} />
-              <Input keyboardType="default" label="Nama Pemilik" icon="profile" type="inputForm" scope="umkm" />
+              <Input
+                keyboardType="default"
+                label="Nama Pemilik"
+                icon="profile"
+                type="inputForm"
+                scope="umkm"
+                editable={false}
+              />
               <Gap height={10} />
-              <Input keyboardType="phone-pad" label="No. Telp Pemilik" phoneCode="+62" type="inputForm" scope="umkm" />
+              <Input
+                keyboardType="phone-pad"
+                label="No. Telp Pemilik"
+                phoneCode="+62"
+                type="inputForm"
+                scope="umkm"
+                editable={false}
+              />
               <Gap height={10} />
-          <View style={styles.locWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
-                <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
-              </TouchableOpacity>
-                <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
-          </View>
-          <Gap height={20} />
+              <View style={styles.locWrapper}>
+                  <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
+                    <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
+                  </TouchableOpacity>
+                    <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
+              </View>
+              <Gap height={20} />
           <Button title="Simpan" scope="sign-in" onPress={onContinue} />
       </View>
     </ScrollView>
@@ -108,7 +122,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.primary,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 5,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,

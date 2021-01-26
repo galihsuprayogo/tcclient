@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Header } from '../../components';
 import { colors } from '../../utils';
 import IsProduct from './IsProduct';
@@ -16,11 +16,11 @@ const Product = ({ navigation }) => {
         width={24}
         onPress={() => navigation.openDrawer()}
       />
-      <View style={styles.content(product)}>
-        <View style={styles.subDivContent}>
+      <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
+        <View style={styles.subDivContent(product)}>
           <IsProduct product={product} navigation={navigation} />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -30,23 +30,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.secondary,
   },
-  content: (product) => (
-    {
-      paddingTop: product ? 0 : 0,
-      flex: 1,
-      backgroundColor: colors.primary,
-      justifyContent: product ? 'center' : 'center',
-      paddingHorizontal: 30,
-      borderTopLeftRadius: 5,
-      borderTopRightRadius: 5,
-      borderBottomLeftRadius: 15,
-      borderBottomRightRadius: 15,
-    }
-  ),
-  subDivContent: {
+  content: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    paddingHorizontal: 20,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+  },
+  subDivContent: (product) => ({
+    flex: 1,
+    justifyContent: product ? 'center' : 'center',
     backgroundColor: colors.secondary,
     paddingVertical: 45,
+    marginVertical: 30,
     borderRadius: 10
-  }
+  })
 });
 export default Product;

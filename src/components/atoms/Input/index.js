@@ -7,7 +7,7 @@ import { colors, fonts } from '../../../utils';
 
 const Input = ({
   placeholder, keyboardType, label, type, scope, icon, value, onChangeText,
-  maxLength, phoneCode
+  maxLength, phoneCode, editable
 }) => {
   const IconI = () => <Icon icon={icon} />;
   return (
@@ -19,7 +19,7 @@ const Input = ({
         {' '}
       </Text>
       )}
-      <View style={styles.divInput(type)}>
+      <View style={styles.divInput(type, editable)}>
       { phoneCode && (
         <Text style={styles.phoneCodeDiv}>
           {' '}
@@ -37,6 +37,7 @@ const Input = ({
           maxLength={maxLength}
           value={value}
           onChangeText={onChangeText}
+          editable={editable}
         />
       </View>
     </View>
@@ -49,10 +50,10 @@ const styles = StyleSheet.create({
     paddingVertical: scope === 'sign-up' ? 9 : 5,
     color: colors.text.default,
   }),
-  divInput: (type) => ({
+  divInput: (type, editable) => ({
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: type === 'inputForm' ? colors.text.secondary : 'white',
+    backgroundColor: editable === false ? colors.third : type === 'inputForm' ? colors.text.secondary : 'white',
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.secondary,
