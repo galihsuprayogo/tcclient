@@ -9,6 +9,7 @@ import CoffeePicker from './CoffeePicker';
 import Map from './Map';
 import MapCls from './MapCls';
 import DrawerContent from './DrawerContent';
+import Loading from './Loading';
 
 export {
   Header,
@@ -21,5 +22,6 @@ export {
   CoffeePicker,
   Map,
   MapCls,
-  DrawerContent
+  DrawerContent,
+  Loading
 };

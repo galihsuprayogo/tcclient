@@ -5,6 +5,7 @@ const mainColors = {
   semired: '#E06379',
   black: '#453c43',
   blue: '#047CFC',
+  half: 'rgba(0, 0, 0, 0.2)'
 };
 
 export const colors = {
@@ -29,4 +30,5 @@ export const colors = {
     header: mainColors.black,
     button: mainColors.blue,
   },
+  loadingBackground: mainColors.half
 };

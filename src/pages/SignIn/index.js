@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, StyleSheet, ScrollView
 } from 'react-native';
@@ -7,31 +7,37 @@ import {
 } from '../../utils';
 import { service } from '../../config';
 import {
-  Button, Gap, Header, Input,
+  Button, Gap, Header, Input, Loading
 } from '../../components';
 
 const SignIn = ({ navigation }) => {
   const [form, setForm] = useForm({
     phone_number: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const onContinue = () => {
+    setLoading(true);
     if (form.phone_number === '') {
+      setLoading(false);
       setForm('reset');
       showError('nomor HP tidak boleh kosong');
     } else {
       const firstIndex = form.phone_number.substring(0, 1);
       if (firstIndex === '0') {
+        setLoading(false);
         setForm('reset');
         showError('Tidak perlu menggunakan 0 diawal');
       } else {
         service.post('/api/auth/login', {
           phone_number: form.phone_number
         }).then(() => {
+          setLoading(false);
           setForm('reset');
           showSuccess('Berhasil masuk, silahkan masukkan kode otp');
           navigation.replace('Verify');
         }).catch(() => {
+          setLoading(false);
           setForm('reset');
           showError('nomor HP salah atau belum terdaftar');
         });
@@ -40,33 +46,36 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-    <Header
-      title="Masuk"
-      type="icon-button"
-      icon="icon-back-light"
-      width={24}
-      onPress={() => navigation.goBack()}
-    />
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.content}>
-        <Input
-          placeholder="No. HP kamu"
-          keyboardType="phone-pad"
-          scope="sign-up"
-          phoneCode="+62"
-          value={form.phone_number}
-          onChangeText={(value) => setForm('phone_number', value)}
-        />
-        <Gap height={15} />
-        <Button
-          title="silahkan masuk"
-          onPress={onContinue}
-          scope="sign-in"
-        />
+    <>
+      <View style={styles.container}>
+      <Header
+        title="Masuk"
+        type="icon-button"
+        icon="icon-back-light"
+        width={24}
+        onPress={() => navigation.goBack()}
+      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <Input
+            placeholder="No. HP kamu"
+            keyboardType="phone-pad"
+            scope="sign-up"
+            phoneCode="+62"
+            value={form.phone_number}
+            onChangeText={(value) => setForm('phone_number', value)}
+          />
+          <Gap height={15} />
+          <Button
+            title="silahkan masuk"
+            onPress={onContinue}
+            scope="sign-in"
+          />
+        </View>
+      </ScrollView>
       </View>
-    </ScrollView>
-    </View>
+      {loading && <Loading />}
+    </>
   );
 };
 
