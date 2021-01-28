@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { colors, showError, useForm } from '../../utils';
-import { service } from '../../config';
+import { service, storeUser, getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import {
   Button, Gap, Header, Input, Profile,
@@ -14,19 +14,48 @@ import {
 
 const UpdateUmkm = ({ navigation }) => {
   const [form, setForm] = useForm({
-    name: ''
+    store_name: ''
+  });
+  const [profile, setProfile] = useState({
+    photo: ILNullPhoto,
+    id: '',
+    name: '',
+    store_name: '',
+    phone_number: ''
   });
 
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
+
+  useEffect(() => {
+    getUser('user').then((res) => {
+      console.log(res);
+      if (res.photo === null || res.store_name === null) {
+        setPhoto(ILNullPhoto);
+        setProfile(res);
+        setForm('store_name', '');
+      } else {
+        const source = { uri: res.photo };
+        setPhoto(source);
+        setPhotoDB(res.photo);
+        setForm('store_name', res.store_name);
+        setProfile(res);
+        setHasPhoto(true);
+      }
+    });
+  }, []);
+
   const getImage = () => {
-    launchImageLibrary({ includeBase64: true }, (response) => {
+    launchImageLibrary({
+      includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200
+    }, (response) => {
       console.log('response', response);
       if (response.didCancel || response.error) {
         showError('oops, sepertinya anda tidak memilih photo');
       } else {
-        setPhotoDB(response.base64);
+        const base64 = `data:${response.type};base64, ${response.base64}`;
+        setPhotoDB(base64);
         const source = { uri: response.uri };
         setPhoto(source);
         setHasPhoto(true);
@@ -41,10 +70,10 @@ const UpdateUmkm = ({ navigation }) => {
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
-        name: form.name,
-        photo: photoDB
+        name: form.store_name,
+        photo: photoDB,
       };
-      service.post('/api/auth/decode', data, {
+      service.post('/api/auth/store', data, {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
           Accept: 'application/json',
@@ -52,7 +81,16 @@ const UpdateUmkm = ({ navigation }) => {
           // 'Content-Type': 'application/json'
         },
       }).then((response) => {
-        console.log(response);
+        const data = {
+          photo: photoDB,
+          id: response.data.user.id,
+          name: response.data.user.name,
+          store_name: form.store_name,
+          phone_number: response.data.user.phone_number
+        };
+        // console.log(response);
+        setHasPhoto(true);
+        storeUser('user', data);
       }).catch((error) => {
         console.log(error);
       });
@@ -78,8 +116,8 @@ const UpdateUmkm = ({ navigation }) => {
                 icon="umkm-dark"
                 type="inputForm"
                 scope="umkm"
-                value={form.name}
-                onChangeText={(value) => setForm('name', value)}
+                value={form.store_name}
+                onChangeText={(value) => setForm('store_name', value)}
               />
               <Gap height={10} />
               <Input
@@ -88,6 +126,7 @@ const UpdateUmkm = ({ navigation }) => {
                 icon="profile"
                 type="inputForm"
                 scope="umkm"
+                value={profile.name}
                 editable={false}
               />
               <Gap height={10} />
@@ -97,6 +136,7 @@ const UpdateUmkm = ({ navigation }) => {
                 phoneCode="+62"
                 type="inputForm"
                 scope="umkm"
+                value={profile.phone_number}
                 editable={false}
               />
               <Gap height={10} />

@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Profile, List, Header, Gap
 } from '../../components';
+import { service, getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import { colors } from '../../utils';
 
-const Umkm = ({ navigation }) => (
-  <View style={styles.container}>
+const Umkm = ({ navigation }) => {
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  const [profile, setProfile] = useState({
+    photo: ILNullPhoto,
+    id: '',
+    name: '',
+    store_name: '',
+    phone_number: ''
+  });
+  useEffect(() => {
+    const unsubscribe = async () => {
+      getUser('user').then((res) => {
+        console.log(res);
+        if (res.photo === null || res.store_name === null) {
+          setPhoto(ILNullPhoto);
+          const data = res;
+          data.store_name = 'Belum Dilengkapi';
+          setProfile(res);
+        } else {
+          const source = { uri: res.photo };
+          setPhoto(source);
+          setProfile(res);
+        }
+      });
+    };
+    unsubscribe();
+  }, []);
+  return (
+    <View style={styles.container}>
     <Header
       title="Profil UMKM"
       type="icon-button"
@@ -18,17 +47,18 @@ const Umkm = ({ navigation }) => (
     <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
         <View style={{ alignItems: 'center' }}>
-          <Profile source={ILNullPhoto} />
+          <Profile source={photo} />
         </View>
         <Gap height={25} />
-        <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value="OS Coffe" />
-        <List type="icon" icon="profile-light" name="Nama Pemilik" value="David Bowie" />
-        <List type="icon" icon="telp-light" name="No. Telp Pemilik" value="xxxxxxxxxxxx" />
+        <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value={profile.store_name} />
+        <List type="icon" icon="profile-light" name="Nama Pemilik" value={profile.name} />
+        <List type="icon" icon="telp-light" name="No. Telp Pemilik" value={profile.phone_number} />
         <List type="icon" icon="loc-light" name="Lokasi" value="Kledung, Temanggung" />
       </View>
     </ScrollView>
-  </View>
-);
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

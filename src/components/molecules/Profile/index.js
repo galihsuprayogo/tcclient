@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
   image: {
     height: 125,
     width: 125,
-    borderRadius: 125 / 2
+    borderRadius: 125 / 2,
+    // resizeMode: 'contain'
   },
   actionPhoto: {
     position: 'absolute',

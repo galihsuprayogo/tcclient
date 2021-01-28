@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, StyleSheet
 } from 'react-native';
@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   colors, useForm, showError, showSuccess
 } from '../../utils';
-import { service } from '../../config';
+import { service, storeUser } from '../../config';
 import { Button, Input, Gap } from '../../components';
 
 const Verify = ({ navigation }) => {
@@ -21,7 +21,14 @@ const Verify = ({ navigation }) => {
       service.post('/api/auth/verify', {
         phone_otp: form.phone_otp
       }).then((response) => {
-        console.log(response.data.user);
+        const data = {
+          photo: response.data.store.image,
+          id: response.data.user.id,
+          name: response.data.user.name,
+          store_name: response.data.store.name,
+          phone_number: response.data.user.phone_number,
+        };
+        storeUser('user', data);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
         setForm('reset');
@@ -63,7 +70,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'flex-start',
-    paddingHorizontal: 50,
+    paddingHorizontal: 35,
     paddingVertical: '20%'
   }
 });
