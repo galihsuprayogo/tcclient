@@ -27,6 +27,7 @@ const Verify = ({ navigation }) => {
           name: response.data.user.name,
           store_name: response.data.store.name,
           phone_number: response.data.user.phone_number,
+          address: response.data.store.address
         };
         storeUser('user', data);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));

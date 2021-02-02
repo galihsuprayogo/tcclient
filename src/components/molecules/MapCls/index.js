@@ -13,6 +13,7 @@ import { PERMISSIONS, request } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoder';
 import Modal from 'react-native-modal';
+import { getUser, storeUser } from '../../../config';
 import { colors, fonts } from '../../../utils';
 import {
   Icon, Button, ButtonModal, Gap,
@@ -68,7 +69,7 @@ class MapCls extends React.Component {
     currentLocation = () => {
       Geolocation.getCurrentPosition(
         (position) => {
-          console.log(JSON.stringify(position));
+          // console.log(JSON.stringify(position));
           const initialRegion = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -85,6 +86,30 @@ class MapCls extends React.Component {
         (error) => this.setState({ error: error.message }),
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
       );
+    }
+
+    onCloseModal = () => {
+      const resetPosition = {
+        latitude: this.state.markerPosition.latitude,
+        longitude: this.state.markerPosition.longitude,
+      };
+      this.setState({ modalVisible: false });
+      this.setState({ markerPosition: resetPosition });
+    }
+
+    onSaveModal = () => {
+      getUser('user').then((res) => {
+        const data = res;
+        data.address = this.state.addressPosition;
+        storeUser('user', res);
+      });
+      const resetPosition = {
+        latitude: 0,
+        longitude: 0,
+      };
+      this.setState({ modalVisible: false });
+      this.setState({ markerPosition: resetPosition });
+      this.props.navigation.goBack();
     }
 
     modalProp = () => (
@@ -109,8 +134,8 @@ class MapCls extends React.Component {
               icon={this.state.iconValue}
               onPress={() => {
                 const resetPosition = {
-                  latitude: 0,
-                  longitude: 0,
+                  latitude: this.state.markerPosition.latitude,
+                  longitude: this.state.markerPosition.longitude,
                 };
                 this.setState({ modalVisible: false });
                 this.setState({ markerPosition: resetPosition });
@@ -132,12 +157,10 @@ class MapCls extends React.Component {
               pagingEnable
             >
               <View style={styles.contentFooter} onStartShouldSetResponder={() => true}>
-                <Gap width={10} />
-                <ButtonModal icon="beenhere" title="Simpan Lokasi" />
-                <Gap width={10} />
-                <ButtonModal icon="direction" title="Petunjuk Arah" height={21} width={21} />
-                <Gap width={10} />
-                <ButtonModal icon="navigation" title="Mulai" height={18} width={23} />
+                  <Gap width={10} />
+                  <ButtonModal icon="beenhere" title="Simpan Lokasi" onPress={this.onSaveModal} />
+                  <Gap width={10} />
+                  <ButtonModal icon="xlight" title="Batal" onPress={this.onCloseModal} />
               </View>
             </ScrollView>
           </View>
@@ -171,7 +194,7 @@ class MapCls extends React.Component {
         this.setState({ iconValue: 'x' });
         this.setState({ propSwipe: true });
         this.setState({ modalVisible: true });
-        console.log(res[1].formattedAddress);
+        // console.log(res[1].formattedAddress);
       }).catch((err) => {
         this.setState({ addressPosition: `${this.state.markerPosition.latitude.toString()},${this.state.markerPosition.longitude.toString()}` });
         this.setState({ iconValue: 'x' });
@@ -183,9 +206,7 @@ class MapCls extends React.Component {
     render() {
       return (
         <View style={styles.container}>
-          {
-                        this.modalProp()
-                    }
+          {this.modalProp()}
           <MapView
             provider={this.props.provider}
             showUserLocation
@@ -234,7 +255,7 @@ const styles = StyleSheet.create({
   textInputWrapper: {
     borderRadius: 7,
     backgroundColor: 'white',
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
     paddingTop: 5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -247,6 +268,9 @@ const styles = StyleSheet.create({
   },
   contentFooter: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   headingFooter: {
     textAlign: 'center',

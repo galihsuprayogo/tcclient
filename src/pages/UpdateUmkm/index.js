@@ -14,16 +14,19 @@ import {
 
 const UpdateUmkm = ({ navigation }) => {
   const [form, setForm] = useForm({
-    store_name: ''
+    store_name: '',
+    address: ''
   });
   const [profile, setProfile] = useState({
     photo: ILNullPhoto,
     id: '',
     name: '',
     store_name: '',
-    phone_number: ''
+    phone_number: '',
+    address: ''
   });
 
+  const [status, setStatus] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -31,15 +34,17 @@ const UpdateUmkm = ({ navigation }) => {
   useEffect(() => {
     getUser('user').then((res) => {
       console.log(res);
-      if (res.photo === null || res.store_name === null) {
+      if (res.photo === null || res.address === null) {
         setPhoto(ILNullPhoto);
         setProfile(res);
         setForm('store_name', '');
+        setForm('address', '[belum dilengkapi, klik di atas]');
       } else {
         const source = { uri: res.photo };
         setPhoto(source);
         setPhotoDB(res.photo);
         setForm('store_name', res.store_name);
+        setForm('address', res.address);
         setProfile(res);
         setHasPhoto(true);
       }
@@ -72,6 +77,7 @@ const UpdateUmkm = ({ navigation }) => {
       const data = {
         name: form.store_name,
         photo: photoDB,
+        address: form.address
       };
       service.post('/api/auth/store', data, {
         headers: {
@@ -86,7 +92,8 @@ const UpdateUmkm = ({ navigation }) => {
           id: response.data.user.id,
           name: response.data.user.name,
           store_name: form.store_name,
-          phone_number: response.data.user.phone_number
+          phone_number: response.data.user.phone_number,
+          address: form.address
         };
         // console.log(response);
         setHasPhoto(true);
@@ -98,6 +105,11 @@ const UpdateUmkm = ({ navigation }) => {
       showError('photo tidak boleh kosong');
     }
   };
+
+  const onMap = () => {
+    navigation.navigate('MapCls');
+  };
+
   return (
     <View style={styles.container}>
     <Header
@@ -141,10 +153,10 @@ const UpdateUmkm = ({ navigation }) => {
               />
               <Gap height={10} />
               <View style={styles.locWrapper}>
-                  <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
+                  <TouchableOpacity onPress={onMap}>
                     <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
                   </TouchableOpacity>
-                    <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
+                    <InputLocation type="text2" icon="loc2" text={profile.address} />
               </View>
               <Gap height={20} />
           <Button title="Simpan" scope="sign-in" onPress={onContinue} />

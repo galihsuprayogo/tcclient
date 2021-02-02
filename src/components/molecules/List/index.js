@@ -21,27 +21,46 @@ const List = ({
 
   return (
     <View style={styles.container}>
-      <Type />
-      <View style={styles.wrapperText}>
-        <Text numberOfLines={2} style={styles.nameText(type)}>
-          {' '}
-          {name}
-          {' '}
-        </Text>
-        <Text numberOfLines={1} style={styles.valueText(type)}>
-          {' '}
-          {value}
-          {' '}
-        </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Type />
+        <View style={styles.wrapperText}>
+          <Text numberOfLines={2} style={styles.nameText(type)}>
+            {''}
+            {name}
+            {' '}
+          </Text>
+          <Text numberOfLines={4} style={styles.valueText(type)}>
+            {''}
+            {value}
+            {' '}
+          </Text>
+        </View>
       </View>
       { image && (
-        <TouchableOpacity style={styles.wrapperButton} onPress={() => alert('hai')}>
-          <View style={{ alignSelf: 'center' }}>
-            <Text style={styles.buttonText}> detail </Text>
+        <>
+          <Gap height={8} />
+          <View style={styles.wrapperButton} onPress={() => alert('hai')}>
+            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.buttonText}>
+                {' '}
+                ubah
+                {' '}
+              </Text>
+              <Gap width={1} />
+              <Icon icon="forward" />
+            </TouchableOpacity>
+            <Gap width={8} />
+            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.buttonText}>
+                {' '}
+                hapus
+                {' '}
+              </Text>
+              <Gap width={1} />
+              <Icon icon="forward" />
+            </TouchableOpacity>
           </View>
-          <Gap width={2} />
-          <Icon icon="forward" />
-        </TouchableOpacity>
+        </>
       )}
     </View>
   );
@@ -49,7 +68,6 @@ const List = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 13,
     paddingLeft: 30,
@@ -65,11 +83,11 @@ const styles = StyleSheet.create({
   wrapperButton: {
     flexDirection: 'row',
     alignSelf: 'flex-end',
-    paddingRight: 7
+    paddingRight: '5%'
   },
   buttonText: {
     fontFamily: fonts.Akkurat.bold,
-    fontSize: 12,
+    fontSize: 13,
     color: colors.primary,
   },
   nameText: (type) => (

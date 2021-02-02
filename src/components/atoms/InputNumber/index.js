@@ -5,9 +5,9 @@ import {
 import numbro from 'numbro';
 import { colors, fonts } from '../../../utils';
 
-const InputNumber = ({ title, priceFormat }) => {
-  const [price, setPrice] = useState(0);
-
+const InputNumber = ({
+  title, priceFormat, price, setPrice, keyboardType
+}) => {
   numbro.registerLanguage({
     languageTag: 'en-US',
     delimiters: {
@@ -65,6 +65,7 @@ const InputNumber = ({ title, priceFormat }) => {
         <View style={styles.content}>
           <TextInput
             style={styles.input}
+            keyboardType={keyboardType}
             value={setValue(price)}
             onChangeText={(price) => setPrice(formatPrice(price))}
           />
@@ -83,12 +84,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     borderColor: colors.secondary,
-    paddingVertical: 5,
+    paddingVertical: 0,
     paddingHorizontal: 15,
     backgroundColor: colors.text.secondary,
   },
   input: {
-    height: 35,
+    height: 40,
     width: 280,
     color: colors.text.default,
   },

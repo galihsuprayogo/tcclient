@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity,
 } from 'react-native';
-import { colors, fonts } from '../../utils';
+import { colors, fonts, useForm } from '../../utils';
 import {
   Header,
-  CoffeePicker,
+  DPicker,
   Gap,
   PriceSlider,
   InputLocation,
@@ -13,23 +13,33 @@ import {
 } from '../../components';
 
 const ChooseCoffee = ({ navigation }) => {
-  const [coffees] = useState([
-    {
-      id: 1,
-      type: 'Arabica',
-      procedure: 'Fullwash',
-      output: 'Roasted bean',
-      grade: 'A',
-    },
-    {
-      id: 2,
-      type: 'Robusta',
-      procedure: 'Wine',
-      output: 'Green Bean',
-      grade: 'B',
-    },
+  const [form, setForm] = useForm({
+    type: '',
+    procedure: '',
+    output: '',
+    grade: ''
+  });
+  const [type] = useState([
+    { label: 'Arabica', value: 'Arabica' },
+    { label: 'Robusta', value: 'Robusta' }
+  ]);
+  const [procedure] = useState([
+    { label: 'Fullwash', value: 'Fullwash' },
+    { label: 'Semiwash', value: 'Semiwash' }
+  ]);
+  const [output] = useState([
+    { label: 'Green Bean', value: 'Green Bean' },
+    { label: 'Roasted Bean', value: 'Roasted Bean' }
+  ]);
+  const [grade] = useState([
+    { label: 'A', value: 'A' },
+    { label: 'B', value: 'B' }
   ]);
 
+  const onContinue = () => {
+    // console.log(form);
+    navigation.replace('Map');
+  };
   return (
     <View style={styles.container}>
       <Header
@@ -41,34 +51,34 @@ const ChooseCoffee = ({ navigation }) => {
       />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
           <View style={styles.subDivContent}>
-            <CoffeePicker
-              title="Jenis Kopi (Arabica/Robusta"
-              datacoffees={coffees}
-              target="type"
-              labelType="dss"
-            />
-            <Gap height={10} />
-            <CoffeePicker
-              title="Cara Pengolahan"
-              datacoffees={coffees}
-              target="procedure"
-              labelType="dss"
-            />
-            <Gap height={10} />
-            <CoffeePicker
-              title="Hasil Pengolahan"
-              datacoffees={coffees}
-              target="output"
-              labelType="dss"
-            />
-            <Gap height={10} />
-            <CoffeePicker
-              title="Grade"
-              datacoffees={coffees}
-              target="grade"
-              labelType="dss"
-            />
-            <Gap height={10} />
+                <DPicker
+                  title="Jenis Kopi (Arabica/Robusta)"
+                  data={type}
+                  value={form.type}
+                  onChangeItem={(item) => setForm('type', item.value)}
+                />
+                <Gap height={10} />
+                <DPicker
+                  title="Cara Pengolahan"
+                  data={procedure}
+                  value={form.procedure}
+                  onChangeItem={(item) => setForm('procedure', item.value)}
+                />
+                <Gap height={10} />
+                <DPicker
+                  title="Hasil Pengolahan"
+                  data={output}
+                  value={form.output}
+                  onChangeItem={(item) => setForm('output', item.value)}
+                />
+                <Gap height={10} />
+                <DPicker
+                  title="Grade"
+                  data={grade}
+                  value={form.grade}
+                  onChangeItem={(item) => setForm('grade', item.value)}
+                />
+                <Gap height={10} />
             <PriceSlider type="minimum" />
             <Gap height={10} />
             <View style={styles.locWrapper}>
@@ -78,7 +88,7 @@ const ChooseCoffee = ({ navigation }) => {
               <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
             </View>
             <Gap height={20} />
-            <Button title="DSS Result [Klik]" scope="dss" onPress={() => navigation.replace('Map')} />
+            <Button title="DSS Result [Klik]" scope="dss" onPress={onContinue} />
           </View>
       </ScrollView>
     </View>

@@ -15,16 +15,17 @@ const Umkm = ({ navigation }) => {
     id: '',
     name: '',
     store_name: '',
-    phone_number: ''
+    phone_number: '',
+    address: ''
   });
   useEffect(() => {
     const unsubscribe = async () => {
       getUser('user').then((res) => {
-        console.log(res);
-        if (res.photo === null || res.store_name === null) {
+        if (res.photo === null || res.store_name === null || res.address === null) {
           setPhoto(ILNullPhoto);
           const data = res;
           data.store_name = 'Belum Dilengkapi';
+          data.address = 'Belum Dilengkapi';
           setProfile(res);
         } else {
           const source = { uri: res.photo };
@@ -53,7 +54,7 @@ const Umkm = ({ navigation }) => {
         <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value={profile.store_name} />
         <List type="icon" icon="profile-light" name="Nama Pemilik" value={profile.name} />
         <List type="icon" icon="telp-light" name="No. Telp Pemilik" value={profile.phone_number} />
-        <List type="icon" icon="loc-light" name="Lokasi" value="Kledung, Temanggung" />
+        <List type="icon" icon="loc-light" name="Lokasi" value={profile.address} />
       </View>
     </ScrollView>
     </View>

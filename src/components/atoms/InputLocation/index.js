@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Icon } from '../..';
+import { Icon, Gap } from '../..';
 import { fonts, colors } from '../../../utils';
 
 const InputLocation = ({ type, icon, text }) => (
   <View style={styles.test}>
     <Icon icon={icon} />
+    <Gap width={5} />
     <Text style={styles.text(type)}>
-      {' '}
+      {''}
       {text}
-      {' '}
+      {''}
     </Text>
   </View>
 );
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     color: type === 'text1' ? colors.text.default : colors.text.third,
     fontSize: type === 'text1' ? 15 : 13,
     paddingVertical: 7,
-    maxWidth: 300,
+    maxWidth: 280,
     borderTopWidth: type === 'text1' ? 0 : 1 / 2,
   }),
 });

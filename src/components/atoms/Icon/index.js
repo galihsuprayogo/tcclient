@@ -17,7 +17,8 @@ import {
   ILPhotoFrame,
   IconUmkmActive,
   IconUmkmDark,
-  IconForward
+  IconForward,
+  IconXLight
 } from '../../../assets';
 
 const Icon = ({
@@ -56,10 +57,12 @@ const Icon = ({
       return <IconNavigation height={height} width={width} />;
     case 'beenhere':
       return <IconBeenhere height={21} width={25} />;
+    case 'xlight':
+      return <IconXLight height={20} width={23} />;
     case 'frame':
       return <ILPhotoFrame height={110} width={85} />;
     case 'forward':
-      return <IconForward height={19} width={19} />;
+      return <IconForward height={10} width={10} />;
     default:
       return <Text />;
   }

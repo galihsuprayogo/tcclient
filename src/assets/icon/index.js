@@ -28,6 +28,7 @@ import IconNearMe from './icon-near-me.svg';
 import IconMarker from './icon-marker.png';
 import IconRight from './icon-arrow-right.svg';
 import IconX from './icon-x.svg';
+import IconXLight from './icon-x-light.svg';
 import IconDirection from './icon-direction.svg';
 import IconNavigation from './icon-navigation.svg';
 import IconBeenhere from './icon-savepinhere.svg';
@@ -69,6 +70,7 @@ export {
   IconMarker,
   IconRight,
   IconX,
+  IconXLight,
   IconDirection,
   IconNavigation,
   IconBeenhere,

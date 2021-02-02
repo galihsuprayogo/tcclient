@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { colors } from '../../utils';
+import { colors, showError, useForm } from '../../utils';
 import { ILNullPhoto } from '../../assets';
 import {
   Gap,
@@ -9,25 +9,32 @@ import {
   InputNumber,
   Profile,
   Button,
-  CoffeePicker,
+  DPicker
 } from '../../components';
 
 const InputProduct = ({ navigation }) => {
-  const [coffees] = useState([
-    {
-      id: 1,
-      type: 'Arabica',
-      procedure: 'Fullwash',
-      output: 'Roasted bean',
-      grade: 'A',
-    },
-    {
-      id: 2,
-      type: 'Robusta',
-      procedure: 'Wine',
-      output: 'Green Bean',
-      grade: 'B',
-    },
+  const [form, setForm] = useForm({
+    type: '',
+    procedure: '',
+    output: '',
+    grade: ''
+  });
+  const [price, setPrice] = useState(0);
+  const [type] = useState([
+    { label: 'Arabica', value: 'Arabica' },
+    { label: 'Robusta', value: 'Robusta' }
+  ]);
+  const [procedure] = useState([
+    { label: 'Fullwash', value: 'Fullwash' },
+    { label: 'Semiwash', value: 'Semiwash' }
+  ]);
+  const [output] = useState([
+    { label: 'Green Bean', value: 'Green Bean' },
+    { label: 'Roasted Bean', value: 'Roasted Bean' }
+  ]);
+  const [grade] = useState([
+    { label: 'A', value: 'A' },
+    { label: 'B', value: 'B' }
   ]);
 
   const [photoDB, setPhotoDB] = useState('');
@@ -53,7 +60,8 @@ const InputProduct = ({ navigation }) => {
   };
 
   const onContinue = () => {
-    alert('not yet');
+    console.log(form);
+    console.log(price);
   };
   return (
     <View style={styles.container}>
@@ -67,31 +75,40 @@ const InputProduct = ({ navigation }) => {
               {!hasPhoto && <Profile icon="add-photo" onPress={getImage} source={photo} />}
               </View>
               <Gap height={25} />
-                <CoffeePicker
+                <DPicker
                   title="Jenis Kopi (Arabica/Robusta)"
-                  datacoffees={coffees}
-                  target="type"
+                  data={type}
+                  value={form.type}
+                  onChangeItem={(item) => setForm('type', item.value)}
                 />
                 <Gap height={10} />
-                <CoffeePicker
+                <DPicker
                   title="Cara Pengolahan"
-                  datacoffees={coffees}
-                  target="procedure"
+                  data={procedure}
+                  value={form.procedure}
+                  onChangeItem={(item) => setForm('procedure', item.value)}
                 />
                 <Gap height={10} />
-                <CoffeePicker
+                <DPicker
                   title="Hasil Pengolahan"
-                  datacoffees={coffees}
-                  target="output"
+                  data={output}
+                  value={form.output}
+                  onChangeItem={(item) => setForm('output', item.value)}
                 />
                 <Gap height={10} />
-                <CoffeePicker
+                <DPicker
                   title="Grade"
-                  datacoffees={coffees}
-                  target="grade"
+                  data={grade}
+                  value={form.grade}
+                  onChangeItem={(item) => setForm('grade', item.value)}
                 />
                 <Gap height={10} />
-                <InputNumber title="Harga" />
+                <InputNumber
+                  title="Harga"
+                  keyboardType="phone-pad"
+                  price={price}
+                  setPrice={setPrice}
+                />
               <Gap height={25} />
               <View>
                 <Button title="Simpan" scope="sign-in" onPress={onContinue} />

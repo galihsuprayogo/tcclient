@@ -11,32 +11,32 @@ const IsProduct = ({ product, navigation }) => {
         <List
           type="image"
           image="dummycoffe1"
-          name="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
-          value="Kledung, Temanggung, Jawa Tengah, 27777"
+          name="Arabica"
+          value="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
         />
         <List
           type="image"
           image="dummycoffe2"
-          name="Ambu Coffe-Robusta-Semi Wash-Green Bean- Rp. 80.000,-"
-          value="Posong, Temanggung, Jawa Tengah, 27777"
-        />
-        <List
-          type="image"
-          image="dummycoffe3"
-          name="Header nama coffe"
-          value="Tanon, Temanggung, Jawa Tengah, 27777"
+          name="Arabica"
+          value="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
         />
         <List
           type="image"
           image="dummycoffe4"
-          name="Header nama coffe"
-          value="Random, Temanggung, Jawa Tengah, 27777"
+          name="Arabica"
+          value="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
+        />
+        <List
+          type="image"
+          image="dummycoffe4"
+          name="Robusta"
+          value="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
         />
         <List
           type="image"
           image="dummycoffe3"
-          name="Header nama coffe"
-          value="Tanon, Temanggung, Jawa Tengah, 27777"
+          name="Robusta"
+          value="Header nama coffe-Arabica-Fullwash-Roast Bean- Rp. 50.000,-"
         />
       </>
     );
