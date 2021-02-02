@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { colors, showError, useForm } from '../../utils';
 import { ILNullPhoto } from '../../assets';
+import { service } from '../../config';
 import {
   Gap,
   Header,
@@ -19,7 +21,7 @@ const InputProduct = ({ navigation }) => {
     output: '',
     grade: ''
   });
-  const [price, setPrice] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [type] = useState([
     { label: 'Arabica', value: 'Arabica' },
     { label: 'Robusta', value: 'Robusta' }
@@ -41,12 +43,14 @@ const InputProduct = ({ navigation }) => {
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
   const getImage = () => {
-    launchImageLibrary({ includeBase64: true }, (response) => {
-      console.log('response', response);
+    launchImageLibrary({
+      includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200
+    }, (response) => {
       if (response.didCancel || response.error) {
         showError('oops, sepertinya anda tidak memilih photo');
       } else {
-        setPhotoDB(response.base64);
+        const base64 = `data:${response.type};base64, ${response.base64}`;
+        setPhotoDB(base64);
         const source = { uri: response.uri };
         setPhoto(source);
         setHasPhoto(true);
@@ -59,9 +63,33 @@ const InputProduct = ({ navigation }) => {
     setHasPhoto(false);
   };
 
-  const onContinue = () => {
-    console.log(form);
-    console.log(price);
+  const onContinue = async () => {
+    if (hasPhoto) {
+      const token = await AsyncStorage.getItem('@token');
+      console.log(token);
+      const data = {
+        type: form.type,
+        procedure: form.procedure,
+        output: form.output,
+        grade: form.grade,
+        price: amount,
+        photo: photoDB
+      };
+      service.post('/api/auth/createProduct', data, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      showError('photo tidak boleh kosong');
+    }
   };
   return (
     <View style={styles.container}>
@@ -106,8 +134,8 @@ const InputProduct = ({ navigation }) => {
                 <InputNumber
                   title="Harga"
                   keyboardType="phone-pad"
-                  price={price}
-                  setPrice={setPrice}
+                  price={amount}
+                  setPrice={setAmount}
                 />
               <Gap height={25} />
               <View>

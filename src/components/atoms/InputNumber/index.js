@@ -29,7 +29,7 @@ const InputNumber = ({
   });
 
   const formatPrice = (price) => {
-    console.log(price);
+    // console.log(price);
     if (price !== '') {
       return numbro(price).formatCurrency({
         thousandSeparated: true,
@@ -41,7 +41,7 @@ const InputNumber = ({
   };
 
   const setValue = (price) => {
-    console.log(typeof price, 'value');
+    // console.log(typeof price, 'value');
     if (typeof price === 'number') {
       return price.toString();
     }
