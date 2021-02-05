@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { colors, showError, useForm } from '../../utils';
+import {
+  colors, showError, showSuccess, useForm
+} from '../../utils';
 import { ILNullPhoto } from '../../assets';
 import { service } from '../../config';
 import {
@@ -11,7 +13,8 @@ import {
   InputNumber,
   Profile,
   Button,
-  DPicker
+  DPicker,
+  Loading
 } from '../../components';
 
 const InputProduct = ({ navigation }) => {
@@ -39,6 +42,7 @@ const InputProduct = ({ navigation }) => {
     { label: 'B', value: 'B' }
   ]);
 
+  const [loading, setLoading] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -64,6 +68,7 @@ const InputProduct = ({ navigation }) => {
   };
 
   const onContinue = async () => {
+    setLoading(true);
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       console.log(token);
@@ -84,66 +89,74 @@ const InputProduct = ({ navigation }) => {
         },
       }).then((response) => {
         console.log(response);
+        setLoading(false);
+        showSuccess('Berhasil menambahkan produk baru');
       }).catch((error) => {
         console.log(error);
+        setLoading(false);
+        showError('Terjadi kesalahan');
       });
     } else {
+      setLoading(false);
       showError('photo tidak boleh kosong');
     }
   };
   return (
-    <View style={styles.container}>
-      <Header
-        title="Tambah Produk"
-      />
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
-          <View style={styles.subDivContent}>
-              <View style={{ alignItems: 'center' }}>
-              {hasPhoto && <Profile icon="remove-photo" onPress={removeImage} source={photo} />}
-              {!hasPhoto && <Profile icon="add-photo" onPress={getImage} source={photo} />}
-              </View>
-              <Gap height={25} />
-                <DPicker
-                  title="Jenis Kopi (Arabica/Robusta)"
-                  data={type}
-                  value={form.type}
-                  onChangeItem={(item) => setForm('type', item.value)}
-                />
-                <Gap height={10} />
-                <DPicker
-                  title="Cara Pengolahan"
-                  data={procedure}
-                  value={form.procedure}
-                  onChangeItem={(item) => setForm('procedure', item.value)}
-                />
-                <Gap height={10} />
-                <DPicker
-                  title="Hasil Pengolahan"
-                  data={output}
-                  value={form.output}
-                  onChangeItem={(item) => setForm('output', item.value)}
-                />
-                <Gap height={10} />
-                <DPicker
-                  title="Grade"
-                  data={grade}
-                  value={form.grade}
-                  onChangeItem={(item) => setForm('grade', item.value)}
-                />
-                <Gap height={10} />
-                <InputNumber
-                  title="Harga"
-                  keyboardType="phone-pad"
-                  price={amount}
-                  setPrice={setAmount}
-                />
-              <Gap height={25} />
-              <View>
-                <Button title="Simpan" scope="sign-in" onPress={onContinue} />
-              </View>
-          </View>
-        </ScrollView>
-    </View>
+    <>
+      <View style={styles.container}>
+        <Header
+          title="Tambah Produk"
+        />
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
+            <View style={styles.subDivContent}>
+                <View style={{ alignItems: 'center' }}>
+                {hasPhoto && <Profile icon="remove-photo" onPress={removeImage} source={photo} />}
+                {!hasPhoto && <Profile icon="add-photo" onPress={getImage} source={photo} />}
+                </View>
+                <Gap height={25} />
+                  <DPicker
+                    title="Jenis Kopi (Arabica/Robusta)"
+                    data={type}
+                    value={form.type}
+                    onChangeItem={(item) => setForm('type', item.value)}
+                  />
+                  <Gap height={10} />
+                  <DPicker
+                    title="Cara Pengolahan"
+                    data={procedure}
+                    value={form.procedure}
+                    onChangeItem={(item) => setForm('procedure', item.value)}
+                  />
+                  <Gap height={10} />
+                  <DPicker
+                    title="Hasil Pengolahan"
+                    data={output}
+                    value={form.output}
+                    onChangeItem={(item) => setForm('output', item.value)}
+                  />
+                  <Gap height={10} />
+                  <DPicker
+                    title="Grade"
+                    data={grade}
+                    value={form.grade}
+                    onChangeItem={(item) => setForm('grade', item.value)}
+                  />
+                  <Gap height={10} />
+                  <InputNumber
+                    title="Harga"
+                    keyboardType="phone-pad"
+                    price={amount}
+                    setPrice={setAmount}
+                  />
+                <Gap height={25} />
+                <View>
+                  <Button title="Simpan" scope="sign-in" onPress={onContinue} />
+                </View>
+            </View>
+          </ScrollView>
+      </View>
+      {loading && <Loading />}
+    </>
   );
 };
 

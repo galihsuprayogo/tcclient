@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Header } from '../../components';
 import { colors } from '../../utils';
+import { service } from '../../config';
 import IsProduct from './IsProduct';
 
 const Product = ({ navigation }) => {
   const [product] = useState('Os Coffe');
 
+  useEffect(() => {
+    const unsubscribe = async () => {
+      const token = await AsyncStorage.getItem('@token');
+      service.get('/api/auth/product', {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+          // 'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      });
+    };
+    unsubscribe();
+  });
   return (
     <View style={styles.container}>
       <Header

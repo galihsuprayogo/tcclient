@@ -74,6 +74,7 @@ const UpdateUmkm = ({ navigation }) => {
   const onContinue = async () => {
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
+      console.log(token);
       const data = {
         name: form.store_name,
         photo: photoDB,

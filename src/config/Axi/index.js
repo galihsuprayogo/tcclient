@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const service = axios.create({
   // baseURL: 'http://192.168.10.110:8000',
-  baseURL: 'http://192.168.43.20:8000'
+  // baseURL: 'http://192.168.43.20:8000',
+  baseURL: 'http://192.168.0.38:8000',
 });
 
 export const storeUser = async (key, value) => {
