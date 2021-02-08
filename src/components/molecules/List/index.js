@@ -6,7 +6,7 @@ import { fonts, colors } from '../../../utils';
 import { Icon, ImageResource, Gap } from '../..';
 
 const List = ({
-  type, icon, image, name, value,
+  type, icon, source, name, value
 }) => {
   const Type = () => {
     if (type === 'icon') {
@@ -14,7 +14,7 @@ const List = ({
     }
     return (
       <View>
-        <ImageResource image={image} />
+        <ImageResource source={source} />
       </View>
     );
   };
@@ -36,32 +36,6 @@ const List = ({
           </Text>
         </View>
       </View>
-      { image && (
-        <>
-          <Gap height={8} />
-          <View style={styles.wrapperButton} onPress={() => alert('hai')}>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.buttonText}>
-                {' '}
-                ubah
-                {' '}
-              </Text>
-              <Gap width={1} />
-              <Icon icon="forward" />
-            </TouchableOpacity>
-            <Gap width={8} />
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.buttonText}>
-                {' '}
-                hapus
-                {' '}
-              </Text>
-              <Gap width={1} />
-              <Icon icon="forward" />
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
     </View>
   );
 };
@@ -79,16 +53,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 10,
     alignItems: 'flex-start',
-  },
-  wrapperButton: {
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
-    paddingRight: '5%'
-  },
-  buttonText: {
-    fontFamily: fonts.Akkurat.bold,
-    fontSize: 13,
-    color: colors.primary,
   },
   nameText: (type) => (
     {

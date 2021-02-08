@@ -23,5 +23,5 @@ export {
   InputProduct,
   ChooseCoffee,
   Help,
-  Verify
+  Verify,
 };

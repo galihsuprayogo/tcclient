@@ -14,7 +14,7 @@ import {
   InputProduct,
   ChooseCoffee,
   Help,
-  Verify
+  Verify,
 } from '../pages';
 import {
   Map, MapCls,

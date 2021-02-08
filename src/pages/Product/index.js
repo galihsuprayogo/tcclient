@@ -1,32 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Header } from '../../components';
-import { colors } from '../../utils';
-import { service } from '../../config';
-import IsProduct from './IsProduct';
+import {
+  View, StyleSheet, ScrollView, Text
+} from 'react-native';
+import Swiper from 'react-native-swiper';
+import { Header, ListProduct } from '../../components';
+import { colors, fonts } from '../../utils';
+import { getUser } from '../../config';
+import { ILNullPhoto } from '../../assets';
 
 const Product = ({ navigation }) => {
-  const [product] = useState('Os Coffe');
+  const [products, setProducts] = useState([{
+    id: 0,
+    store_id: 0,
+    type: '',
+    procedure: '',
+    output: '',
+    grade: '',
+    price: '',
+    image: ILNullPhoto
+  }]);
 
   useEffect(() => {
     const unsubscribe = async () => {
-      const token = await AsyncStorage.getItem('@token');
-      service.get('/api/auth/product', {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
-          // 'Content-Type': 'application/json'
-        },
-      }).then((response) => {
-        console.log(response);
-      }).catch((error) => {
-        console.log(error);
+      await getUser('products').then((res) => {
+        setProducts(res);
       });
     };
     unsubscribe();
-  });
+  }, []);
+
+  const renderPagination = (index, total, context) => (
+      <View style={styles.paginationNumber}>
+        <Text style={{ color: colors.text.default }}>
+          <Text style={styles.paginationText}>{index + 1}</Text>
+          /
+          {total}
+        </Text>
+      </View>
+  );
+  const renderProducts = () => (
+      <Swiper
+        showsPagination
+        loop={false}
+        dot={(<View style={styles.dot} />)}
+        activeDot={(<View style={styles.activeDot} />)}
+        renderPagination={renderPagination}
+      >
+      {
+        products.map((product, index) => (
+          <ListProduct
+            key={index}
+            source={{ uri: product.image }}
+            type={product.type}
+            procedure={product.procedure}
+            output={product.output}
+            grade={product.grade}
+            price={product.price}
+          />
+        ))
+      }
+      </Swiper>
+  );
+
   return (
     <View style={styles.container}>
       <Header
@@ -36,11 +71,12 @@ const Product = ({ navigation }) => {
         width={24}
         onPress={() => navigation.openDrawer()}
       />
-      <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
-        <View style={styles.subDivContent(product)}>
-          <IsProduct product={product} navigation={navigation} />
+      <View style={styles.content}>
+        <View style={styles.subDivContent}>
+            {!products && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
+            {products && renderProducts()}
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -59,13 +95,50 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
-  subDivContent: (product) => ({
+  subDivContent: {
     flex: 1,
-    justifyContent: product ? 'center' : 'center',
+    justifyContent: 'center',
     backgroundColor: colors.secondary,
-    paddingVertical: 45,
+    borderColor: colors.secondary,
+    borderWidth: 3,
+    // paddingVertical: 30,
     marginVertical: 30,
     borderRadius: 10
-  })
+  },
+  dot: {
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    width: 5,
+    height: 5,
+    borderRadius: 20,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 15,
+    // marginBottom: 6
+  },
+  activeDot: {
+    backgroundColor: 'white',
+    width: 6,
+    height: 6,
+    borderRadius: 5,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 15,
+    // marginBottom: 6
+  },
+  paginationNumber: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
+  },
+  paginationText: {
+    color: 'white',
+    fontFamily: fonts.Akkurat.normal,
+    fontSize: 18
+  },
+  text: {
+    fontFamily: fonts.sfProDisplay.black,
+    color: colors.text.default,
+    fontSize: 18,
+  },
 });
 export default Product;
