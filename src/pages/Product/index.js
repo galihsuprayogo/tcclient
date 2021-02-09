@@ -17,7 +17,7 @@ const Product = ({ navigation }) => {
     output: '',
     grade: '',
     price: '',
-    image: ILNullPhoto
+    image: null
   }]);
 
   useEffect(() => {
@@ -73,8 +73,8 @@ const Product = ({ navigation }) => {
       />
       <View style={styles.content}>
         <View style={styles.subDivContent}>
-            {!products && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
-            {products && renderProducts()}
+            {!Array.isArray(products) && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
+            {Array.isArray(products) && renderProducts()}
         </View>
       </View>
     </View>
@@ -136,9 +136,10 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   text: {
-    fontFamily: fonts.sfProDisplay.black,
-    color: colors.text.default,
+    fontFamily: fonts.sfProDisplay.heavy,
+    color: colors.text.secondary,
     fontSize: 18,
+    textAlign: 'center'
   },
 });
 export default Product;

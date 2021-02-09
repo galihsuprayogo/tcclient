@@ -37,6 +37,7 @@
     "no-underscore-dangle": "off",
     "no-unreachable": "off",
     "no-mixed-operators": "off",
+    "no-param-reassign": "off",
     "block-scoped-var": "off",
     "vars-on-top": "off",
     "radix": "off",

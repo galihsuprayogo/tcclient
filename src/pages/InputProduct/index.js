@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
 import {
-  colors, showError, showSuccess, useForm
+  colors, showError, showSuccess
 } from '../../utils';
 import { ILNullPhoto } from '../../assets';
 import { service, storeUser } from '../../config';
@@ -18,26 +18,28 @@ import {
 } from '../../components';
 
 const InputProduct = ({ navigation }) => {
-  const [form, setForm] = useForm({
-    type: '',
-    procedure: '',
-    output: '',
-    grade: ''
-  });
+  const [type, setType] = useState('-- Pilih --');
+  const [procedure, setProcedure] = useState('-- Pilih --');
+  const [output, setOutput] = useState('-- Pilih --');
+  const [grade, setGrade] = useState('-- Pilih --');
   const [amount, setAmount] = useState(0);
-  const [type] = useState([
+  const [typeData] = useState([
+    { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'Arabica', value: 'Arabica' },
     { label: 'Robusta', value: 'Robusta' }
   ]);
-  const [procedure] = useState([
+  const [procedureData] = useState([
+    { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'Fullwash', value: 'Fullwash' },
     { label: 'Semiwash', value: 'Semiwash' }
   ]);
-  const [output] = useState([
+  const [outputData] = useState([
+    { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'Green Bean', value: 'Green Bean' },
     { label: 'Roasted Bean', value: 'Roasted Bean' }
   ]);
-  const [grade] = useState([
+  const [gradeData] = useState([
+    { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'A', value: 'A' },
     { label: 'B', value: 'B' }
   ]);
@@ -67,16 +69,26 @@ const InputProduct = ({ navigation }) => {
     setHasPhoto(false);
   };
 
+  const resetForm = () => {
+    setLoading(false);
+    setPhoto(ILNullPhoto);
+    setHasPhoto(false);
+    setAmount(0);
+    setType('-- Pilih --');
+    setProcedure('-- Pilih --');
+    setOutput('-- Pilih --');
+    setGrade('-- Pilih --');
+  };
   const onContinue = async () => {
     setLoading(true);
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       console.log(token);
       const data = {
-        type: form.type,
-        procedure: form.procedure,
-        output: form.output,
-        grade: form.grade,
+        type,
+        procedure,
+        output,
+        grade,
         price: amount,
         photo: photoDB
       };
@@ -90,18 +102,19 @@ const InputProduct = ({ navigation }) => {
       }).then((response) => {
         console.log(response);
         storeUser('products', response.data.products);
-        setLoading(false);
+        resetForm();
         showSuccess('Berhasil menambahkan produk baru');
       }).catch((error) => {
         console.log(error);
-        setLoading(false);
+        resetForm();
         showError('Terjadi kesalahan');
       });
     } else {
-      setLoading(false);
+      resetForm();
       showError('photo tidak boleh kosong');
     }
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -117,30 +130,30 @@ const InputProduct = ({ navigation }) => {
                 <Gap height={25} />
                   <DPicker
                     title="Jenis Kopi (Arabica/Robusta)"
-                    data={type}
-                    value={form.type}
-                    onChangeItem={(item) => setForm('type', item.value)}
+                    data={typeData}
+                    value={type}
+                    onChangeItem={(item) => setType(item.value)}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Cara Pengolahan"
-                    data={procedure}
-                    value={form.procedure}
-                    onChangeItem={(item) => setForm('procedure', item.value)}
+                    data={procedureData}
+                    value={procedure}
+                    onChangeItem={(item) => setProcedure(item.value)}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Hasil Pengolahan"
-                    data={output}
-                    value={form.output}
-                    onChangeItem={(item) => setForm('output', item.value)}
+                    data={outputData}
+                    value={output}
+                    onChangeItem={(item) => setOutput(item.value)}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Grade"
-                    data={grade}
-                    value={form.grade}
-                    onChangeItem={(item) => setForm('grade', item.value)}
+                    data={gradeData}
+                    value={grade}
+                    onChangeItem={(item) => setGrade(item.value)}
                   />
                   <Gap height={10} />
                   <InputNumber

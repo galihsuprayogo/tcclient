@@ -18,11 +18,20 @@ const DPicker = ({
             defaultValue={value}
             placeholder="-- Pilih --"
             placeholderStyle={styles.placeholder}
-            selectedLabelStyle={{ color: colors.text.default }}
+            selectedLabelStyle={{
+              color: colors.text.default,
+              fontFamily: fonts.Akkurat.bold,
+              fontSize: 14,
+            }}
             containerStyle={{ height: 40 }}
             style={styles.wrapper}
             itemStyle={{
-              justifyContent: 'flex-start'
+              justifyContent: 'flex-start',
+            }}
+            activeLabelStyle={{
+              color: colors.text.default,
+              fontFamily: fonts.Akkurat.bold,
+              fontSize: 14,
             }}
             dropDownStyle={styles.dropDown}
             onChangeItem={onChangeItem}

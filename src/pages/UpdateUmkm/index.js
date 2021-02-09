@@ -71,6 +71,7 @@ const UpdateUmkm = ({ navigation }) => {
     setPhoto(ILNullPhoto);
     setHasPhoto(false);
   };
+
   const onContinue = async () => {
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
