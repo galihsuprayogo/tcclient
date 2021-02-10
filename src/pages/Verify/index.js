@@ -30,7 +30,8 @@ const Verify = ({ navigation }) => {
           address: response.data.store.address
         };
         storeUser('user', data);
-        storeUser('products', response.data.products);
+        const temp = response.data.products;
+        storeUser('products', temp);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
         setForm('reset');

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Profile, List, Header, Gap
 } from '../../components';
-import { service, getUser } from '../../config';
+import { getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import { colors } from '../../utils';
 
@@ -18,9 +17,10 @@ const Umkm = ({ navigation }) => {
     phone_number: '',
     address: ''
   });
+
   useEffect(() => {
     const unsubscribe = async () => {
-      getUser('user').then((res) => {
+      await getUser('user').then((res) => {
         if (res.photo === null || res.store_name === null || res.address === null) {
           setPhoto(ILNullPhoto);
           const data = res;
@@ -36,6 +36,26 @@ const Umkm = ({ navigation }) => {
     };
     unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      await getUser('user').then((res) => {
+        if (res.photo === null || res.store_name === null || res.address === null) {
+          setPhoto(ILNullPhoto);
+          const data = res;
+          data.store_name = 'Belum Dilengkapi';
+          data.address = 'Belum Dilengkapi';
+          setProfile(res);
+        } else {
+          const source = { uri: res.photo };
+          setPhoto(source);
+          setProfile(res);
+        }
+      }, 2000);
+    });
+    return () => clearTimeout(timeout);
+  }, [profile]);
+
   return (
     <View style={styles.container}>
     <Header

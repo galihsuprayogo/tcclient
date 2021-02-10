@@ -83,7 +83,6 @@ const InputProduct = ({ navigation }) => {
     setLoading(true);
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
-      console.log(token);
       const data = {
         type,
         procedure,
@@ -100,9 +99,9 @@ const InputProduct = ({ navigation }) => {
           // 'Content-Type': 'application/json'
         },
       }).then((response) => {
-        console.log(response);
-        storeUser('products', response.data.products);
+        const temp = response.data.products;
         resetForm();
+        storeUser('products', temp);
         showSuccess('Berhasil menambahkan produk baru');
       }).catch((error) => {
         console.log(error);

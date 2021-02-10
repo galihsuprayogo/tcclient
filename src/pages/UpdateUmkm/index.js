@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity
+  View, StyleSheet, ScrollView, TouchableOpacity, TextInput
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { colors, showError, useForm } from '../../utils';
+import {
+  colors, showError, showSuccess, useForm
+} from '../../utils';
 import { service, storeUser, getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import {
   Button, Gap, Header, Input, Profile,
-  InputLocation
+  InputLocation, Loading
 } from '../../components';
 
 const UpdateUmkm = ({ navigation }) => {
-  const [form, setForm] = useForm({
-    store_name: '',
-    address: ''
-  });
   const [profile, setProfile] = useState({
     photo: ILNullPhoto,
     id: '',
@@ -26,30 +24,13 @@ const UpdateUmkm = ({ navigation }) => {
     address: ''
   });
 
-  const [status, setStatus] = useState(false);
+  const timeoutRef = useRef(null);
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState();
+  const [loading, setLoading] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
-
-  useEffect(() => {
-    getUser('user').then((res) => {
-      console.log(res);
-      if (res.photo === null || res.address === null) {
-        setPhoto(ILNullPhoto);
-        setProfile(res);
-        setForm('store_name', '');
-        setForm('address', '[belum dilengkapi, klik di atas]');
-      } else {
-        const source = { uri: res.photo };
-        setPhoto(source);
-        setPhotoDB(res.photo);
-        setForm('store_name', res.store_name);
-        setForm('address', res.address);
-        setProfile(res);
-        setHasPhoto(true);
-      }
-    });
-  }, []);
 
   const getImage = () => {
     launchImageLibrary({
@@ -67,19 +48,65 @@ const UpdateUmkm = ({ navigation }) => {
       }
     });
   };
+
   const removeImage = () => {
     setPhoto(ILNullPhoto);
     setHasPhoto(false);
   };
 
+  useEffect(() => {
+    const unsubscribe = async () => {
+      await getUser('user').then((res) => {
+        if (res.photo === null || res.address === null) {
+          setPhoto(ILNullPhoto);
+          setProfile(res);
+          setName('');
+          setAddress('belum dilengkapi, klik di atas');
+        } else {
+          const source = { uri: res.photo };
+          setPhoto(source);
+          setPhotoDB(res.photo);
+          setProfile(res);
+          setName(res.store_name);
+          setAddress(res.address);
+          setHasPhoto(true);
+        }
+      });
+    };
+    unsubscribe();
+  }, []);
+
+  const reloadData = async () => {
+    await getUser('user').then((res) => {
+      const source = { uri: res.photo };
+      setPhoto(source);
+      setPhotoDB(res.photo);
+      setProfile(res);
+      setName(res.store_name);
+      setAddress(res.address);
+      setHasPhoto(true);
+    });
+  };
+
+  useEffect(() => {
+    if (timeoutRef.current !== null) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = null;
+      name !== '' ? null : reloadData();
+      hasPhoto !== false ? null : reloadData();
+    }, 10000);
+  }, [name, hasPhoto]);
+
   const onContinue = async () => {
+    setLoading(true);
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
-      console.log(token);
       const data = {
-        name: form.store_name,
+        name,
         photo: photoDB,
-        address: form.address
+        address
       };
       service.post('/api/auth/store', data, {
         headers: {
@@ -93,15 +120,22 @@ const UpdateUmkm = ({ navigation }) => {
           photo: photoDB,
           id: response.data.user.id,
           name: response.data.user.name,
-          store_name: form.store_name,
+          store_name: name,
           phone_number: response.data.user.phone_number,
-          address: form.address
+          address
         };
         // console.log(response);
         setHasPhoto(true);
         storeUser('user', data);
+        setLoading(false);
+        setName(data.store_name);
+        const source = { uri: data.photo };
+        setPhoto(source);
+        showSuccess('Berhasil mengubah profil umkm');
       }).catch((error) => {
         console.log(error);
+        setLoading(false);
+        showError('Terjadi kesalahan');
       });
     } else {
       showError('photo tidak boleh kosong');
@@ -113,6 +147,7 @@ const UpdateUmkm = ({ navigation }) => {
   };
 
   return (
+  <>
     <View style={styles.container}>
     <Header
       title="Edit profil UMKM"
@@ -130,8 +165,8 @@ const UpdateUmkm = ({ navigation }) => {
                 icon="umkm-dark"
                 type="inputForm"
                 scope="umkm"
-                value={form.store_name}
-                onChangeText={(value) => setForm('store_name', value)}
+                value={name}
+                onChangeText={(value) => setName(value)}
               />
               <Gap height={10} />
               <Input
@@ -165,6 +200,8 @@ const UpdateUmkm = ({ navigation }) => {
       </View>
     </ScrollView>
     </View>
+    {loading && <Loading />}
+  </>
   );
 };
 
