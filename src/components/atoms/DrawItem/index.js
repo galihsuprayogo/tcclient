@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   IconUmkm, IconUmkmActive, IconProduct, IconProductActive,
   IconHome, IconLogout, IconHelp, IconHelpActive

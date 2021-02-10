@@ -1,13 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { colors, fonts } from '../../../utils';
-import { Button } from '../..';
+import { Icon } from '../..';
 
 const Header = ({
   title, type, icon, width, onPress, scope
 }) => (
   <View style={styles.container(scope)}>
-    <Button type={type} icon={icon} onPress={onPress} />
+    {type && (
+      <TouchableOpacity onPress={onPress}>
+          <Icon icon={icon} />
+      </TouchableOpacity>
+    )}
     <Text style={styles.text}>
       {' '}
       {title}

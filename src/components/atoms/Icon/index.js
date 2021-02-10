@@ -18,7 +18,10 @@ import {
   IconUmkmActive,
   IconUmkmDark,
   IconForward,
-  IconXLight
+  IconXLight,
+  IconOpenDrawer,
+  IconBackLight,
+  IconBack,
 } from '../../../assets';
 
 const Icon = ({
@@ -63,6 +66,12 @@ const Icon = ({
       return <ILPhotoFrame height={110} width={85} />;
     case 'forward':
       return <IconForward height={10} width={10} />;
+    case 'open-drawer':
+      return <IconOpenDrawer height={20} width={20} />;
+    case 'icon-back':
+      return <IconBack />;
+    case 'icon-back-light':
+      return <IconBackLight />;
     default:
       return <Text />;
   }

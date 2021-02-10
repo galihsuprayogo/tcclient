@@ -21,5 +21,5 @@ export {
   MapCls,
   DrawerContent,
   Loading,
-  DPicker
+  DPicker,
 };

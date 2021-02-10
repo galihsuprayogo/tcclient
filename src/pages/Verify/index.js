@@ -29,18 +29,8 @@ const Verify = ({ navigation }) => {
           phone_number: response.data.user.phone_number,
           address: response.data.store.address
         };
-        const products = {
-          id: response.data.products.id,
-          store_id: response.data.products.store_id,
-          type: response.data.products.type,
-          procedure: response.data.products.procedure,
-          output: response.data.products.output,
-          grade: response.data.products.grade,
-          price: response.data.products.price,
-          image: response.data.products.image
-        };
         storeUser('user', data);
-        storeUser('products', products);
+        storeUser('products', response.data.products);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
         setForm('reset');

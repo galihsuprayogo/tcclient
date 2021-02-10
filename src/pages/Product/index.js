@@ -29,6 +29,15 @@ const Product = ({ navigation }) => {
     unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      await getUser('products').then((res) => {
+        setProducts(res);
+      }, 2000);
+    });
+    return () => clearTimeout(timeout);
+  }, [products]);
+
   const renderPagination = (index, total, context) => (
       <View style={styles.paginationNumber}>
         <Text style={{ color: colors.text.default }}>
@@ -64,17 +73,18 @@ const Product = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Header
-        title="Produk"
-        type="icon-button"
-        icon="open-drawer"
-        width={24}
-        onPress={() => navigation.openDrawer()}
-      />
+    <Header
+      title="Produk"
+      type="icon-button"
+      icon="open-drawer"
+      width={24}
+      onPress={() => navigation.openDrawer()}
+    />
       <View style={styles.content}>
         <View style={styles.subDivContent}>
-            {!Array.isArray(products) && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
-            {Array.isArray(products) && renderProducts()}
+            {products[0].type === null
+             && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
+            {products[0].type !== null && renderProducts()}
         </View>
       </View>
     </View>
