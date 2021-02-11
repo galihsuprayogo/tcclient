@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     color: type === 'text1' ? colors.text.default : colors.text.third,
     fontSize: type === 'text1' ? 15 : 13,
     paddingVertical: 7,
-    maxWidth: 280,
+    maxWidth: 300,
     borderTopWidth: type === 'text1' ? 0 : 1 / 2,
   }),
 });

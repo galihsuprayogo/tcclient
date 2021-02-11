@@ -14,7 +14,7 @@ import {
   InputLocation, Loading
 } from '../../components';
 
-const UpdateUmkm = ({ navigation }) => {
+const UpdateUmkm = ({ navigation, params }) => {
   const [profile, setProfile] = useState({
     photo: ILNullPhoto,
     id: '',
@@ -26,7 +26,7 @@ const UpdateUmkm = ({ navigation }) => {
 
   const timeoutRef = useRef(null);
   const [name, setName] = useState('');
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
@@ -60,8 +60,9 @@ const UpdateUmkm = ({ navigation }) => {
         if (res.photo === null || res.address === null) {
           setPhoto(ILNullPhoto);
           setProfile(res);
-          setName('');
-          setAddress('belum dilengkapi, klik di atas');
+          setName('Belum Dilengkapi');
+          setAddress('[Belum dilengkapi, klik di atas]');
+          setHasPhoto(false);
         } else {
           const source = { uri: res.photo };
           setPhoto(source);
@@ -92,15 +93,27 @@ const UpdateUmkm = ({ navigation }) => {
     if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
     }
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async () => {
       timeoutRef.current = null;
       name !== '' ? null : reloadData();
       hasPhoto !== false ? null : reloadData();
-    }, 10000);
-  }, [name, hasPhoto]);
+      await getUser('user').then((res) => {
+        const source = { uri: res.photo };
+        setAddress(res.address);
+        setPhoto(source);
+        setPhotoDB(res.photo);
+        setProfile(res);
+        setHasPhoto(true);
+      });
+    }, 3000);
+  }, [name, hasPhoto, profile]);
 
   const onContinue = async () => {
     setLoading(true);
+    if (address === '[Belum dilengkapi, klik di atas]') {
+      setLoading(false);
+      showError('Mohon lengkapi alamat');
+    }
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
@@ -129,6 +142,7 @@ const UpdateUmkm = ({ navigation }) => {
         storeUser('user', data);
         setLoading(false);
         setName(data.store_name);
+        setAddress(data.address);
         const source = { uri: data.photo };
         setPhoto(source);
         showSuccess('Berhasil mengubah profil umkm');
@@ -140,10 +154,6 @@ const UpdateUmkm = ({ navigation }) => {
     } else {
       showError('photo tidak boleh kosong');
     }
-  };
-
-  const onMap = () => {
-    navigation.navigate('MapCls');
   };
 
   return (
@@ -190,17 +200,17 @@ const UpdateUmkm = ({ navigation }) => {
               />
               <Gap height={10} />
               <View style={styles.locWrapper}>
-                  <TouchableOpacity onPress={onMap}>
+                  <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
                     <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
                   </TouchableOpacity>
-                    <InputLocation type="text2" icon="loc2" text={profile.address} />
+                    <InputLocation type="text2" icon="loc2" text={address} />
               </View>
               <Gap height={20} />
           <Button title="Simpan" scope="sign-in" onPress={onContinue} />
       </View>
     </ScrollView>
     </View>
-    {loading && <Loading />}
+  {loading && <Loading />}
   </>
   );
 };

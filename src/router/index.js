@@ -127,6 +127,11 @@ const Router = () => (
       component={MapCls}
       options={{ headerShown: false }}
     />
+    <Stack.Screen
+      name="UpdateUmkm"
+      component={UpdateUmkm}
+      options={{ headerShown: false }}
+    />
   </Stack.Navigator>
 );
 

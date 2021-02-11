@@ -13,6 +13,7 @@ import { PERMISSIONS, request } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoder';
 import Modal from 'react-native-modal';
+import { useNavigation } from '@react-navigation/native';
 import { getUser, storeUser } from '../../../config';
 import { colors, fonts } from '../../../utils';
 import {
@@ -46,6 +47,7 @@ class MapCls extends React.Component {
       propSwipe: false,
       error: null,
     };
+    const { navigation } = this.props;
   }
 
   componentDidMount() {
