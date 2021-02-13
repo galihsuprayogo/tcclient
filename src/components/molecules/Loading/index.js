@@ -6,7 +6,7 @@ import { colors, fonts } from '../../../utils';
 
 const Loading = () => (
    <View style={styles.wrapper}>
-          <ActivityIndicator size="large" color={colors.secondary} />
+          <ActivityIndicator size="large" color={colors.loading} />
           <Text style={styles.text}>sedang menunggu...</Text>
    </View>
 );
@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.Akkurat.boldItalic,
-    fontSize: 15,
-    marginTop: 8
+    fontSize: 17,
+    marginTop: 8,
+    color: colors.loading
   }
 });
 export default Loading;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, Image
 } from 'react-native';
@@ -10,12 +10,62 @@ import {
 import {
   colors, fonts, showError, showSuccess
 } from '../../../utils';
-import { deleteId, deleteToken, service } from '../../../config';
-import { DrawItem, Gap } from '../..';
-import { dummycoffe1 } from '../../../assets';
+import {
+  deleteId, deleteToken, service, getUser
+} from '../../../config';
+import { DrawItem, Gap, Loading } from '../..';
+import { ILNullPhoto } from '../../../assets';
 
 const DrawerContent = (props) => {
+  const [photo, setPhoto] = useState(ILNullPhoto);
+  const [loading, setLoading] = useState(false);
+  const [profile, setProfile] = useState({
+    photo: ILNullPhoto,
+    id: '',
+    name: '',
+    store_name: '',
+    phone_number: '',
+    address: ''
+  });
+
+  useEffect(() => {
+    const unsubscribe = async () => {
+      await getUser('user').then((res) => {
+        if (res.photo === null || res.store_name === null) {
+          setPhoto(ILNullPhoto);
+          const data = res;
+          data.store_name = 'Belum Dilengkapi';
+          setProfile(res);
+        } else {
+          const source = { uri: res.photo };
+          setPhoto(source);
+          setProfile(res);
+        }
+      });
+    };
+    unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      await getUser('user').then((res) => {
+        if (res.photo === null || res.store_name === null) {
+          setPhoto(ILNullPhoto);
+          const data = res;
+          data.store_name = 'Belum Dilengkapi';
+          setProfile(res);
+        } else {
+          const source = { uri: res.photo };
+          setPhoto(source);
+          setProfile(res);
+        }
+      }, 2000);
+    });
+    return () => clearTimeout(timeout);
+  }, [profile]);
+
   const onClose = async () => {
+    setLoading(true);
     const token = await AsyncStorage.getItem('@token');
     service.get('/api/auth/logout', {
       headers: {
@@ -25,25 +75,39 @@ const DrawerContent = (props) => {
     }).then((response) => {
       deleteId();
       deleteToken();
+      setLoading(false);
       showSuccess('Anda berhasil keluar');
       props.navigation.replace('Splash');
     }).catch(() => {
+      setLoading(false);
       showError('Terjadi kesalahan jaringan');
     });
   };
+
   return (
+  <>
     <View style={styles.container}>
         <View style={styles.content}>
         <View>
           <Gap height={40} />
           <View style={styles.header}>
               <View>
-                  <Image source={dummycoffe1} style={styles.image} />
+                  <Image source={photo} style={styles.image} />
               </View>
           <Gap width={15} />
               <View>
-                  <Text style={styles.titleText}> OS Coffee </Text>
-                  <Text style={styles.detailText}> Pemilik : David Bowie </Text>
+                  <Text style={styles.titleText}>
+                    {' '}
+                    { profile.store_name }
+                    {' '}
+                  </Text>
+                  <Text style={styles.detailText}>
+                    {' '}
+                    Pemilik :
+                    {' '}
+                    {profile.name}
+                    {' '}
+                  </Text>
               </View>
           </View>
           <Gap height={30} />
@@ -72,6 +136,8 @@ const DrawerContent = (props) => {
           </View>
         </View>
     </View>
+  {loading && <Loading />}
+  </>
   );
 };
 
@@ -101,7 +167,7 @@ const styles = StyleSheet.create({
   footer: {
     borderTopWidth: 2,
     borderColor: colors.secondary,
-    borderRadius: 5,
+    borderRadius: 0,
   },
   titleText: {
     fontFamily: fonts.sfProDisplay.heavyItalic,
@@ -111,7 +177,8 @@ const styles = StyleSheet.create({
   detailText: {
     fontFamily: fonts.Akkurat.normalItalic,
     fontSize: 14,
-    color: 'white'
+    color: 'white',
+    maxWidth: 180
   },
   thirdText: {
     fontFamily: fonts.Akkurat.normalItalic,

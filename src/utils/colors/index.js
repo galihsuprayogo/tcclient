@@ -5,6 +5,7 @@ const mainColors = {
   semired: '#E06379',
   black: '#453c43',
   blue: '#047CFC',
+  indicator: '#66de48',
   half: 'rgba(0, 0, 0, 0.2)'
 };
 
@@ -13,6 +14,7 @@ export const colors = {
   secondary: mainColors.dark,
   third: mainColors.semidark,
   fourth: mainColors.black,
+  loading: mainColors.indicator,
   text: {
     default: mainColors.dark,
     secondary: mainColors.light,

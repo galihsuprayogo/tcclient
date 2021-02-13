@@ -8,12 +8,12 @@ const Help = ({ navigation }) => (
          <Header
            title="Bantuan"
            type="icon-button"
-           icon="icon-back-light"
+           icon="open-drawer"
            width={24}
-           onPress={() => navigation.goBack()}
+           onPress={() => navigation.openDrawer()}
          />
          <View style={styles.content}>
-            <Text style={styles.text}> This is a Pain full </Text>
+            <Text style={styles.text}> Halaman belum tersedia </Text>
          </View>
     </View>
 );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: fonts.Akkurat.bold,
-    fontSize: 40
+    fontSize: 25
   }
 });
 

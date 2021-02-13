@@ -14,7 +14,7 @@ import {
   InputLocation, Loading
 } from '../../components';
 
-const UpdateUmkm = ({ navigation, params }) => {
+const UpdateUmkm = ({ navigation }) => {
   const [profile, setProfile] = useState({
     photo: ILNullPhoto,
     id: '',
@@ -25,7 +25,7 @@ const UpdateUmkm = ({ navigation, params }) => {
   });
 
   const timeoutRef = useRef(null);
-  const [name, setName] = useState('');
+  const [storeName, setStoreName] = useState('');
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
@@ -57,19 +57,21 @@ const UpdateUmkm = ({ navigation, params }) => {
   useEffect(() => {
     const unsubscribe = async () => {
       await getUser('user').then((res) => {
-        if (res.photo === null || res.address === null) {
-          setPhoto(ILNullPhoto);
+        if (res.photo === null || res.address === null || res.store_name === null) {
+          const data = res;
+          data.store_name = 'Belum Dilengkapi';
+          data.address = '[Belum dilengkapi, klik di atas]';
           setProfile(res);
-          setName('Belum Dilengkapi');
-          setAddress('[Belum dilengkapi, klik di atas]');
+          setPhoto(ILNullPhoto);
           setHasPhoto(false);
+          storeUser('user', res);
         } else {
           const source = { uri: res.photo };
           setPhoto(source);
           setPhotoDB(res.photo);
-          setProfile(res);
-          setName(res.store_name);
+          setStoreName(res.store_name);
           setAddress(res.address);
+          setProfile(res);
           setHasPhoto(true);
         }
       });
@@ -77,15 +79,26 @@ const UpdateUmkm = ({ navigation, params }) => {
     unsubscribe();
   }, []);
 
-  const reloadData = async () => {
+  const reloadImage = async () => {
     await getUser('user').then((res) => {
-      const source = { uri: res.photo };
-      setPhoto(source);
-      setPhotoDB(res.photo);
+      if (res.photo === null) {
+        setPhoto(ILNullPhoto);
+        setProfile(res);
+        setHasPhoto(true);
+      } else {
+        const source = { uri: res.photo };
+        setPhoto(source);
+        setPhotoDB(res.photo);
+        setProfile(res);
+        setHasPhoto(true);
+      }
+    });
+  };
+
+  const reloadStoreName = async () => {
+    await getUser('user').then((res) => {
+      setStoreName(res.store_name);
       setProfile(res);
-      setName(res.store_name);
-      setAddress(res.address);
-      setHasPhoto(true);
     });
   };
 
@@ -95,29 +108,27 @@ const UpdateUmkm = ({ navigation, params }) => {
     }
     timeoutRef.current = setTimeout(async () => {
       timeoutRef.current = null;
-      name !== '' ? null : reloadData();
-      hasPhoto !== false ? null : reloadData();
+      storeName === '' ? reloadStoreName() : null;
+      hasPhoto === false ? reloadImage() : null;
+    }, 7000);
+  }, [storeName, hasPhoto]);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
       await getUser('user').then((res) => {
-        const source = { uri: res.photo };
         setAddress(res.address);
-        setPhoto(source);
-        setPhotoDB(res.photo);
         setProfile(res);
-        setHasPhoto(true);
-      });
-    }, 3000);
-  }, [name, hasPhoto, profile]);
+      }, 2000);
+    });
+    return () => clearTimeout(timeout);
+  }, [profile]);
 
   const onContinue = async () => {
     setLoading(true);
-    if (address === '[Belum dilengkapi, klik di atas]') {
-      setLoading(false);
-      showError('Mohon lengkapi alamat');
-    }
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
-        name,
+        name: storeName,
         photo: photoDB,
         address
       };
@@ -130,28 +141,27 @@ const UpdateUmkm = ({ navigation, params }) => {
         },
       }).then((response) => {
         const data = {
-          photo: photoDB,
+          photo: response.data.store.image,
           id: response.data.user.id,
           name: response.data.user.name,
-          store_name: name,
+          store_name: response.data.store.name,
           phone_number: response.data.user.phone_number,
-          address
+          address: response.data.store.address
         };
-        // console.log(response);
-        setHasPhoto(true);
+        console.log(data);
         storeUser('user', data);
         setLoading(false);
-        setName(data.store_name);
-        setAddress(data.address);
-        const source = { uri: data.photo };
-        setPhoto(source);
         showSuccess('Berhasil mengubah profil umkm');
       }).catch((error) => {
         console.log(error);
         setLoading(false);
         showError('Terjadi kesalahan');
       });
+    } else if (address === '[Belum dilengkapi, klik di atas]') {
+      setLoading(false);
+      showError('Mohon lengkapi alamat');
     } else {
+      setLoading(false);
       showError('photo tidak boleh kosong');
     }
   };
@@ -175,8 +185,8 @@ const UpdateUmkm = ({ navigation, params }) => {
                 icon="umkm-dark"
                 type="inputForm"
                 scope="umkm"
-                value={name}
-                onChangeText={(value) => setName(value)}
+                value={storeName}
+                onChangeText={(value) => setStoreName(value)}
               />
               <Gap height={10} />
               <Input

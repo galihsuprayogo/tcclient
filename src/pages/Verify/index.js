@@ -7,14 +7,19 @@ import {
   colors, useForm, showError, showSuccess
 } from '../../utils';
 import { service, storeUser } from '../../config';
-import { Button, Input, Gap } from '../../components';
+import {
+  Button, Input, Gap, Loading
+} from '../../components';
 
 const Verify = ({ navigation }) => {
   const [form, setForm] = useForm({
     phone_otp: ''
   });
+  const [loading, setLoading] = useState(false);
   const onContinue = () => {
+    setLoading(true);
     if (form.phone_otp === '') {
+      setLoading(false);
       setForm('reset');
       showError('kode otp tidak boleh kosong');
     } else {
@@ -34,16 +39,19 @@ const Verify = ({ navigation }) => {
         storeUser('products', temp);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
+        setLoading(false);
         setForm('reset');
         showSuccess('Berhasil masuk ke akun anda');
         navigation.replace('Splash');
       }).catch(() => {
+        setLoading(false);
         setForm('reset');
         showError('kode otp tidak cocok');
       });
     }
   };
   return (
+    <>
         <View style={styles.container}>
               <View style={styles.content}>
                 <Input
@@ -62,6 +70,8 @@ const Verify = ({ navigation }) => {
                   />
               </View>
         </View>
+      {loading && <Loading />}
+    </>
   );
 };
 

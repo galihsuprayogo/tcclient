@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import {
+  View, Image, StyleSheet, TouchableOpacity
+} from 'react-native';
 import { colors } from '../../../utils';
 import { Button } from '../..';
 
 const Profile = ({ icon, onPress, source }) => (
-  <View style={styles.imageWrapper}>
+  <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
     <Image source={source} style={styles.image} />
     {icon && (
     <View style={styles.actionPhoto}>
@@ -15,7 +17,7 @@ const Profile = ({ icon, onPress, source }) => (
       />
     </View>
     )}
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
