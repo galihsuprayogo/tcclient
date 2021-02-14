@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   View, Text, StyleSheet, ScrollView
 } from 'react-native';
@@ -11,18 +12,22 @@ import {
 } from '../../components';
 
 const SignUp = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [form, setForm] = useForm({
     name: '',
     phone_number: ''
   });
 
   const onContinue = () => {
+    dispatch({ type: 'SET_LOADING', value: true });
     if (form.name === '' || form.phone_number === '') {
       setForm('reset');
+      dispatch({ type: 'SET_LOADING', value: false });
       showError('form tidak boleh kosong');
     } else {
       const firstIndex = form.phone_number.substring(0, 1);
       if (firstIndex === '0') {
+        dispatch({ type: 'SET_LOADING', value: false });
         setForm('reset');
         showError('Tidak perlu menggunakan 0 diawal');
       } else {
@@ -30,10 +35,12 @@ const SignUp = ({ navigation }) => {
           name: form.name,
           phone_number: form.phone_number
         }).then(() => {
+          dispatch({ type: 'SET_LOADING', value: false });
           setForm('reset');
           showSuccess('nomor HP anda berhasil didaftarkan');
           navigation.replace('SignIn');
         }).catch(() => {
+          dispatch({ type: 'SET_LOADING', value: false });
           setForm('reset');
           showError('Terjadi kesalahan jaringan');
         });

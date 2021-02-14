@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -14,7 +15,6 @@ import {
   Profile,
   Button,
   DPicker,
-  Loading
 } from '../../components';
 
 const InputProduct = ({ navigation }) => {
@@ -44,7 +44,7 @@ const InputProduct = ({ navigation }) => {
     { label: 'B', value: 'B' }
   ]);
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -70,7 +70,7 @@ const InputProduct = ({ navigation }) => {
   };
 
   const resetForm = () => {
-    setLoading(false);
+    dispatch({ type: 'SET_LOADING', value: false });
     setPhoto(ILNullPhoto);
     setHasPhoto(false);
     setAmount(0);
@@ -80,7 +80,7 @@ const InputProduct = ({ navigation }) => {
     setGrade('-- Pilih --');
   };
   const onContinue = async () => {
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', value: true });
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
@@ -115,7 +115,6 @@ const InputProduct = ({ navigation }) => {
   };
 
   return (
-    <>
       <View style={styles.container}>
         <Header
           title="Tambah Produk"
@@ -168,8 +167,6 @@ const InputProduct = ({ navigation }) => {
             </View>
           </ScrollView>
       </View>
-      {loading && <Loading />}
-    </>
   );
 };
 

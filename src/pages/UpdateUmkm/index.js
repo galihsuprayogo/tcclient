@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity, TextInput
+  View, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
-  colors, showError, showSuccess, useForm
+  colors, showError, showSuccess,
 } from '../../utils';
 import { service, storeUser, getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import {
   Button, Gap, Header, Input, Profile,
-  InputLocation, Loading
+  InputLocation,
 } from '../../components';
 
 const UpdateUmkm = ({ navigation }) => {
@@ -25,9 +26,9 @@ const UpdateUmkm = ({ navigation }) => {
   });
 
   const timeoutRef = useRef(null);
+  const dispatch = useDispatch();
   const [storeName, setStoreName] = useState('');
   const [address, setAddress] = useState('');
-  const [loading, setLoading] = useState(false);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -124,7 +125,7 @@ const UpdateUmkm = ({ navigation }) => {
   }, [profile]);
 
   const onContinue = async () => {
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', value: true });
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
@@ -148,27 +149,25 @@ const UpdateUmkm = ({ navigation }) => {
           phone_number: response.data.user.phone_number,
           address: response.data.store.address
         };
-        console.log(data);
         storeUser('user', data);
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', value: false });
         showSuccess('Berhasil mengubah profil umkm');
       }).catch((error) => {
         console.log(error);
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', value: false });
         showError('Terjadi kesalahan');
       });
     } else if (address === '[Belum dilengkapi, klik di atas]') {
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', value: false });
       showError('Mohon lengkapi alamat');
     } else {
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', value: false });
       showError('photo tidak boleh kosong');
     }
   };
 
   return (
-  <>
-    <View style={styles.container}>
+  <View style={styles.container}>
     <Header
       title="Edit profil UMKM"
     />
@@ -219,9 +218,7 @@ const UpdateUmkm = ({ navigation }) => {
           <Button title="Simpan" scope="sign-in" onPress={onContinue} />
       </View>
     </ScrollView>
-    </View>
-  {loading && <Loading />}
-  </>
+  </View>
   );
 };
 

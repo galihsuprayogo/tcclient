@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   View, Text, StyleSheet, Image
 } from 'react-native';
@@ -13,12 +14,12 @@ import {
 import {
   deleteId, deleteToken, service, getUser
 } from '../../../config';
-import { DrawItem, Gap, Loading } from '../..';
+import { DrawItem, Gap } from '../..';
 import { ILNullPhoto } from '../../../assets';
 
 const DrawerContent = (props) => {
   const [photo, setPhoto] = useState(ILNullPhoto);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const [profile, setProfile] = useState({
     photo: ILNullPhoto,
     id: '',
@@ -65,7 +66,7 @@ const DrawerContent = (props) => {
   }, [profile]);
 
   const onClose = async () => {
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', value: true });
     const token = await AsyncStorage.getItem('@token');
     service.get('/api/auth/logout', {
       headers: {
@@ -75,17 +76,16 @@ const DrawerContent = (props) => {
     }).then((response) => {
       deleteId();
       deleteToken();
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', value: false });
       showSuccess('Anda berhasil keluar');
       props.navigation.replace('Splash');
     }).catch(() => {
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', value: false });
       showError('Terjadi kesalahan jaringan');
     });
   };
 
   return (
-  <>
     <View style={styles.container}>
         <View style={styles.content}>
         <View>
@@ -136,8 +136,6 @@ const DrawerContent = (props) => {
           </View>
         </View>
     </View>
-  {loading && <Loading />}
-  </>
   );
 };
 

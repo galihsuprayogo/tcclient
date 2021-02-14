@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   View, StyleSheet
 } from 'react-native';
@@ -8,18 +9,20 @@ import {
 } from '../../utils';
 import { service, storeUser } from '../../config';
 import {
-  Button, Input, Gap, Loading
+  Button, Input, Gap
 } from '../../components';
 
 const Verify = ({ navigation }) => {
   const [form, setForm] = useForm({
     phone_otp: ''
   });
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
   const onContinue = () => {
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', value: true });
     if (form.phone_otp === '') {
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', value: false });
       setForm('reset');
       showError('kode otp tidak boleh kosong');
     } else {
@@ -39,39 +42,36 @@ const Verify = ({ navigation }) => {
         storeUser('products', temp);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', value: false });
         setForm('reset');
         showSuccess('Berhasil masuk ke akun anda');
         navigation.replace('Splash');
       }).catch(() => {
-        setLoading(false);
+        dispatch({ type: 'SET_LOADING', value: false });
         setForm('reset');
         showError('kode otp tidak cocok');
       });
     }
   };
   return (
-    <>
-        <View style={styles.container}>
-              <View style={styles.content}>
-                <Input
-                  placeholder="kode otp"
-                  keyboardType="phone-pad"
-                  scope="sign-up"
-                  maxLength={4}
-                  value={form.phone_otp}
-                  onChangeText={(value) => setForm('phone_otp', value)}
-                />
-                <Gap height={15} />
-                  <Button
-                    title="Konfirmasi"
-                    onPress={onContinue}
-                    scope="sign-in"
-                  />
-              </View>
-        </View>
-      {loading && <Loading />}
-    </>
+  <View style={styles.container}>
+    <View style={styles.content}>
+        <Input
+          placeholder="kode otp"
+          keyboardType="phone-pad"
+          scope="sign-up"
+          maxLength={4}
+          value={form.phone_otp}
+          onChangeText={(value) => setForm('phone_otp', value)}
+        />
+        <Gap height={15} />
+        <Button
+          title="Konfirmasi"
+          onPress={onContinue}
+          scope="sign-in"
+        />
+    </View>
+  </View>
   );
 };
 
