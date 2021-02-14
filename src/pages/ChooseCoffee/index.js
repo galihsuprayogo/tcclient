@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   subDivContent: {
     flex: 1,
     paddingVertical: 30,
-    marginVertical: 30,
+    marginVertical: 60,
     paddingHorizontal: 15,
     borderWidth: 2,
     borderRadius: 15,

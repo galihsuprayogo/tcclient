@@ -3,12 +3,12 @@ import { YellowBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import FlashMessage from 'react-native-flash-message';
 import { Provider, useSelector } from 'react-redux';
-import store from './redux/store';
+import { store } from './redux';
 import Router from './router';
 import { Loading } from './components';
 
 const MainApp = () => {
-  const stateGlobal = useSelector((state) => state);
+  const stateGlobal = useSelector((state) => state.loadingReducer);
   YellowBox.ignoreWarnings(['Setting a timer']);
   return (
     <>

@@ -9,8 +9,9 @@ import {
 } from '../../utils';
 import { service, storeUser } from '../../config';
 import {
-  Button, Input, Gap
+  Button, Input, Gap,
 } from '../../components';
+import { globalAction } from '../../redux';
 
 const Verify = ({ navigation }) => {
   const [form, setForm] = useForm({
@@ -20,7 +21,7 @@ const Verify = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const onContinue = () => {
-    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: globalAction.SET_LOADING, value: true });
     if (form.phone_otp === '') {
       dispatch({ type: 'SET_LOADING', value: false });
       setForm('reset');
@@ -42,7 +43,7 @@ const Verify = ({ navigation }) => {
         storeUser('products', temp);
         AsyncStorage.setItem('@id', JSON.stringify(response.data.user.id));
         AsyncStorage.setItem('@token', response.data.token);
-        dispatch({ type: 'SET_LOADING', value: false });
+        dispatch({ type: globalAction.SET_LOADING, value: false });
         setForm('reset');
         showSuccess('Berhasil masuk ke akun anda');
         navigation.replace('Splash');
