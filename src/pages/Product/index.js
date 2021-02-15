@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
-  View, StyleSheet, ScrollView, Text
+  View, StyleSheet, Text,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { Header, ListProduct } from '../../components';
 import { colors, fonts } from '../../utils';
 import { getUser } from '../../config';
-import { ILNullPhoto } from '../../assets';
+import { globalAction } from '../../redux';
 
 const Product = ({ navigation }) => {
-  const [products, setProducts] = useState([{
-    id: 0,
-    store_id: 0,
-    type: '',
-    procedure: '',
-    output: '',
-    grade: '',
-    price: '',
-    image: null
-  }]);
+  const products = useSelector((state) => state.productReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = async () => {
       await getUser('products').then((res) => {
-        setProducts(res);
+        dispatch({ type: globalAction.SET_PRODUCT, value: res });
       });
     };
     unsubscribe();
@@ -32,11 +25,11 @@ const Product = ({ navigation }) => {
   useEffect(() => {
     const timeout = setTimeout(async () => {
       await getUser('products').then((res) => {
-        setProducts(res);
+        dispatch({ type: globalAction.SET_PRODUCT, value: res });
       }, 2000);
     });
     return () => clearTimeout(timeout);
-  }, [products]);
+  }, [products.product]);
 
   const renderPagination = (index, total, context) => (
       <View style={styles.paginationNumber}>
@@ -56,7 +49,7 @@ const Product = ({ navigation }) => {
         renderPagination={renderPagination}
       >
       {
-        products.map((product, index) => (
+        products.product.map((product, index) => (
           <ListProduct
             key={index}
             source={{ uri: product.image }}
@@ -82,9 +75,9 @@ const Product = ({ navigation }) => {
     />
       <View style={styles.content}>
         <View style={styles.subDivContent}>
-            {products[0].type === null
+            {products.product[0].type === null
              && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
-            {products[0].type !== null && renderProducts()}
+            {products.product[0].type !== null && renderProducts()}
         </View>
       </View>
     </View>

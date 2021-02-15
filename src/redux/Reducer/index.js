@@ -20,6 +20,19 @@ const photo = {
   photoDB: ''
 };
 
+const products = {
+  product: [{
+    id: 0,
+    store_id: 0,
+    type: '',
+    procedure: '',
+    output: '',
+    grade: '',
+    price: '',
+    image: null
+  }]
+};
+
 export const loadingReducer = (state = initialState, action) => {
   if (action.type === globalAction.SET_LOADING) {
     return {
@@ -35,6 +48,16 @@ export const profileReducer = (state = profile, action) => {
     return {
       ...state,
       ...action.value
+    };
+  }
+  return state;
+};
+
+export const productReducer = (state = products, action) => {
+  if (action.type === globalAction.SET_PRODUCT) {
+    return {
+      ...state,
+      product: action.value
     };
   }
   return state;
