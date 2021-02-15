@@ -23,7 +23,7 @@ const Verify = ({ navigation }) => {
   const onContinue = () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (form.phone_otp === '') {
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       setForm('reset');
       showError('kode otp tidak boleh kosong');
     } else {
@@ -48,7 +48,7 @@ const Verify = ({ navigation }) => {
         showSuccess('Berhasil masuk ke akun anda');
         navigation.replace('Splash');
       }).catch(() => {
-        dispatch({ type: 'SET_LOADING', value: false });
+        dispatch({ type: globalAction.SET_LOADING, value: false });
         setForm('reset');
         showError('kode otp tidak cocok');
       });

@@ -1,7 +1,23 @@
 import { globalAction } from '../Action';
+import { ILNullPhoto } from '../../assets';
 
 const initialState = {
   loading: false
+};
+
+const profile = {
+  photo: ILNullPhoto,
+  id: '',
+  name: '',
+  store_name: '',
+  phone_number: '',
+  address: ''
+};
+
+const photo = {
+  photo: ILNullPhoto,
+  hasPhoto: false,
+  photoDB: ''
 };
 
 export const loadingReducer = (state = initialState, action) => {
@@ -14,22 +30,33 @@ export const loadingReducer = (state = initialState, action) => {
   return state;
 };
 
-const profile = {
-  name: 'Belum Ada',
-  address: 'Belum Ada'
-};
-
 export const profileReducer = (state = profile, action) => {
-  if (action.type === globalAction.SET_NAME) {
+  if (action.type === globalAction.SET_PROFILE) {
     return {
       ...state,
-      name: action.value
+      ...action.value
     };
   }
-  if (action.type === globalAction.SET_ADDRESS) {
+  return state;
+};
+
+export const photoReducer = (state = photo, action) => {
+  if (action.type === globalAction.SET_PHOTO) {
     return {
       ...state,
-      address: action.value
+      photo: action.value
+    };
+  }
+  if (action.type === globalAction.SET_HAS_PHOTO) {
+    return {
+      ...state,
+      hasPhoto: action.value
+    };
+  }
+  if (action.type === globalAction.SET_PHOTO_DB) {
+    return {
+      ...state,
+      photoDB: action.value
     };
   }
   return state;

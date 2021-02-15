@@ -10,6 +10,7 @@ import { service } from '../../config';
 import {
   Button, Gap, Header, Input
 } from '../../components';
+import { globalAction } from '../../redux';
 
 const SignIn = ({ navigation }) => {
   const [form, setForm] = useForm({
@@ -18,27 +19,27 @@ const SignIn = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const onContinue = () => {
-    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: globalAction.SET_LOADING, value: true });
     if (form.phone_number === '') {
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       setForm('reset');
       showError('nomor HP tidak boleh kosong');
     } else {
       const firstIndex = form.phone_number.substring(0, 1);
       if (firstIndex === '0') {
-        dispatch({ type: 'SET_LOADING', value: false });
+        dispatch({ type: globalAction.SET_LOADING, value: false });
         setForm('reset');
         showError('Tidak perlu menggunakan 0 diawal');
       } else {
         service.post('/api/auth/login', {
           phone_number: form.phone_number
         }).then(() => {
-          dispatch({ type: 'SET_LOADING', value: false });
+          dispatch({ type: globalAction.SET_LOADING, value: false });
           setForm('reset');
           showSuccess('Berhasil masuk, silahkan masukkan kode otp');
           navigation.replace('Verify');
         }).catch(() => {
-          dispatch({ type: 'SET_LOADING', value: false });
+          dispatch({ type: globalAction.SET_LOADING, value: false });
           setForm('reset');
           showError('nomor HP salah atau belum terdaftar');
         });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native';
@@ -14,19 +14,13 @@ import {
   Button, Gap, Header, Input, Profile,
   InputLocation,
 } from '../../components';
+import { globalAction } from '../../redux';
 
 const UpdateUmkm = ({ navigation }) => {
-  const [profile, setProfile] = useState({
-    photo: ILNullPhoto,
-    id: '',
-    name: '',
-    store_name: '',
-    phone_number: '',
-    address: ''
-  });
+  const profile = useSelector((state) => state.profileReducer);
+  const dispatch = useDispatch();
 
   const timeoutRef = useRef(null);
-  const dispatch = useDispatch();
   const [storeName, setStoreName] = useState('');
   const [address, setAddress] = useState('');
   const [photoDB, setPhotoDB] = useState('');
@@ -62,7 +56,7 @@ const UpdateUmkm = ({ navigation }) => {
           const data = res;
           data.store_name = 'Belum Dilengkapi';
           data.address = '[Belum dilengkapi, klik di atas]';
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
           setPhoto(ILNullPhoto);
           setHasPhoto(false);
           storeUser('user', res);
@@ -72,7 +66,7 @@ const UpdateUmkm = ({ navigation }) => {
           setPhotoDB(res.photo);
           setStoreName(res.store_name);
           setAddress(res.address);
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
           setHasPhoto(true);
         }
       });
@@ -84,13 +78,13 @@ const UpdateUmkm = ({ navigation }) => {
     await getUser('user').then((res) => {
       if (res.photo === null) {
         setPhoto(ILNullPhoto);
-        setProfile(res);
+        dispatch({ type: globalAction.SET_PROFILE, value: res });
         setHasPhoto(true);
       } else {
         const source = { uri: res.photo };
         setPhoto(source);
         setPhotoDB(res.photo);
-        setProfile(res);
+        dispatch({ type: globalAction.SET_PROFILE, value: res });
         setHasPhoto(true);
       }
     });
@@ -99,7 +93,7 @@ const UpdateUmkm = ({ navigation }) => {
   const reloadStoreName = async () => {
     await getUser('user').then((res) => {
       setStoreName(res.store_name);
-      setProfile(res);
+      dispatch({ type: globalAction.SET_PROFILE, value: res });
     });
   };
 
@@ -107,25 +101,25 @@ const UpdateUmkm = ({ navigation }) => {
     if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
     }
-    timeoutRef.current = setTimeout(async () => {
+    timeoutRef.current = setTimeout(() => {
       timeoutRef.current = null;
       storeName === '' ? reloadStoreName() : null;
       hasPhoto === false ? reloadImage() : null;
-    }, 7000);
+    }, 10000);
   }, [storeName, hasPhoto]);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
       await getUser('user').then((res) => {
         setAddress(res.address);
-        setProfile(res);
+        dispatch({ type: globalAction.SET_PROFILE, value: res });
       }, 2000);
     });
     return () => clearTimeout(timeout);
   }, [profile]);
 
   const onContinue = async () => {
-    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: globalAction.SET_LOADING, value: true });
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
@@ -150,18 +144,18 @@ const UpdateUmkm = ({ navigation }) => {
           address: response.data.store.address
         };
         storeUser('user', data);
-        dispatch({ type: 'SET_LOADING', value: false });
+        dispatch({ type: globalAction.SET_LOADING, value: false });
         showSuccess('Berhasil mengubah profil umkm');
       }).catch((error) => {
         console.log(error);
-        dispatch({ type: 'SET_LOADING', value: false });
+        dispatch({ type: globalAction.SET_LOADING, value: false });
         showError('Terjadi kesalahan');
       });
     } else if (address === '[Belum dilengkapi, klik di atas]') {
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('Mohon lengkapi alamat');
     } else {
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('photo tidak boleh kosong');
     }
   };

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import {
   Profile, List, Header, Gap
@@ -6,31 +7,26 @@ import {
 import { getUser } from '../../config';
 import { ILNullPhoto } from '../../assets';
 import { colors } from '../../utils';
+import { globalAction } from '../../redux';
 
 const Umkm = ({ navigation }) => {
-  const [photo, setPhoto] = useState(ILNullPhoto);
-  const [profile, setProfile] = useState({
-    photo: ILNullPhoto,
-    id: '',
-    name: '',
-    store_name: '',
-    phone_number: '',
-    address: ''
-  });
+  const profile = useSelector((state) => state.profileReducer);
+  const photo = useSelector((state) => state.photoReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = async () => {
       await getUser('user').then((res) => {
         if (res.photo === null || res.store_name === null || res.address === null) {
-          setPhoto(ILNullPhoto);
           const data = res;
           data.store_name = 'Belum Dilengkapi';
           data.address = 'Belum Dilengkapi';
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
+          dispatch({ type: globalAction.SET_PHOTO, value: ILNullPhoto });
         } else {
           const source = { uri: res.photo };
-          setPhoto(source);
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
+          dispatch({ type: globalAction.SET_PHOTO, value: source });
         }
       });
     };
@@ -41,15 +37,15 @@ const Umkm = ({ navigation }) => {
     const timeout = setTimeout(async () => {
       await getUser('user').then((res) => {
         if (res.photo === null || res.store_name === null || res.address === null) {
-          setPhoto(ILNullPhoto);
           const data = res;
           data.store_name = 'Belum Dilengkapi';
           data.address = 'Belum Dilengkapi';
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
+          dispatch({ type: globalAction.SET_PHOTO, value: ILNullPhoto });
         } else {
           const source = { uri: res.photo };
-          setPhoto(source);
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
+          dispatch({ type: globalAction.SET_PHOTO, value: source });
         }
       }, 2000);
     });
@@ -68,7 +64,7 @@ const Umkm = ({ navigation }) => {
     <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
         <View style={{ alignItems: 'center' }}>
-          <Profile source={photo} />
+          <Profile source={photo.photo} />
         </View>
         <Gap height={25} />
         <List type="icon" icon="umkm" name="Nama UMKM/Usaha" value={profile.store_name} />

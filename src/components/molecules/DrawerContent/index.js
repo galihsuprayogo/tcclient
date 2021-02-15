@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View, Text, StyleSheet, Image
 } from 'react-native';
@@ -16,31 +16,25 @@ import {
 } from '../../../config';
 import { DrawItem, Gap } from '../..';
 import { ILNullPhoto } from '../../../assets';
+import { globalAction } from '../../../redux';
 
 const DrawerContent = (props) => {
-  const [photo, setPhoto] = useState(ILNullPhoto);
+  const profile = useSelector((state) => state.profileReducer);
+  const photo = useSelector((state) => state.photoReducer);
   const dispatch = useDispatch();
-  const [profile, setProfile] = useState({
-    photo: ILNullPhoto,
-    id: '',
-    name: '',
-    store_name: '',
-    phone_number: '',
-    address: ''
-  });
 
   useEffect(() => {
     const unsubscribe = async () => {
       await getUser('user').then((res) => {
         if (res.photo === null || res.store_name === null) {
-          setPhoto(ILNullPhoto);
+          dispatch({ type: globalAction.SET_PHOTO, value: ILNullPhoto });
           const data = res;
           data.store_name = 'Belum Dilengkapi';
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
         } else {
           const source = { uri: res.photo };
-          setPhoto(source);
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PHOTO, value: source });
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
         }
       });
     };
@@ -51,14 +45,14 @@ const DrawerContent = (props) => {
     const timeout = setTimeout(async () => {
       await getUser('user').then((res) => {
         if (res.photo === null || res.store_name === null) {
-          setPhoto(ILNullPhoto);
+          dispatch({ type: globalAction.SET_PHOTO, value: ILNullPhoto });
           const data = res;
           data.store_name = 'Belum Dilengkapi';
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
         } else {
           const source = { uri: res.photo };
-          setPhoto(source);
-          setProfile(res);
+          dispatch({ type: globalAction.SET_PHOTO, value: source });
+          dispatch({ type: globalAction.SET_PROFILE, value: res });
         }
       }, 2000);
     });
@@ -66,7 +60,7 @@ const DrawerContent = (props) => {
   }, [profile]);
 
   const onClose = async () => {
-    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: globalAction.SET_LOADING, value: true });
     const token = await AsyncStorage.getItem('@token');
     service.get('/api/auth/logout', {
       headers: {
@@ -76,11 +70,11 @@ const DrawerContent = (props) => {
     }).then((response) => {
       deleteId();
       deleteToken();
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       showSuccess('Anda berhasil keluar');
       props.navigation.replace('Splash');
     }).catch(() => {
-      dispatch({ type: 'SET_LOADING', value: false });
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('Terjadi kesalahan jaringan');
     });
   };
@@ -92,7 +86,7 @@ const DrawerContent = (props) => {
           <Gap height={40} />
           <View style={styles.header}>
               <View>
-                  <Image source={photo} style={styles.image} />
+                  <Image source={photo.photo} style={styles.image} />
               </View>
           <Gap width={15} />
               <View>
