@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  View, StyleSheet, Text,
-} from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { useDispatch, useSelector } from 'react-redux';
 import { Header, ListProduct } from '../../components';
-import { colors, fonts } from '../../utils';
 import { getUser } from '../../config';
 import { globalAction } from '../../redux';
+import { colors, fonts } from '../../utils';
 
 const Product = ({ navigation }) => {
   const products = useSelector((state) => state.productReducer);
@@ -40,28 +38,32 @@ const Product = ({ navigation }) => {
         </Text>
       </View>
   );
+
+  const onProduct = (products) => (
+    products.map((product, index) => (
+      <ListProduct
+        key={index}
+        source={{ uri: product.image }}
+        type={product.type}
+        procedure={product.procedure}
+        output={product.output}
+        grade={product.grade}
+        price={product.price}
+        id={product.id}
+      />
+    ))
+  );
+
   const renderProducts = () => (
-      <Swiper
-        showsPagination
-        loop={false}
-        dot={(<View style={styles.dot} />)}
-        activeDot={(<View style={styles.activeDot} />)}
-        renderPagination={renderPagination}
-      >
-      {
-        products.product.map((product, index) => (
-          <ListProduct
-            key={index}
-            source={{ uri: product.image }}
-            type={product.type}
-            procedure={product.procedure}
-            output={product.output}
-            grade={product.grade}
-            price={product.price}
-          />
-        ))
-      }
-      </Swiper>
+    <Swiper
+      showsPagination
+      loop={false}
+      dot={(<View style={styles.dot} />)}
+      activeDot={(<View style={styles.activeDot} />)}
+      renderPagination={renderPagination}
+    >
+    {useMemo(() => onProduct(products.product), [products.product])}
+    </Swiper>
   );
 
   return (

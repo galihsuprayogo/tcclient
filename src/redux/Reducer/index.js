@@ -1,5 +1,5 @@
-import { globalAction } from '../Action';
 import { ILNullPhoto } from '../../assets';
+import { globalAction } from '../Action';
 
 const initialState = {
   loading: false
@@ -14,7 +14,7 @@ const profile = {
   address: ''
 };
 
-const photo = {
+const photos = {
   photo: ILNullPhoto,
   hasPhoto: false,
   photoDB: ''
@@ -63,7 +63,7 @@ export const productReducer = (state = products, action) => {
   return state;
 };
 
-export const photoReducer = (state = photo, action) => {
+export const photoReducer = (state = photos, action) => {
   if (action.type === globalAction.SET_PHOTO) {
     return {
       ...state,

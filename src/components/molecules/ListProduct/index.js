@@ -1,103 +1,154 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  View, Text, StyleSheet, TouchableOpacity
+  View, Text, StyleSheet, TouchableOpacity, Alert
 } from 'react-native';
-import { fonts, colors } from '../../../utils';
+import {
+  fonts, colors, showError, showSuccess
+} from '../../../utils';
 import { ImageResource, Gap, Icon } from '../..';
+import { service, storeUser } from '../../../config';
+import { globalAction } from '../../../redux';
 
 const ListProduct = ({
-  source, type, procedure, output, grade, price
-}) => (
-          <View style={styles.container}>
-                    <ImageResource source={source} />
-                    <View style={styles.contentWrapper}>
-                    <Gap height={4} />
-                              <View style={{ alignSelf: 'center' }}>
-                                        <Text style={styles.titleText}>
-                                                  {' '}
-                                                  {type}
-                                                  {' '}
-                                        </Text>
-                              </View>
-                              <Gap height={3} />
-                              <View style={styles.textWrapper}>
-                                        <View>
-                                                  <Text style={styles.boldText}>
-                                                            {' '}
-                                                            {'Cara Pengolahan'}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.boldText}>
-                                                            {' '}
-                                                            {'Hasil Pengolahan'}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.boldText}>
-                                                            {' '}
-                                                            {'Grade'}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.boldText}>
-                                                            {' '}
-                                                            {'Harga'}
-                                                            {' '}
-                                                  </Text>
-                                        </View>
-                                        <Gap width={25} />
-                                        <View>
-                                                  <Text style={styles.separatorText}> : </Text>
-                                                  <Text style={styles.separatorText}> : </Text>
-                                                  <Text style={styles.separatorText}> : </Text>
-                                                  <Text style={styles.separatorText}> : </Text>
-                                        </View>
-                                        <Gap width={25} />
-                                        <View>
-                                                  <Text style={styles.normalText}>
-                                                            {' '}
-                                                            {procedure}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.normalText}>
-                                                            {' '}
-                                                            {output}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.normalText}>
-                                                            {' '}
-                                                            {grade}
-                                                            {' '}
-                                                  </Text>
-                                                  <Text style={styles.normalText}>
-                                                            {' '}
-                                                            {price}
-                                                            {' '}
-                                                  </Text>
-                                        </View>
-                              </View>
-                              <View style={styles.wrapperButton}>
-                                        <TouchableOpacity style={styles.buttonOpacity} onPress={() => alert('Belum Tersedia')}>
-                                                  <Text style={styles.buttonText}>
-                                                  {' '}
-                                                  Ubah
-                                                  {' '}
-                                                  </Text>
-                                                  <Gap width={1} />
-                                                  <Icon icon="forward" />
-                                        </TouchableOpacity>
-                                        <Gap width={8} />
-                                        <TouchableOpacity style={styles.buttonOpacity} onPress={() => alert('Belum Tersedia')}>
-                                                  <Text style={styles.buttonText}>
-                                                  {' '}
-                                                  Hapus
-                                                  {' '}
-                                                  </Text>
-                                                  <Gap width={1} />
-                                                  <Icon icon="forward" />
-                                        </TouchableOpacity>
-                              </View>
-                    </View>
-          </View>
-);
+  source, type, procedure, output, grade, price, id
+}) => {
+  const dispatch = useDispatch();
+
+  const onUpdate = () => {
+    Alert.alert(
+      'Alert Title',
+      'My Alert Msg',
+      [
+        {
+          text: 'Tidak',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel'
+        },
+        {
+          text: 'Ya',
+          onPress: () => console.log('OK Pressed')
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const onDelete = async () => {
+    dispatch({ type: globalAction.SET_LOADING, value: true });
+    const token = await AsyncStorage.getItem('@token');
+    const data = {
+      id
+    };
+    service.post('/api/auth/deleteProduct', data, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => {
+      storeUser('products', response.data.products);
+      showSuccess('Berhasil menghapus produk');
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+    }).catch((error) => {
+      console.log(error);
+      showError('Terjadi kesalahan');
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+    });
+  };
+  return (
+    <View style={styles.container}>
+        <ImageResource source={source} />
+        <View style={styles.contentWrapper}>
+          <Gap height={4} />
+            <View style={{ alignSelf: 'center' }}>
+                <Text style={styles.titleText}>
+                  {' '}
+                  {type}
+                  {' '}
+                </Text>
+            </View>
+          <Gap height={3} />
+            <View style={styles.textWrapper}>
+                  <View>
+                      <Text style={styles.boldText}>
+                          {' '}
+                          {'Cara Pengolahan'}
+                          {' '}
+                      </Text>
+                      <Text style={styles.boldText}>
+                          {' '}
+                          {'Hasil Pengolahan'}
+                          {' '}
+                      </Text>
+                      <Text style={styles.boldText}>
+                          {' '}
+                          {'Grade'}
+                          {' '}
+                      </Text>
+                      <Text style={styles.boldText}>
+                          {' '}
+                          {'Harga'}
+                          {' '}
+                      </Text>
+                  </View>
+                  <Gap width={25} />
+                  <View>
+                      <Text style={styles.separatorText}> : </Text>
+                      <Text style={styles.separatorText}> : </Text>
+                      <Text style={styles.separatorText}> : </Text>
+                      <Text style={styles.separatorText}> : </Text>
+                  </View>
+                  <Gap width={25} />
+                  <View>
+                      <Text style={styles.normalText}>
+                          {' '}
+                          {procedure}
+                          {' '}
+                      </Text>
+                      <Text style={styles.normalText}>
+                          {' '}
+                          {output}
+                          {' '}
+                      </Text>
+                      <Text style={styles.normalText}>
+                          {' '}
+                          {grade}
+                          {' '}
+                      </Text>
+                      <Text style={styles.normalText}>
+                          {' '}
+                          {price}
+                          {' '}
+                      </Text>
+                  </View>
+            </View>
+            <View style={styles.wrapperButton}>
+                <TouchableOpacity style={styles.buttonOpacity} onPress={onUpdate}>
+                    <Text style={styles.buttonText}>
+                        {' '}
+                        Ubah
+                        {' '}
+                    </Text>
+                    <Gap width={1} />
+                    <Icon icon="forward" />
+                </TouchableOpacity>
+                <Gap width={8} />
+                <TouchableOpacity style={styles.buttonOpacity} onPress={onDelete}>
+                    <Text style={styles.buttonText}>
+                        {' '}
+                        Hapus
+                        {' '}
+                    </Text>
+                    <Gap width={1} />
+                    <Icon icon="forward" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

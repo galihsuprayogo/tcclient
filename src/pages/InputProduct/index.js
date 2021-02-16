@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { View, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
+import { ILNullPhoto } from '../../assets';
+import {
+  Button,
+  DPicker, Gap,
+  Header,
+  InputNumber,
+  Profile
+} from '../../components';
+import { service, storeUser } from '../../config';
 import {
   colors, showError, showSuccess
 } from '../../utils';
-import { ILNullPhoto } from '../../assets';
-import { service, storeUser } from '../../config';
-import {
-  Gap,
-  Header,
-  InputNumber,
-  Profile,
-  Button,
-  DPicker,
-} from '../../components';
 
 const InputProduct = ({ navigation }) => {
   const [type, setType] = useState('-- Pilih --');
