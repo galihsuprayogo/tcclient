@@ -103,14 +103,11 @@ class MapCls extends React.Component {
       getUser('user').then((res) => {
         const data = res;
         data.address = this.state.addressPosition;
+        data.latitude = this.state.markerPosition.latitude.toString();
+        data.longitude = this.state.markerPosition.longitude.toString();
         storeUser('user', res);
       });
-      const resetPosition = {
-        latitude: 0,
-        longitude: 0,
-      };
       this.setState({ modalVisible: false });
-      this.setState({ markerPosition: resetPosition });
       this.props.navigation.goBack();
     }
 

@@ -125,7 +125,9 @@ const UpdateUmkm = ({ navigation }) => {
       const data = {
         name: storeName,
         photo: photoDB,
-        address
+        address,
+        latitude: profile.latitude,
+        longitude: profile.longitude
       };
       service.post('/api/auth/store', data, {
         headers: {
@@ -141,7 +143,9 @@ const UpdateUmkm = ({ navigation }) => {
           name: response.data.user.name,
           store_name: response.data.store.name,
           phone_number: response.data.user.phone_number,
-          address: response.data.store.address
+          address: response.data.store.address,
+          latitude: response.data.store.latitude,
+          longitude: response.data.store.longitude,
         };
         storeUser('user', data);
         dispatch({ type: globalAction.SET_LOADING, value: false });

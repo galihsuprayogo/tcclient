@@ -11,7 +11,9 @@ const profile = {
   name: '',
   store_name: '',
   phone_number: '',
-  address: ''
+  address: '',
+  latitude: '',
+  longitude: ''
 };
 
 const photos = {

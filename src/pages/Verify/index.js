@@ -36,7 +36,9 @@ const Verify = ({ navigation }) => {
           name: response.data.user.name,
           store_name: response.data.store.name,
           phone_number: response.data.user.phone_number,
-          address: response.data.store.address
+          address: response.data.store.address,
+          latitude: response.data.store.latitude,
+          longitude: response.data.store.longitude
         };
         storeUser('user', data);
         const temp = response.data.products;
