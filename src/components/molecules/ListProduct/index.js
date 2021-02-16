@@ -16,23 +16,26 @@ const ListProduct = ({
 }) => {
   const dispatch = useDispatch();
 
-  const onUpdate = () => {
+  const onAlert = () => {
     Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
+      'Peringatan',
+      'Apakah Anda Yakin ?',
       [
         {
           text: 'Tidak',
-          onPress: () => console.log('Cancel Pressed'),
+          onPress: () => console.log('did cancel'),
           style: 'cancel'
         },
         {
           text: 'Ya',
-          onPress: () => console.log('OK Pressed')
+          onPress: () => { onDelete(); }
         }
       ],
-      { cancelable: false }
+      { cancelable: true }
     );
+  };
+  const onUpdate = () => {
+    alert('Belum Tersedia');
   };
 
   const onDelete = async () => {
@@ -48,7 +51,8 @@ const ListProduct = ({
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
-      storeUser('products', response.data.products);
+      const temp = response.data.products;
+      storeUser('products', temp);
       showSuccess('Berhasil menghapus produk');
       dispatch({ type: globalAction.SET_LOADING, value: false });
     }).catch((error) => {
@@ -57,6 +61,7 @@ const ListProduct = ({
       dispatch({ type: globalAction.SET_LOADING, value: false });
     });
   };
+
   return (
     <View style={styles.container}>
         <ImageResource source={source} />
@@ -135,7 +140,7 @@ const ListProduct = ({
                     <Icon icon="forward" />
                 </TouchableOpacity>
                 <Gap width={8} />
-                <TouchableOpacity style={styles.buttonOpacity} onPress={onDelete}>
+                <TouchableOpacity style={styles.buttonOpacity} onPress={onAlert}>
                     <Text style={styles.buttonText}>
                         {' '}
                         Hapus

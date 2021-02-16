@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,19 +12,19 @@ const Product = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = async () => {
+    const unsubscribe = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      });
-    };
-    unsubscribe();
+      }, 500);
+    });
+    return () => clearTimeout(unsubscribe);
   }, []);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      }, 2000);
+      }, 500);
     });
     return () => clearTimeout(timeout);
   }, [products.product]);
@@ -39,21 +39,6 @@ const Product = ({ navigation }) => {
       </View>
   );
 
-  const onProduct = (products) => (
-    products.map((product, index) => (
-      <ListProduct
-        key={index}
-        source={{ uri: product.image }}
-        type={product.type}
-        procedure={product.procedure}
-        output={product.output}
-        grade={product.grade}
-        price={product.price}
-        id={product.id}
-      />
-    ))
-  );
-
   const renderProducts = () => (
     <Swiper
       showsPagination
@@ -62,7 +47,20 @@ const Product = ({ navigation }) => {
       activeDot={(<View style={styles.activeDot} />)}
       renderPagination={renderPagination}
     >
-    {useMemo(() => onProduct(products.product), [products.product])}
+    {
+      products.product.map((product, index) => (
+        <ListProduct
+          key={index}
+          source={{ uri: product.image }}
+          type={product.type}
+          procedure={product.procedure}
+          output={product.output}
+          grade={product.grade}
+          price={product.price}
+          id={product.id}
+        />
+      ))
+    }
     </Swiper>
   );
 
