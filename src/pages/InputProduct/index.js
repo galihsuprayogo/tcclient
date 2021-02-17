@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ILNullPhoto } from '../../assets';
 import {
   Button,
@@ -15,35 +15,14 @@ import { service, storeUser } from '../../config';
 import {
   colors, showError, showSuccess
 } from '../../utils';
+import { globalAction } from '../../redux';
 
 const InputProduct = ({ navigation }) => {
-  const [type, setType] = useState('-- Pilih --');
-  const [procedure, setProcedure] = useState('-- Pilih --');
-  const [output, setOutput] = useState('-- Pilih --');
-  const [grade, setGrade] = useState('-- Pilih --');
-  const [amount, setAmount] = useState(0);
-  const [typeData] = useState([
-    { label: '-- Pilih --', value: '-- Pilih --' },
-    { label: 'Arabica', value: 'Arabica' },
-    { label: 'Robusta', value: 'Robusta' }
-  ]);
-  const [procedureData] = useState([
-    { label: '-- Pilih --', value: '-- Pilih --' },
-    { label: 'Fullwash', value: 'Fullwash' },
-    { label: 'Semiwash', value: 'Semiwash' }
-  ]);
-  const [outputData] = useState([
-    { label: '-- Pilih --', value: '-- Pilih --' },
-    { label: 'Green Bean', value: 'Green Bean' },
-    { label: 'Roasted Bean', value: 'Roasted Bean' }
-  ]);
-  const [gradeData] = useState([
-    { label: '-- Pilih --', value: '-- Pilih --' },
-    { label: 'A', value: 'A' },
-    { label: 'B', value: 'B' }
-  ]);
-
+  const categories = useSelector((state) => state.categoriesReducer);
+  const category = useSelector((state) => state.setCategoryReducer);
   const dispatch = useDispatch();
+
+  const [amount, setAmount] = useState(0);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -69,24 +48,25 @@ const InputProduct = ({ navigation }) => {
   };
 
   const resetForm = () => {
-    dispatch({ type: 'SET_LOADING', value: false });
+    dispatch({ type: globalAction.SET_LOADING, value: false });
     setPhoto(ILNullPhoto);
     setHasPhoto(false);
     setAmount(0);
-    setType('-- Pilih --');
-    setProcedure('-- Pilih --');
-    setOutput('-- Pilih --');
-    setGrade('-- Pilih --');
+    dispatch({ type: globalAction.SET_TYPE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_PROCEDURE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_OUTPUT, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
   };
+
   const onContinue = async () => {
-    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: globalAction.SET_LOADING, value: true });
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
-        type,
-        procedure,
-        output,
-        grade,
+        type: category.type,
+        procedure: category.procedure,
+        output: category.output,
+        grade: category.grade,
         price: amount,
         photo: photoDB
       };
@@ -127,30 +107,30 @@ const InputProduct = ({ navigation }) => {
                 <Gap height={25} />
                   <DPicker
                     title="Jenis Kopi (Arabica/Robusta)"
-                    data={typeData}
-                    value={type}
-                    onChangeItem={(item) => setType(item.value)}
+                    data={categories.type}
+                    value={category.type}
+                    onChangeItem={(item) => dispatch({ type: globalAction.SET_TYPE, value: item.value })}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Cara Pengolahan"
-                    data={procedureData}
-                    value={procedure}
-                    onChangeItem={(item) => setProcedure(item.value)}
+                    data={categories.procedure}
+                    value={category.procedure}
+                    onChangeItem={(item) => dispatch({ type: globalAction.SET_PROCEDURE, value: item.value })}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Hasil Pengolahan"
-                    data={outputData}
-                    value={output}
-                    onChangeItem={(item) => setOutput(item.value)}
+                    data={categories.output}
+                    value={category.output}
+                    onChangeItem={(item) => dispatch({ type: globalAction.SET_OUTPUT, value: item.value })}
                   />
                   <Gap height={10} />
                   <DPicker
                     title="Grade"
-                    data={gradeData}
-                    value={grade}
-                    onChangeItem={(item) => setGrade(item.value)}
+                    data={categories.grade}
+                    value={category.grade}
+                    onChangeItem={(item) => dispatch({ type: globalAction.SET_GRADE, value: item.value })}
                   />
                   <Gap height={10} />
                   <InputNumber

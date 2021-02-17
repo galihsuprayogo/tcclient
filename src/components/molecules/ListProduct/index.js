@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import {
   View, Text, StyleSheet, TouchableOpacity, Alert
 } from 'react-native';
@@ -14,6 +15,7 @@ import { globalAction } from '../../../redux';
 const ListProduct = ({
   source, type, procedure, output, grade, price, id
 }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const onAlert = () => {
@@ -35,7 +37,7 @@ const ListProduct = ({
     );
   };
   const onUpdate = () => {
-    alert('Belum Tersedia');
+    navigation.navigate('UpdateProduct');
   };
 
   const onDelete = async () => {

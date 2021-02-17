@@ -5,6 +5,36 @@ const initialState = {
   loading: false
 };
 
+const categories = {
+  type: [
+    { label: '-- Pilih --', value: '-- Pilih --' },
+    { label: 'Arabica', value: 'Arabica' },
+    { label: 'Robusta', value: 'Robusta' }
+  ],
+  procedure: [
+    { label: '-- Pilih --', value: '-- Pilih --' },
+    { label: 'Fullwash', value: 'Fullwash' },
+    { label: 'Semiwash', value: 'Semiwash' }
+  ],
+  output: [
+    { label: '-- Pilih --', value: '-- Pilih --' },
+    { label: 'Green Bean', value: 'Green Bean' },
+    { label: 'Roasted Bean', value: 'Roasted Bean' }
+  ],
+  grade: [
+    { label: '-- Pilih --', value: '-- Pilih --' },
+    { label: 'A', value: 'A' },
+    { label: 'B', value: 'B' }
+  ]
+};
+
+const setCategory = {
+  type: '-- Pilih --',
+  procedure: '-- Pilih --',
+  output: '-- Pilih --',
+  grade: '-- Pilih --'
+};
+
 const profile = {
   photo: ILNullPhoto,
   id: '',
@@ -33,6 +63,16 @@ const products = {
     price: '',
     image: null
   }]
+};
+
+export const categoriesReducer = (state = categories, action) => {
+  if (action.type === globalAction.SET_CATEGORIES) {
+    return {
+      ...state,
+      ...action.value
+    };
+  }
+  return state;
 };
 
 export const loadingReducer = (state = initialState, action) => {
@@ -82,6 +122,34 @@ export const photoReducer = (state = photos, action) => {
     return {
       ...state,
       photoDB: action.value
+    };
+  }
+  return state;
+};
+
+export const setCategoryReducer = (state = setCategory, action) => {
+  if (action.type === globalAction.SET_TYPE) {
+    return {
+      ...state,
+      type: action.value
+    };
+  }
+  if (action.type === globalAction.SET_PROCEDURE) {
+    return {
+      ...state,
+      procedure: action.value
+    };
+  }
+  if (action.type === globalAction.SET_OUTPUT) {
+    return {
+      ...state,
+      output: action.value
+    };
+  }
+  if (action.type === globalAction.SET_GRADE) {
+    return {
+      ...state,
+      grade: action.value
     };
   }
   return state;

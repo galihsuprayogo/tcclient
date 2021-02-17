@@ -15,6 +15,7 @@ import {
   ChooseCoffee,
   Help,
   Verify,
+  UpdateProduct
 } from '../pages';
 import {
   Map, MapCls,
@@ -128,8 +129,8 @@ const Router = () => (
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="UpdateUmkm"
-      component={UpdateUmkm}
+      name="UpdateProduct"
+      component={UpdateProduct}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

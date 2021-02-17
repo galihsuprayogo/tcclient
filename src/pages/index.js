@@ -4,9 +4,10 @@ import GetIn from './GetIn';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Product from './Product';
+import InputProduct from './InputProduct';
+import UpdateProduct from './UpdateProduct';
 import Umkm from './Umkm';
 import UpdateUmkm from './UpdateUmkm';
-import InputProduct from './InputProduct';
 import ChooseCoffee from './ChooseCoffee';
 import Help from './Help';
 import Verify from './Verify';
@@ -21,6 +22,7 @@ export {
   Umkm,
   UpdateUmkm,
   InputProduct,
+  UpdateProduct,
   ChooseCoffee,
   Help,
   Verify,
