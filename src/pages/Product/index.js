@@ -15,7 +15,7 @@ const Product = ({ navigation }) => {
     const unsubscribe = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      }, 500);
+      }, 400);
     });
     return () => clearTimeout(unsubscribe);
   }, []);
@@ -24,7 +24,7 @@ const Product = ({ navigation }) => {
     const timeout = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      }, 500);
+      }, 100);
     });
     return () => clearTimeout(timeout);
   }, [products.product]);
@@ -58,6 +58,7 @@ const Product = ({ navigation }) => {
           grade={product.grade}
           price={product.price}
           id={product.id}
+          index={index}
         />
       ))
     }

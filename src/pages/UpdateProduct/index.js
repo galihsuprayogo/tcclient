@@ -1,17 +1,68 @@
 import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  StyleSheet, ScrollView, View, Text, BackHandler
+  StyleSheet, ScrollView, View, BackHandler
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { ILNullPhoto } from '../../assets';
-import { colors } from '../../utils';
-import { Header } from '../../components';
+import { colors, showError, showSuccess } from '../../utils';
+import { getUser, storeUser, service } from '../../config';
+import {
+  Header, Profile, Gap, DPicker, InputNumber, Button
+} from '../../components';
+import { globalAction } from '../../redux';
 
-const UpdateProduct = () => {
-  const navigation = useNavigation();
+const UpdateProduct = ({ navigation, route }) => {
+  const products = useSelector((state) => state.productReducer);
+  const categories = useSelector((state) => state.categoriesReducer);
+  const category = useSelector((state) => state.setCategoryReducer);
+  const dispatch = useDispatch();
+
+  const [id] = useState(route.params?.id);
+  const [index] = useState(route.params?.index);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
+  const [amount, setAmount] = useState(0);
+
+  const getImage = () => {
+    launchImageLibrary({
+      includeBase64: true, quality: 1, maxWidth: 800, maxHeight: 800
+    }, (response) => {
+      if (response.didCancel || response.error) {
+        showError('oops, sepertinya anda tidak memilih photo');
+      } else {
+        const base64 = `data:${response.type};base64, ${response.base64}`;
+        setPhotoDB(base64);
+        const source = { uri: response.uri };
+        setPhoto(source);
+        setHasPhoto(true);
+      }
+    });
+  };
+
+  const removeImage = () => {
+    setPhoto(ILNullPhoto);
+    setHasPhoto(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('products').then((res) => {
+        dispatch({ type: globalAction.SET_PRODUCT, value: res });
+        dispatch({ type: globalAction.SET_TYPE, value: products.product[index].type });
+        dispatch({ type: globalAction.SET_PROCEDURE, value: products.product[index].procedure });
+        dispatch({ type: globalAction.SET_OUTPUT, value: products.product[index].output });
+        dispatch({ type: globalAction.SET_GRADE, value: products.product[index].grade });
+        setAmount(products.product[index].price);
+        setPhoto({ uri: products.product[index].image });
+        setPhotoDB(products.product[index].image);
+        setHasPhoto(true);
+      }, 100);
+    });
+    return () => clearTimeout(unsubscribe);
+  }, []);
 
   useEffect(() => {
     BackHandler.addEventListener('backPress', onBackHandling);
@@ -19,10 +70,66 @@ const UpdateProduct = () => {
       BackHandler.removeEventListener('backPress', onBackHandling);
   });
 
-  const onBackHandling = () => {
-
+  const resetForm = () => {
+    dispatch({ type: globalAction.SET_TYPE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_PROCEDURE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_OUTPUT, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
+    setPhoto(ILNullPhoto);
+    setHasPhoto(false);
+    setAmount(0);
   };
 
+  const onBackHandling = () => {
+    resetForm();
+    console.log('did cancel');
+  };
+
+  const onBackNavigation = () => {
+    resetForm();
+    navigation.goBack();
+  };
+
+  const onContinue = async () => {
+    dispatch({ type: globalAction.SET_LOADING, value: true });
+    if (category.type !== '-- Pilih --' || category.procedure !== '-- Pilih --'
+    || category.output !== '-- Pilih --' || category.grade !== '-- Pilih --') {
+      const token = await AsyncStorage.getItem('@token');
+      const data = {
+        id,
+        type: category.type,
+        procedure: category.procedure,
+        output: category.output,
+        grade: category.grade,
+        price: amount,
+        photo: photoDB
+      };
+      service.post('/api/auth/updateProduct', data, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        // 'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        const temp = response.data.products;
+        storeUser('products', temp);
+        showSuccess('Berhasil mengubah produk');
+        dispatch({ type: globalAction.SET_LOADING, value: false });
+      }).catch((error) => {
+        console.log(error);
+        showError('Terjadi kesalahan');
+        dispatch({ type: globalAction.SET_LOADING, value: false });
+      });
+    } else {
+      showError('Form tidak boleh kosong');
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+    }
+  };
+
+  const onTest = () => {
+    console.log(products.product[index]);
+  };
   return (
     <View style={styles.container}>
       <Header
@@ -30,11 +137,53 @@ const UpdateProduct = () => {
         type="icon-button"
         icon="icon-back-light"
         width={24}
-        onPress={() => navigation.goBack()}
+        onPress={onBackNavigation}
       />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
         <View style={styles.subDivContent}>
-          <Text>  Halaman ubah produk </Text>
+            <View style={{ alignItems: 'center' }}>
+                {hasPhoto && <Profile icon="remove-photo" onPress={removeImage} source={photo} />}
+                {!hasPhoto && <Profile icon="add-photo" onPress={getImage} source={photo} />}
+            </View>
+            <Gap height={25} />
+            <DPicker
+              title="Jenis Kopi (Arabica/Robusta)"
+              data={categories.type}
+              value={category.type}
+              onChangeItem={(item) => dispatch({ type: globalAction.SET_TYPE, value: item.value })}
+            />
+            <Gap height={10} />
+            <DPicker
+              title="Cara Pengolahan"
+              data={categories.procedure}
+              value={category.procedure}
+              onChangeItem={(item) => dispatch({ type: globalAction.SET_PROCEDURE, value: item.value })}
+            />
+            <Gap height={10} />
+            <DPicker
+              title="Hasil Pengolahan"
+              data={categories.output}
+              value={category.output}
+              onChangeItem={(item) => dispatch({ type: globalAction.SET_OUTPUT, value: item.value })}
+            />
+            <Gap height={10} />
+            <DPicker
+              title="Grade"
+              data={categories.grade}
+              value={category.grade}
+              onChangeItem={(item) => dispatch({ type: globalAction.SET_GRADE, value: item.value })}
+            />
+            <Gap height={10} />
+            <InputNumber
+              title="Harga"
+              keyboardType="phone-pad"
+              price={amount}
+              setPrice={setAmount}
+            />
+            <Gap height={25} />
+            <View>
+                  <Button title="Simpan" scope="sign-in" onPress={onContinue} />
+            </View>
         </View>
       </ScrollView>
     </View>
