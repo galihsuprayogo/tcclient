@@ -6,7 +6,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { ILNullPhoto } from '../../assets';
-import { colors, showError, showSuccess } from '../../utils';
+import {
+  colors, showError, showSuccess, unFormatNumbro, formatNumbro
+} from '../../utils';
 import { getUser, storeUser, service } from '../../config';
 import {
   Header, Profile, Gap, DPicker, InputNumber, Button
@@ -55,7 +57,7 @@ const UpdateProduct = ({ navigation, route }) => {
         dispatch({ type: globalAction.SET_PROCEDURE, value: products.product[index].procedure });
         dispatch({ type: globalAction.SET_OUTPUT, value: products.product[index].output });
         dispatch({ type: globalAction.SET_GRADE, value: products.product[index].grade });
-        setAmount(products.product[index].price);
+        setAmount(formatNumbro(products.product[index].price));
         setPhoto({ uri: products.product[index].image });
         setPhotoDB(products.product[index].image);
         setHasPhoto(true);
@@ -95,13 +97,14 @@ const UpdateProduct = ({ navigation, route }) => {
     if (category.type !== '-- Pilih --' || category.procedure !== '-- Pilih --'
     || category.output !== '-- Pilih --' || category.grade !== '-- Pilih --') {
       const token = await AsyncStorage.getItem('@token');
+      const price = unFormatNumbro(amount);
       const data = {
         id,
         type: category.type,
         procedure: category.procedure,
         output: category.output,
         grade: category.grade,
-        price: amount,
+        price,
         photo: photoDB
       };
       service.post('/api/auth/updateProduct', data, {

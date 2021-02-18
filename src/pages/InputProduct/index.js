@@ -13,7 +13,7 @@ import {
 } from '../../components';
 import { service, storeUser } from '../../config';
 import {
-  colors, showError, showSuccess
+  colors, showError, showSuccess, unFormatNumbro
 } from '../../utils';
 import { globalAction } from '../../redux';
 
@@ -62,12 +62,13 @@ const InputProduct = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (hasPhoto) {
       const token = await AsyncStorage.getItem('@token');
+      const price = unFormatNumbro(amount);
       const data = {
         type: category.type,
         procedure: category.procedure,
         output: category.output,
         grade: category.grade,
-        price: amount,
+        price,
         photo: photoDB
       };
       service.post('/api/auth/createProduct', data, {
@@ -95,6 +96,11 @@ const InputProduct = ({ navigation }) => {
       resetForm();
       showError('photo tidak boleh kosong');
     }
+  };
+
+  const onTest = () => {
+    dispatch({ type: globalAction.SET_NUMBRO, value: unFormatNumbro(amount) });
+    console.log(number);
   };
 
   return (

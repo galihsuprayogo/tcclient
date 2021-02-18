@@ -72,7 +72,7 @@ const products = {
     procedure: '',
     output: '',
     grade: '',
-    price: '',
+    price: 0,
     image: null
   }]
 };

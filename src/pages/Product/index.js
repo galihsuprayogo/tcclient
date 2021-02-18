@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Header, ListProduct } from '../../components';
 import { getUser } from '../../config';
 import { globalAction } from '../../redux';
-import { colors, fonts } from '../../utils';
+import { colors, fonts, formatNumbro } from '../../utils';
 
 const Product = ({ navigation }) => {
   const products = useSelector((state) => state.productReducer);
@@ -47,7 +47,7 @@ const Product = ({ navigation }) => {
       activeDot={(<View style={styles.activeDot} />)}
       renderPagination={renderPagination}
     >
-    {
+     {
       products.product.map((product, index) => (
         <ListProduct
           key={index}
@@ -56,7 +56,7 @@ const Product = ({ navigation }) => {
           procedure={product.procedure}
           output={product.output}
           grade={product.grade}
-          price={product.price}
+          price={formatNumbro(product.price)}
           id={product.id}
           index={index}
         />

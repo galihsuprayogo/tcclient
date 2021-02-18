@@ -38,7 +38,10 @@ const Home = ({ navigation }) => {
             backgroundShadow={colors.primary}
             backgroundProgress={colors.primary}
             progress
-            onPress={onContinue}
+            onPress={(next) => {
+              onContinue();
+              next();
+            }}
           >
           <Text style={styles.textButton}> Klik Ya ! </Text>
           </AwesomeButton>

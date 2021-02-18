@@ -2,41 +2,16 @@ import React, { useState } from 'react';
 import {
   TextInput, StyleSheet, View, Text,
 } from 'react-native';
-import numbro from 'numbro';
-import { colors, fonts } from '../../../utils';
+import { colors, fonts, formatNumbro } from '../../../utils';
 
 const InputNumber = ({
   title, priceFormat, price, setPrice, keyboardType
 }) => {
-  numbro.registerLanguage({
-    languageTag: 'en-US',
-    delimiters: {
-      thousands: '.',
-      decimal: ',',
-    },
-    abbreviations: {
-      thousand: 'k',
-      million: 'm',
-      billion: 'b',
-      trillion: 't',
-    },
-    ordinal: () => '',
-    currency: {
-      symbol: 'Rp',
-      position: 'prefix',
-      code: 'EUR',
-    },
-  });
-
   const formatPrice = (price) => {
-    // console.log(price);
     if (price !== '') {
-      return numbro(price).formatCurrency({
-        thousandSeparated: true,
-        spaceSeparated: true,
-        mantissa: 2,
-        optionalMantissa: true,
-      });
+      return (
+        formatNumbro(price)
+      );
     }
   };
 
