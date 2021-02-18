@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity,
+  View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
 import {
   colors, showError, showSuccess
@@ -24,6 +24,8 @@ const ChooseCoffee = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [address, setAddress] = useState('');
+  const [minimum, setMinimum] = useState(consumer.minimumLimit);
+  const [maximum, setMaximum] = useState(minimum);
 
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
@@ -33,7 +35,11 @@ const ChooseCoffee = ({ navigation }) => {
           data.address = '[Belum dilengkapi, klik di atas]';
           dispatch({ type: globalAction.SET_CONSUMER, value: res });
           storeUser('consumer', res);
+          setMinimum(res.minimumLimit);
+          setMaximum(minimum);
         } else {
+          setMinimum(res.minimumLimit);
+          setMaximum(minimum);
           setAddress(res.address);
           dispatch({ type: globalAction.SET_CONSUMER, value: res });
           storeUser('consumer', res);
@@ -53,15 +59,33 @@ const ChooseCoffee = ({ navigation }) => {
     return () => clearTimeout(timeout);
   }, [consumer]);
 
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    resetForm();
+  };
+
+  const onBackPressHandling = () => {
+    resetForm();
+    navigation.goBack();
+  };
   const resetForm = () => {
     dispatch({ type: globalAction.SET_TYPE, value: '-- Pilih --' });
     dispatch({ type: globalAction.SET_PROCEDURE, value: '-- Pilih --' });
     dispatch({ type: globalAction.SET_OUTPUT, value: '-- Pilih --' });
     dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
+    setMinimum(consumer.minimumLimit);
+    setMaximum(minimum);
   };
 
   const onContinue = () => {
-    resetForm();
+    console.log(category.type, category.procedure, category.output, category.grade);
+    console.log(address);
+    console.log('minimum', minimum, 'maximum', maximum);
   };
 
   return (
@@ -71,7 +95,7 @@ const ChooseCoffee = ({ navigation }) => {
         type="icon-button"
         icon="icon-back-light"
         width={24}
-        onPress={() => navigation.goBack()}
+        onPress={onBackPressHandling}
       />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
           <View style={styles.subDivContent}>
@@ -103,7 +127,14 @@ const ChooseCoffee = ({ navigation }) => {
                   onChangeItem={(item) => dispatch({ type: globalAction.SET_GRADE, value: item.value })}
                 />
                 <Gap height={10} />
-            <PriceSlider type="minimum" />
+                <PriceSlider
+                  type="minimum"
+                  minimum={minimum}
+                  maximum={maximum}
+                  setMinimum={setMinimum}
+                  setMaximum={setMaximum}
+                  initialMaximum={consumer.maximumLimit}
+                />
             <Gap height={10} />
             <View style={styles.locWrapper}>
               <TouchableOpacity onPress={() => navigation.navigate('MapCls', { type: 'dss' })}>

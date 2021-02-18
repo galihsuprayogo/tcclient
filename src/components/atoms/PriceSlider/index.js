@@ -4,9 +4,11 @@ import Slider from '@react-native-community/slider';
 import { colors, fonts } from '../../../utils';
 import { PriceFormat } from '../..';
 
-const PriceSlider = ({ type }) => {
-  const [minimum, setMinimum] = useState(55000);
-  const [maximum, setMaximum] = useState(minimum);
+const PriceSlider = ({
+  type, minimum, maximum, setMinimum, setMaximum, initialMaximum
+}) => {
+  // const [minimum, setMinimum] = useState(initialMinimum);
+  // const [maximum, setMaximum] = useState(minimum);
 
   const checkType = (type) => {
     if (type === 'minimum') {
@@ -20,8 +22,8 @@ const PriceSlider = ({ type }) => {
           <Slider
             style={styles.slideWrapper}
             minimumValue={minimum}
-            maximumValue={100000}
-            step={10000}
+            maximumValue={initialMaximum}
+            step={100}
             thumbTintColor={colors.primary}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor="white"
@@ -49,8 +51,8 @@ const PriceSlider = ({ type }) => {
       <Slider
         style={styles.slideWrapper}
         minimumValue={0}
-        maximumValue={100000}
-        step={10000}
+        maximumValue={initialMaximum}
+        step={100}
         thumbTintColor={colors.primary}
         minimumTrackTintColor={colors.primary}
         maximumTrackTintColor="white"

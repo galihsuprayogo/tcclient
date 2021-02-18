@@ -1,19 +1,49 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  View, Text, Image, StyleSheet,
+  View, Text, Image, StyleSheet, TouchableOpacity
 } from 'react-native';
-import AwesomeButton from 'react-native-really-awesome-button';
 import { Gap, Header } from '../../components';
-import { colors, fonts } from '../../utils';
+import {
+  colors, fonts, showSuccess, showError
+} from '../../utils';
 import { ILLogo } from '../../assets';
-import { storeUser } from '../../config';
+import { storeUser, service } from '../../config';
+import { globalAction } from '../../redux';
 
 const Home = ({ navigation }) => {
-  const consumer = useSelector((state) => state.consumerReducer);
+  const dispatch = useDispatch();
+
   const onContinue = () => {
-    storeUser('consumer', consumer);
-    navigation.navigate('ChooseCoffee');
+    dispatch({ type: globalAction.SET_LOADING, value: true });
+    service.get('/api/auth/minMax', {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        Accept: 'application/json',
+      },
+    }).then((response) => {
+      const data = {
+        type: '',
+        procedure: '',
+        output: '',
+        grade: '',
+        minimum: 0,
+        maximum: 0,
+        minimumLimit: response.data.minimum,
+        maximumLimit: response.data.maximum,
+        address: '',
+        latitude: '',
+        longitude: ''
+      };
+      storeUser('consumer', data);
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      navigation.navigate('ChooseCoffee');
+      showSuccess('Temukan kopi favorit kamu !');
+    }).catch((error) => {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      console.log(error);
+      showError('Terjadi kesalahan');
+    });
   };
 
   return (
@@ -30,21 +60,12 @@ const Home = ({ navigation }) => {
             katalog di Temanggung, klik di bawah ini
           </Text>
           <Gap height={15} />
-          <AwesomeButton
-            width={150}
-            height={45}
-            backgroundColor={colors.secondary}
-            backgroundDarker={colors.fourth}
-            backgroundShadow={colors.primary}
-            backgroundProgress={colors.primary}
-            progress
-            onPress={(next) => {
-              onContinue();
-              next();
-            }}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={onContinue}
           >
           <Text style={styles.textButton}> Klik Ya ! </Text>
-          </AwesomeButton>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -69,6 +90,14 @@ const styles = StyleSheet.create({
   image: {
     height: 230,
     width: 300,
+  },
+  button: {
+    width: 120,
+    height: 45,
+    backgroundColor: colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4
   },
   textWrapper: {
     alignItems: 'center',

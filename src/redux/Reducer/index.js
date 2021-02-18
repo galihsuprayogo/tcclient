@@ -42,6 +42,8 @@ const consumer = {
   grade: '',
   minimum: 0,
   maximum: 0,
+  minimumLimit: 0,
+  maximumLimit: 0,
   address: '',
   latitude: '',
   longitude: ''
