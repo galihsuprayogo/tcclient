@@ -35,6 +35,18 @@ const setCategory = {
   grade: '-- Pilih --'
 };
 
+const consumer = {
+  type: '',
+  procedure: '',
+  output: '',
+  grade: '',
+  minimum: 0,
+  maximum: 0,
+  address: '',
+  latitude: '',
+  longitude: ''
+};
+
 const profile = {
   photo: ILNullPhoto,
   id: '',
@@ -67,6 +79,16 @@ const products = {
 
 export const categoriesReducer = (state = categories, action) => {
   if (action.type === globalAction.SET_CATEGORIES) {
+    return {
+      ...state,
+      ...action.value
+    };
+  }
+  return state;
+};
+
+export const consumerReducer = (state = consumer, action) => {
+  if (action.type === globalAction.SET_CONSUMER) {
     return {
       ...state,
       ...action.value

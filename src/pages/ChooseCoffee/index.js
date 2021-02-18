@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity,
 } from 'react-native';
-import { colors, fonts, useForm } from '../../utils';
+import {
+  colors, showError, showSuccess
+} from '../../utils';
 import {
   Header,
   DPicker,
@@ -11,35 +14,56 @@ import {
   InputLocation,
   Button,
 } from '../../components';
+import { globalAction } from '../../redux';
+import { getUser, storeUser } from '../../config';
 
 const ChooseCoffee = ({ navigation }) => {
-  const [form, setForm] = useForm({
-    type: '',
-    procedure: '',
-    output: '',
-    grade: ''
-  });
-  const [type] = useState([
-    { label: 'Arabica', value: 'Arabica' },
-    { label: 'Robusta', value: 'Robusta' }
-  ]);
-  const [procedure] = useState([
-    { label: 'Fullwash', value: 'Fullwash' },
-    { label: 'Semiwash', value: 'Semiwash' }
-  ]);
-  const [output] = useState([
-    { label: 'Green Bean', value: 'Green Bean' },
-    { label: 'Roasted Bean', value: 'Roasted Bean' }
-  ]);
-  const [grade] = useState([
-    { label: 'A', value: 'A' },
-    { label: 'B', value: 'B' }
-  ]);
+  const categories = useSelector((state) => state.categoriesReducer);
+  const category = useSelector((state) => state.setCategoryReducer);
+  const consumer = useSelector((state) => state.consumerReducer);
+  const dispatch = useDispatch();
+
+  const [address, setAddress] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('consumer').then((res) => {
+        if (res.address === '') {
+          const data = res;
+          data.address = '[Belum dilengkapi, klik di atas]';
+          dispatch({ type: globalAction.SET_CONSUMER, value: res });
+          storeUser('consumer', res);
+        } else {
+          setAddress(res.address);
+          dispatch({ type: globalAction.SET_CONSUMER, value: res });
+          storeUser('consumer', res);
+        }
+      }, 100);
+    });
+    return () => clearTimeout(unsubscribe);
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      await getUser('consumer').then((res) => {
+        setAddress(res.address);
+        dispatch({ type: globalAction.SET_CONSUMER, value: res });
+      }, 500);
+    });
+    return () => clearTimeout(timeout);
+  }, [consumer]);
+
+  const resetForm = () => {
+    dispatch({ type: globalAction.SET_TYPE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_PROCEDURE, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_OUTPUT, value: '-- Pilih --' });
+    dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
+  };
 
   const onContinue = () => {
-    // console.log(form);
-    navigation.replace('Map');
+    resetForm();
   };
+
   return (
     <View style={styles.container}>
       <Header
@@ -53,39 +77,39 @@ const ChooseCoffee = ({ navigation }) => {
           <View style={styles.subDivContent}>
                 <DPicker
                   title="Jenis Kopi (Arabica/Robusta)"
-                  data={type}
-                  value={form.type}
-                  onChangeItem={(item) => setForm('type', item.value)}
+                  data={categories.type}
+                  value={category.type}
+                  onChangeItem={(item) => dispatch({ type: globalAction.SET_TYPE, value: item.value })}
                 />
                 <Gap height={10} />
                 <DPicker
                   title="Cara Pengolahan"
-                  data={procedure}
-                  value={form.procedure}
-                  onChangeItem={(item) => setForm('procedure', item.value)}
+                  data={categories.procedure}
+                  value={category.procedure}
+                  onChangeItem={(item) => dispatch({ type: globalAction.SET_PROCEDURE, value: item.value })}
                 />
                 <Gap height={10} />
                 <DPicker
                   title="Hasil Pengolahan"
-                  data={output}
-                  value={form.output}
-                  onChangeItem={(item) => setForm('output', item.value)}
+                  data={categories.output}
+                  value={category.output}
+                  onChangeItem={(item) => dispatch({ type: globalAction.SET_OUTPUT, value: item.value })}
                 />
                 <Gap height={10} />
                 <DPicker
                   title="Grade"
-                  data={grade}
-                  value={form.grade}
-                  onChangeItem={(item) => setForm('grade', item.value)}
+                  data={categories.grade}
+                  value={category.grade}
+                  onChangeItem={(item) => dispatch({ type: globalAction.SET_GRADE, value: item.value })}
                 />
                 <Gap height={10} />
             <PriceSlider type="minimum" />
             <Gap height={10} />
             <View style={styles.locWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('MapCls')}>
+              <TouchableOpacity onPress={() => navigation.navigate('MapCls', { type: 'dss' })}>
                 <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
               </TouchableOpacity>
-              <InputLocation type="text2" icon="loc2" text="Texas US 666, klik di atas untuk ubah" />
+              <InputLocation type="text2" icon="loc2" text={address} />
             </View>
             <Gap height={20} />
             <Button title="DSS Result [Klik]" scope="dss" onPress={onContinue} />

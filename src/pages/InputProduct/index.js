@@ -87,6 +87,10 @@ const InputProduct = ({ navigation }) => {
         resetForm();
         showError('Terjadi kesalahan');
       });
+    } else if (category.type !== '-- Pilih --' || category.procedure !== '-- Pilih --'
+    || category.output !== '-- Pilih --' || category.grade !== '-- Pilih --') {
+      showError('Form tidak boleh kosong');
+      dispatch({ type: globalAction.SET_LOADING, value: false });
     } else {
       resetForm();
       showError('photo tidak boleh kosong');

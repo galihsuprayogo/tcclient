@@ -7,13 +7,13 @@ import {
   Text,
   TextInput,
   ScrollView,
+  BackHandler
 } from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoder';
 import Modal from 'react-native-modal';
-import { useNavigation } from '@react-navigation/native';
 import { getUser, storeUser } from '../../../config';
 import { colors, fonts } from '../../../utils';
 import {
@@ -46,13 +46,26 @@ class MapCls extends React.Component {
       modalVisible: false,
       propSwipe: false,
       error: null,
+      type: ''
     };
-    const { navigation } = this.props;
   }
 
   componentDidMount() {
     this.requestLocationPermission();
+    this.backHandler = BackHandler.addEventListener('backPress', this.onBackHandling);
   }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+    onBackHandling = () => {
+      const resetPosition = {
+        latitude: this.state.markerPosition.latitude,
+        longitude: this.state.markerPosition.longitude,
+      };
+      this.setState({ markerPosition: resetPosition });
+    }
 
     requestLocationPermission = async () => {
       if (Platform.OS === 'android') {
@@ -100,13 +113,24 @@ class MapCls extends React.Component {
     }
 
     onSaveModal = () => {
-      getUser('user').then((res) => {
-        const data = res;
-        data.address = this.state.addressPosition;
-        data.latitude = this.state.markerPosition.latitude.toString();
-        data.longitude = this.state.markerPosition.longitude.toString();
-        storeUser('user', res);
-      });
+      this.setState({ type: this.props.route.params.type });
+      if (this.props.route.params.type === 'dss') {
+        getUser('consumer').then((res) => {
+          const data = res;
+          data.address = this.state.addressPosition;
+          data.latitude = this.state.markerPosition.latitude.toString();
+          data.longitude = this.state.markerPosition.longitude.toString();
+          storeUser('consumer', res);
+        });
+      } else {
+        getUser('user').then((res) => {
+          const data = res;
+          data.address = this.state.addressPosition;
+          data.latitude = this.state.markerPosition.latitude.toString();
+          data.longitude = this.state.markerPosition.longitude.toString();
+          storeUser('user', res);
+        });
+      }
       this.setState({ modalVisible: false });
       this.props.navigation.goBack();
     }
@@ -193,7 +217,6 @@ class MapCls extends React.Component {
         this.setState({ iconValue: 'x' });
         this.setState({ propSwipe: true });
         this.setState({ modalVisible: true });
-        // console.log(res[1].formattedAddress);
       }).catch((err) => {
         this.setState({ addressPosition: `${this.state.markerPosition.latitude.toString()},${this.state.markerPosition.longitude.toString()}` });
         this.setState({ iconValue: 'x' });

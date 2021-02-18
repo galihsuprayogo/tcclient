@@ -121,15 +121,15 @@ const UpdateProduct = ({ navigation, route }) => {
         showError('Terjadi kesalahan');
         dispatch({ type: globalAction.SET_LOADING, value: false });
       });
+    } else if (!hasPhoto) {
+      showError('Photo tidak boleh kosong');
+      dispatch({ type: globalAction.SET_LOADING, value: false });
     } else {
       showError('Form tidak boleh kosong');
       dispatch({ type: globalAction.SET_LOADING, value: false });
     }
   };
 
-  const onTest = () => {
-    console.log(products.product[index]);
-  };
   return (
     <View style={styles.container}>
       <Header

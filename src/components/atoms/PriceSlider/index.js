@@ -10,7 +10,6 @@ const PriceSlider = ({ type }) => {
 
   const checkType = (type) => {
     if (type === 'minimum') {
-      console.log('minimum ', minimum, 'maximum ', maximum);
       return (
         <View>
           <Text style={styles.textWrapper(type)}>
@@ -28,11 +27,7 @@ const PriceSlider = ({ type }) => {
             maximumTrackTintColor="white"
             inverted
             value={maximum}
-            onValueChange={
-                                (maximum) => setMaximum(
-                                  maximum,
-                                )
-                            }
+            onValueChange={(maximum) => setMaximum(maximum)}
           />
           <Text style={styles.textWrapper('maximum')}>
             {' '}
@@ -60,15 +55,9 @@ const PriceSlider = ({ type }) => {
         minimumTrackTintColor={colors.primary}
         maximumTrackTintColor="white"
         value={minimum}
-        onValueChange={
-                        (minimum) => setMinimum(
-                          changeValue(minimum),
-                        )
-                    }
+        onValueChange={(minimum) => setMinimum(changeValue(minimum))}
       />
-      {
-                    checkType(type)
-                }
+      {checkType(type)}
     </View>
   );
 };

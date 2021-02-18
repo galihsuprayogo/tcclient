@@ -55,6 +55,7 @@ const InputNumber = ({
     if (typeof priceFormat !== 'undefined') {
       return formatPrice(priceFormat);
     }
+
     return (
       <View>
         <Text style={styles.label}>
