@@ -79,10 +79,14 @@ const InputProduct = ({ navigation }) => {
           // 'Content-Type': 'application/json'
         },
       }).then((response) => {
-        const temp = response.data.products;
         resetForm();
-        storeUser('products', temp);
-        showSuccess('Berhasil menambahkan produk baru');
+        if (response.data.address === null) {
+          showError('Silahkan lengkapi dahulu profile UMKM');
+        } else {
+          const temp = response.data.products;
+          storeUser('products', temp);
+          showSuccess('Berhasil menambahkan produk baru');
+        }
       }).catch((error) => {
         console.log(error);
         resetForm();
@@ -96,11 +100,6 @@ const InputProduct = ({ navigation }) => {
       resetForm();
       showError('photo tidak boleh kosong');
     }
-  };
-
-  const onTest = () => {
-    dispatch({ type: globalAction.SET_NUMBRO, value: unFormatNumbro(amount) });
-    console.log(number);
   };
 
   return (
