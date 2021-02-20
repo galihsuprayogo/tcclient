@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Gap, Header } from '../../components';
 import {
-  colors, fonts, showSuccess, showError
+  colors, fonts, showInfo, showError
 } from '../../utils';
 import { ILLogo } from '../../assets';
 import { storeUser, service } from '../../config';
@@ -38,7 +38,7 @@ const Home = ({ navigation }) => {
       storeUser('consumer', data);
       dispatch({ type: globalAction.SET_LOADING, value: false });
       navigation.navigate('ChooseCoffee');
-      showSuccess('Temukan kopi favorit kamu !');
+      showInfo('Temukan kopi favorit kamu, Pilih kriteria yang tersedia. Jangan lupa lokasi !');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       console.log(error);

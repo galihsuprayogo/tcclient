@@ -7,9 +7,6 @@ import { PriceFormat } from '../..';
 const PriceSlider = ({
   type, minimum, maximum, setMinimum, setMaximum, initialMaximum
 }) => {
-  // const [minimum, setMinimum] = useState(initialMinimum);
-  // const [maximum, setMaximum] = useState(minimum);
-
   const checkType = (type) => {
     if (type === 'minimum') {
       return (

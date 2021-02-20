@@ -82,6 +82,8 @@ const InputProduct = ({ navigation }) => {
         resetForm();
         if (response.data.address === null) {
           showError('Silahkan lengkapi dahulu profile UMKM');
+        } else if (response.data.isExist === true) {
+          showError('oops, produk sudah tersedia');
         } else {
           const temp = response.data.products;
           storeUser('products', temp);

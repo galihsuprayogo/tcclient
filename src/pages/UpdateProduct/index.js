@@ -115,9 +115,13 @@ const UpdateProduct = ({ navigation, route }) => {
         // 'Content-Type': 'application/json'
         },
       }).then((response) => {
-        const temp = response.data.products;
-        storeUser('products', temp);
-        showSuccess('Berhasil mengubah produk');
+        if (response.data.isExist === true) {
+          showError('oops, produk sudah tersedia');
+        } else {
+          const temp = response.data.products;
+          storeUser('products', temp);
+          showSuccess('Berhasil mengubah produk');
+        }
         dispatch({ type: globalAction.SET_LOADING, value: false });
       }).catch((error) => {
         console.log(error);

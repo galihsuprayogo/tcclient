@@ -12,12 +12,12 @@ const Product = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = setTimeout(async () => {
+    const unsubscribe = async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      }, 400);
-    });
-    return () => clearTimeout(unsubscribe);
+      });
+    };
+    unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -74,13 +74,13 @@ const Product = ({ navigation }) => {
       width={24}
       onPress={() => navigation.openDrawer()}
     />
-      <View style={styles.content}>
-        <View style={styles.subDivContent}>
-            {products.product[0].type === null
-             && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
-            {products.product[0].type !== null && renderProducts()}
-        </View>
+    <View style={styles.content}>
+      <View style={styles.subDivContent}>
+          {products.product[0].type === null
+           && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
+          {products.product[0].type !== null && renderProducts()}
       </View>
+    </View>
     </View>
   );
 };

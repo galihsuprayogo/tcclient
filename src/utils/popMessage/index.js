@@ -36,3 +36,22 @@ export const showSuccess = (message) => {
     }
   });
 };
+
+export const showInfo = (message) => {
+  showMessage({
+    message,
+    position: 'top',
+    type: 'simple message',
+    duration: 5000,
+    color: 'white',
+    style: {
+      borderRadius: 8,
+      marginHorizontal: 10,
+    },
+    titleStyle: {
+      fontFamily: fonts.sfProDisplay.medium,
+      fontSize: 15,
+      textAlign: 'left'
+    }
+  });
+};

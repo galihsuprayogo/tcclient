@@ -16,7 +16,6 @@ const InputNumber = ({
   };
 
   const setValue = (price) => {
-    // console.log(typeof price, 'value');
     if (typeof price === 'number') {
       return price.toString();
     }
