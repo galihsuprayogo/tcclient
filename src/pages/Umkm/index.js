@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.secondary,
     paddingVertical: 50,
-    marginVertical: 30,
+    marginVertical: 50,
     borderRadius: 10
   }
 });

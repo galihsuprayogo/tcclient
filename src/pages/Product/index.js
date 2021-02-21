@@ -12,12 +12,13 @@ const Product = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = async () => {
+    const unsubscribe = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      });
-    };
-    unsubscribe();
+        renderProducts();
+      }, 500);
+    });
+    return () => clearTimeout(unsubscribe);
   }, []);
 
   useEffect(() => {

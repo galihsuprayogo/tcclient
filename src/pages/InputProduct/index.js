@@ -60,7 +60,8 @@ const InputProduct = ({ navigation }) => {
 
   const onContinue = async () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
-    if (hasPhoto) {
+    if (hasPhoto && category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
+    && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --') {
       const token = await AsyncStorage.getItem('@token');
       const price = unFormatNumbro(amount);
       const data = {
@@ -76,30 +77,31 @@ const InputProduct = ({ navigation }) => {
           'X-Requested-With': 'XMLHttpRequest',
           Accept: 'application/json',
           Authorization: `Bearer ${token}`,
-          // 'Content-Type': 'application/json'
         },
       }).then((response) => {
-        resetForm();
         if (response.data.address === null) {
           showError('Silahkan lengkapi dahulu profile UMKM');
-        } else if (response.data.isExist === true) {
-          showError('oops, produk sudah tersedia');
-        } else {
-          const temp = response.data.products;
-          storeUser('products', temp);
-          showSuccess('Berhasil menambahkan produk baru');
         }
+        if (response.data.address !== null) {
+          if (response.data.isExist === true) {
+            showError('oops, produk sudah tersedia');
+          } else {
+            storeUser('products', response.data.products);
+            showSuccess('Berhasil menambahkan produk baru');
+          }
+        }
+        resetForm();
       }).catch((error) => {
         console.log(error);
         resetForm();
         showError('Terjadi kesalahan');
       });
-    } else if (category.type !== '-- Pilih --' || category.procedure !== '-- Pilih --'
-    || category.output !== '-- Pilih --' || category.grade !== '-- Pilih --') {
-      showError('Form tidak boleh kosong');
+    } else if (category.type === '-- Pilih --' || category.procedure === '-- Pilih --'
+    || category.output === '-- Pilih --' || category.grade === '-- Pilih --') {
       dispatch({ type: globalAction.SET_LOADING, value: false });
+      showError('Form tidak boleh kosong');
     } else {
-      resetForm();
+      dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('photo tidak boleh kosong');
     }
   };

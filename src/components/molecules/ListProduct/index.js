@@ -53,8 +53,6 @@ const ListProduct = ({
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
-      // dispatch({ type: globalAction.SET_PRODUCT, value: response.data.products });
-      console.log(response);
       const temp = response.data.products;
       storeUser('products', temp);
       showSuccess('Berhasil menghapus produk');

@@ -22,20 +22,37 @@ const Home = ({ navigation }) => {
         Accept: 'application/json',
       },
     }).then((response) => {
-      const data = {
-        type: '',
-        procedure: '',
-        output: '',
-        grade: '',
-        minimum: 0,
-        maximum: 0,
-        minimumLimit: response.data.minimum,
-        maximumLimit: response.data.maximum,
-        address: '',
-        latitude: '',
-        longitude: ''
-      };
-      storeUser('consumer', data);
+      if (response.data.minimum === null && response.data.maximum === null) {
+        const data = {
+          type: '',
+          procedure: '',
+          output: '',
+          grade: '',
+          minimum: 0,
+          maximum: 0,
+          minimumLimit: 0,
+          maximumLimit: 0,
+          address: '',
+          latitude: '',
+          longitude: ''
+        };
+        storeUser('consumer', data);
+      } else {
+        const data = {
+          type: '',
+          procedure: '',
+          output: '',
+          grade: '',
+          minimum: 0,
+          maximum: 0,
+          minimumLimit: response.data.minimum,
+          maximumLimit: response.data.maximum,
+          address: '',
+          latitude: '',
+          longitude: ''
+        };
+        storeUser('consumer', data);
+      }
       dispatch({ type: globalAction.SET_LOADING, value: false });
       navigation.navigate('ChooseCoffee');
       showInfo('Temukan kopi favorit kamu, Pilih kriteria yang tersedia. Jangan lupa lokasi !');
