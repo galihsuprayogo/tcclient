@@ -36,6 +36,7 @@ const setCategory = {
 };
 
 const consumer = {
+  consumerId: 0,
   type: '',
   procedure: '',
   output: '',

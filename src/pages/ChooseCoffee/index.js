@@ -15,7 +15,7 @@ import {
   Button,
 } from '../../components';
 import { globalAction } from '../../redux';
-import { getUser, storeUser } from '../../config';
+import { getUser, storeUser, service } from '../../config';
 
 const ChooseCoffee = ({ navigation }) => {
   const categories = useSelector((state) => state.categoriesReducer);
@@ -80,12 +80,42 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
     setMinimum(consumer.minimumLimit);
     setMaximum(minimum);
+    dispatch({ type: globalAction.SET_LOADING, value: false });
   };
 
   const onContinue = () => {
-    console.log(category.type, category.procedure, category.output, category.grade);
-    console.log(address);
-    console.log('minimum', minimum, 'maximum', maximum);
+    dispatch({ type: globalAction.SET_LOADING, value: true });
+    if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
+    && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
+      const data = {
+        consumerId: consumer.consumerId,
+        type: category.type,
+        procedure: category.procedure,
+        output: category.output,
+        grade: category.grade,
+        latitude: consumer.latitude,
+        longitude: consumer.longitude,
+        minimum,
+        maximum
+      };
+      service.post('/api/auth/distance', data, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          Accept: 'application/json',
+        },
+      }).then((response) => {
+        // alert(response.data.distances);
+        console.log(response.data.distances);
+        resetForm();
+      }).catch((error) => {
+        console.log(error);
+        resetForm();
+        showError('Terjadi kesalahan');
+      });
+    } else {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      showError('form tidak boleh kosong');
+    }
   };
 
   return (

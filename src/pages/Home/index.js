@@ -22,8 +22,10 @@ const Home = ({ navigation }) => {
         Accept: 'application/json',
       },
     }).then((response) => {
+      const randomId = Math.floor(Math.random() * 100) + 1;
       if (response.data.minimum === null && response.data.maximum === null) {
         const data = {
+          consumerId: randomId,
           type: '',
           procedure: '',
           output: '',
@@ -39,6 +41,7 @@ const Home = ({ navigation }) => {
         storeUser('consumer', data);
       } else {
         const data = {
+          consumerId: randomId,
           type: '',
           procedure: '',
           output: '',
