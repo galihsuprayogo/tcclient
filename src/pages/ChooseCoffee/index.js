@@ -4,7 +4,7 @@ import {
   View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
 import {
-  colors, showError, showSuccess
+  colors, showError, showInfo
 } from '../../utils';
 import {
   Header,
@@ -28,7 +28,7 @@ const ChooseCoffee = ({ navigation }) => {
   const [maximum, setMaximum] = useState(minimum);
 
   useEffect(() => {
-    const unsubscribe = setTimeout(async () => {
+    const unsubscribe = async () => {
       await getUser('consumer').then((res) => {
         if (res.address === '') {
           const data = res;
@@ -37,6 +37,7 @@ const ChooseCoffee = ({ navigation }) => {
           storeUser('consumer', res);
           setMinimum(res.minimumLimit);
           setMaximum(minimum);
+          setAddress('[Belum dilengkapi, klik di atas]');
         } else {
           setMinimum(res.minimumLimit);
           setMaximum(minimum);
@@ -44,9 +45,9 @@ const ChooseCoffee = ({ navigation }) => {
           dispatch({ type: globalAction.SET_CONSUMER, value: res });
           storeUser('consumer', res);
         }
-      }, 100);
-    });
-    return () => clearTimeout(unsubscribe);
+      });
+    };
+    unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const ChooseCoffee = ({ navigation }) => {
       await getUser('consumer').then((res) => {
         setAddress(res.address);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      }, 500);
+      }, 1000);
     });
     return () => clearTimeout(timeout);
   }, [consumer]);
@@ -73,6 +74,7 @@ const ChooseCoffee = ({ navigation }) => {
     resetForm();
     navigation.goBack();
   };
+
   const resetForm = () => {
     dispatch({ type: globalAction.SET_TYPE, value: '-- Pilih --' });
     dispatch({ type: globalAction.SET_PROCEDURE, value: '-- Pilih --' });
@@ -83,7 +85,7 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: false });
   };
 
-  const onContinue = () => {
+  const onContinue = async () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
     && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
@@ -98,15 +100,16 @@ const ChooseCoffee = ({ navigation }) => {
         minimum,
         maximum
       };
-      service.post('/api/auth/distance', data, {
+      service.post('/api/auth/index', data, {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
           Accept: 'application/json',
         },
       }).then((response) => {
-        // alert(response.data.distances);
-        console.log(response.data.distances);
-        resetForm();
+        storeUser('stores', response.data.stores);
+        showInfo('Silahkan memulai navigasi');
+        dispatch({ type: globalAction.SET_LOADING, value: false });
+        navigation.navigate('Map');
       }).catch((error) => {
         console.log(error);
         resetForm();
@@ -151,7 +154,7 @@ const ChooseCoffee = ({ navigation }) => {
                 />
                 <Gap height={10} />
                 <DPicker
-                  title="Grade"
+                  title="Grade (Opsional)"
                   data={categories.grade}
                   value={category.grade}
                   onChangeItem={(item) => dispatch({ type: globalAction.SET_GRADE, value: item.value })}

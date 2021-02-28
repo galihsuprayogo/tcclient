@@ -58,7 +58,7 @@ const Home = ({ navigation }) => {
       }
       dispatch({ type: globalAction.SET_LOADING, value: false });
       navigation.navigate('ChooseCoffee');
-      showInfo('Temukan kopi favorit kamu, Pilih kriteria yang tersedia. Jangan lupa lokasi !');
+      showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       console.log(error);

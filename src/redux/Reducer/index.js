@@ -80,6 +80,18 @@ const products = {
   }]
 };
 
+const stores = {
+  store: [{
+    id: 0,
+    name: '',
+    image: null,
+    address: '',
+    score: 0,
+    latitude: 0,
+    longitude: 0,
+  }]
+};
+
 export const categoriesReducer = (state = categories, action) => {
   if (action.type === globalAction.SET_CATEGORIES) {
     return {
@@ -175,6 +187,16 @@ export const setCategoryReducer = (state = setCategory, action) => {
     return {
       ...state,
       grade: action.value
+    };
+  }
+  return state;
+};
+
+export const storeReducer = (state = stores, action) => {
+  if (action.type === globalAction.SET_STORE) {
+    return {
+      ...state,
+      store: action.value
     };
   }
   return state;

@@ -11,4 +11,5 @@ export const globalAction = {
   SET_OUTPUT: 'SET_OUTPUT',
   SET_GRADE: 'SET_GRADE',
   SET_CONSUMER: 'SET_CONSUMER',
+  SET_STORE: 'SET_STORE'
 };

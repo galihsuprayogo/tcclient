@@ -9,7 +9,7 @@ import { fonts, colors } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
 import { Button } from '..';
-import { markers } from '../../atoms/MapData';
+import { getUser, service } from '../../../config';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -23,29 +23,17 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 
 const Map = () => {
-  const [coffeeCoordinates] = useState(markers);
-  const [coffees] = useState([
-    {
-      name: 'Medusa Coffee',
-      score: 1.6666
-    },
-    {
-      name: 'Tempik Coffee',
-      score: 1.5666
-    },
-    {
-      name: 'Rumah Posong Coffee',
-      score: 1.3245
-    },
-    {
-      name: 'Pentil Coffee',
-      score: 0.9876
-    },
-    {
-      name: 'Exelco Coffee',
-      score: 0.4567
-    },
-  ]);
+  const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = async () => {
+      await getUser('stores').then((res) => {
+        setCoffeeCoordinates(res);
+      });
+    };
+    unsubscribe();
+  }, []);
+
   const [originCoordinate, setOriginCoordinate] = useState({
     latitude: 0,
     longitude: 0
@@ -69,6 +57,14 @@ const Map = () => {
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
 
+  useEffect(() => {
+    onScrollCardToMarker();
+    watchPosition();
+    BackHandler.addEventListener('backPress', onDisable);
+    return () =>
+      BackHandler.removeEventListener('backPress', onDisable);
+  });
+
   const onDisable = () => {
     if (cardButton === false && direct === false) {
       return false;
@@ -82,14 +78,6 @@ const Map = () => {
       return true;
     }
   };
-
-  useEffect(() => {
-    onScrollCardToMarker();
-    watchPosition();
-    BackHandler.addEventListener('backPress', onDisable);
-    return () =>
-      BackHandler.removeEventListener('backPress', onDisable);
-  });
 
   const getMapRegion = () => ({
     latitude: originCoordinate.latitude,
@@ -159,14 +147,15 @@ const Map = () => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = coffeeCoordinates[index];
+          // const { latitude, longitude } = coffeeCoordinates[index];
           _map.current.animateToRegion(
             {
-              ...coordinate,
+              latitude: coffeeCoordinates[index].latitude,
+              longitude: coffeeCoordinates[index].longitude,
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             },
-            350
+            100
           );
           const x = mapIndex;
           _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
@@ -195,17 +184,17 @@ const Map = () => {
     return { scale };
   });
 
-  const onDirection = (destination) => {
+  const onDirection = (latitude, longitude) => {
     setDirect(true);
-    setDestinationCoordinate(destination);
+    setDestinationCoordinate({ latitude, longitude });
   };
 
-  const onStart = (destination) => {
+  const onStart = (latitude, longitude) => {
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
     setDirect(true);
-    setDestinationCoordinate(destination);
+    setDestinationCoordinate({ latitude, longitude });
     setBoxOne(false);
     setBoxTwo(true);
     setZoom(22);
@@ -270,7 +259,7 @@ const Map = () => {
             ],
           };
           return (
-              <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate.coordinate} onPress={(e) => onMarkerPress(e)}>
+              <MapView.Marker key={`coordinate_${index}`} coordinate={{ latitude: coordinate.latitude, longitude: coordinate.longitude }} onPress={(e) => onMarkerPress(e)}>
                 <Animated.View style={[styles.markerWrap]}>
                   <Animated.Image
                     source={IconMarker}
@@ -294,7 +283,7 @@ const Map = () => {
       {boxOne && (
         <View style={styles.labelBox}>
             <Text style={styles.labelBoxTitle}>
-              skor hasil perhitungan menggunakan promethee
+              skor (Net Flow) hasil perhitungan menggunakan promethee
             </Text>
         </View>
       )}
@@ -323,7 +312,7 @@ const Map = () => {
           paddingRight: Platform.OS === 'android' ? 20 : 0
         }}
       >
-        {coffees.map((coffee, index) => (
+        {coffeeCoordinates.map((coffee, index) => (
           <TouchableOpacity key={index} style={styles.chipsItem}>
             <Text style={styles.chipsText}>{`${index + 1}). ${coffee.name} : ${coffee.score}`}</Text>
           </TouchableOpacity>
@@ -365,19 +354,16 @@ const Map = () => {
             {coffeeCoordinates.map((marker, index) => (
               <View style={styles.card} key={index}>
                 <Image
-                  source={marker.image}
+                  source={{ uri: marker.image }}
                   style={styles.cardImage}
                   resizeMode="cover"
                 />
                 <View style={styles.textContent}>
                   <Text numberOfLines={1} style={styles.cardTitle}>
+                    {index + 1}
+                    ).
                     {' '}
-                    {marker.title }
-                    {' '}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>
-                    {' '}
-                    {marker.description }
+                    {marker.name}
                     {' '}
                   </Text>
                   <Text numberOfLines={1} style={styles.cardAddress}>
@@ -386,9 +372,9 @@ const Map = () => {
                     {' '}
                   </Text>
                   <View style={styles.button}>
-                    <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(marker.coordinate)} />
-                    <Gap width={10} />
-                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart(marker.coordinate)} />
+                    <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(marker.latitude, marker.longitude)} />
+                    <Gap width={5} />
+                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart(marker.latitude, marker.longitude)} />
                   </View>
                 </View>
               </View>

@@ -122,7 +122,8 @@ class MapCls extends React.Component {
           data.longitude = this.state.markerPosition.longitude.toString();
           storeUser('consumer', res);
         });
-      } else {
+      }
+      if (this.props.route.params.type === 'umkm') {
         getUser('user').then((res) => {
           const data = res;
           data.address = this.state.addressPosition;
