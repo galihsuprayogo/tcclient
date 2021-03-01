@@ -33,17 +33,15 @@ const ChooseCoffee = ({ navigation }) => {
         if (res.address === '') {
           const data = res;
           data.address = '[Belum dilengkapi, klik di atas]';
-          dispatch({ type: globalAction.SET_CONSUMER, value: res });
-          storeUser('consumer', res);
           setMinimum(res.minimumLimit);
           setMaximum(minimum);
-          setAddress('[Belum dilengkapi, klik di atas]');
+          dispatch({ type: globalAction.SET_CONSUMER, value: res });
+          storeUser('consumer', res);
         } else {
           setMinimum(res.minimumLimit);
           setMaximum(minimum);
           setAddress(res.address);
           dispatch({ type: globalAction.SET_CONSUMER, value: res });
-          storeUser('consumer', res);
         }
       });
     };
@@ -55,7 +53,7 @@ const ChooseCoffee = ({ navigation }) => {
       await getUser('consumer').then((res) => {
         setAddress(res.address);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      }, 1000);
+      }, 2000);
     });
     return () => clearTimeout(timeout);
   }, [consumer]);

@@ -46,7 +46,6 @@ class MapCls extends React.Component {
       modalVisible: false,
       propSwipe: false,
       error: null,
-      type: ''
     };
   }
 
@@ -113,7 +112,6 @@ class MapCls extends React.Component {
     }
 
     onSaveModal = () => {
-      this.setState({ type: this.props.route.params.type });
       if (this.props.route.params.type === 'dss') {
         getUser('consumer').then((res) => {
           const data = res;
@@ -122,6 +120,8 @@ class MapCls extends React.Component {
           data.longitude = this.state.markerPosition.longitude.toString();
           storeUser('consumer', res);
         });
+        this.setState({ modalVisible: false });
+        this.props.navigation.goBack();
       }
       if (this.props.route.params.type === 'umkm') {
         getUser('user').then((res) => {
@@ -131,9 +131,9 @@ class MapCls extends React.Component {
           data.longitude = this.state.markerPosition.longitude.toString();
           storeUser('user', res);
         });
+        this.setState({ modalVisible: false });
+        this.props.navigation.goBack();
       }
-      this.setState({ modalVisible: false });
-      this.props.navigation.goBack();
     }
 
     modalProp = () => (
