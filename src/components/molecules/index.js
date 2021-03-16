@@ -5,7 +5,6 @@ import Profile from './Profile';
 import List from './List';
 import ListProduct from './ListProduct';
 import Map from './Map';
-import MapCls from './MapCls';
 import MapPoint from './MapPoint';
 import DrawerContent from './DrawerContent';
 import Loading from './Loading';
@@ -19,7 +18,6 @@ export {
   List,
   ListProduct,
   Map,
-  MapCls,
   MapPoint,
   DrawerContent,
   Loading,

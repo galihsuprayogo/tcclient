@@ -18,7 +18,7 @@ import {
   UpdateProduct
 } from '../pages';
 import {
-  Map, MapCls, MapPoint,
+  Map, MapPoint,
   BottomNavigator, DrawerContent, DrawItem
 } from '../components';
 
@@ -126,11 +126,6 @@ const Router = () => (
     <Stack.Screen
       name="MapPoint"
       component={MapPoint}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="MapCls"
-      component={MapCls}
       options={{ headerShown: false }}
     />
     <Stack.Screen

@@ -22,6 +22,8 @@ import {
   IconOpenDrawer,
   IconBackLight,
   IconBack,
+  IconBackLocation,
+  IconToLocation
 } from '../../../assets';
 
 const Icon = ({
@@ -59,9 +61,9 @@ const Icon = ({
     case 'navigation':
       return <IconNavigation height={height} width={width} />;
     case 'beenhere':
-      return <IconBeenhere height={21} width={25} />;
+      return <IconBeenhere height={18} width={20} />;
     case 'xlight':
-      return <IconXLight height={20} width={23} />;
+      return <IconXLight height={18} width={20} />;
     case 'frame':
       return <ILPhotoFrame height={110} width={85} />;
     case 'forward':
@@ -72,6 +74,10 @@ const Icon = ({
       return <IconBack />;
     case 'icon-back-light':
       return <IconBackLight />;
+    case 'icon-back-location':
+      return <IconBackLocation height={18} width={18} />;
+    case 'icon-to-location':
+      return <IconToLocation height={18} width={18} />;
     default:
       return <Text />;
   }

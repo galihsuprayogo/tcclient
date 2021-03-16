@@ -13,8 +13,6 @@ import { getUser, service } from '../../../config';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = -7.400206;
-const LONGITUDE = 110.913001;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 220;

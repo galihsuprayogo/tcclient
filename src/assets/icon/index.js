@@ -38,6 +38,8 @@ import IconOpenDrawer from './icon-open-drawer.svg';
 import IconHelp from './icon-help.svg';
 import IconHelpActive from './icon-help-active.svg';
 import IconForward from './icon-forward.svg';
+import IconBackLocation from './icon-back-location.svg';
+import IconToLocation from './icon-to-location.svg';
 
 export {
   IconBack,
@@ -79,5 +81,7 @@ export {
   IconOpenDrawer,
   IconHelp,
   IconHelpActive,
-  IconForward
+  IconForward,
+  IconBackLocation,
+  IconToLocation
 };

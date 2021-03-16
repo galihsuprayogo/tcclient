@@ -168,7 +168,7 @@ const ChooseCoffee = ({ navigation }) => {
                 />
             <Gap height={10} />
             <View style={styles.locWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('MapCls', { type: 'dss' })}>
+              <TouchableOpacity onPress={() => navigation.navigate('MapPoint', { type: 'dss' })}>
                 <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
               </TouchableOpacity>
               <InputLocation type="text2" icon="loc2" text={address} />

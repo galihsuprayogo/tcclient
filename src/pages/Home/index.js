@@ -57,9 +57,9 @@ const Home = ({ navigation }) => {
         storeUser('consumer', data);
       }
       dispatch({ type: globalAction.SET_LOADING, value: false });
-      // navigation.navigate('ChooseCoffee');
-      // showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
-      navigation.navigate('MapPoint');
+      navigation.navigate('ChooseCoffee');
+      showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
+      // navigation.navigate('MapPoint');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       console.log(error);
