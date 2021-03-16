@@ -22,6 +22,8 @@ const UpdateUmkm = ({ navigation }) => {
 
   const timeoutRef = useRef(null);
   const [storeName, setStoreName] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
@@ -65,6 +67,8 @@ const UpdateUmkm = ({ navigation }) => {
           setPhoto(source);
           setPhotoDB(res.photo);
           setStoreName(res.store_name);
+          setName(res.name);
+          setPhone(res.phone_number);
           setAddress(res.address);
           dispatch({ type: globalAction.SET_PROFILE, value: res });
           setHasPhoto(true);
@@ -97,6 +101,20 @@ const UpdateUmkm = ({ navigation }) => {
     });
   };
 
+  const reloadName = async () => {
+    await getUser('user').then((res) => {
+      setName(res.name);
+      dispatch({ type: globalAction.SET_PROFILE, value: res });
+    });
+  };
+
+  const reloadPhone = async () => {
+    await getUser('user').then((res) => {
+      setPhone(res.phone_number);
+      dispatch({ type: globalAction.SET_PROFILE, value: res });
+    });
+  };
+
   useEffect(() => {
     if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
@@ -104,9 +122,11 @@ const UpdateUmkm = ({ navigation }) => {
     timeoutRef.current = setTimeout(() => {
       timeoutRef.current = null;
       storeName === '' ? reloadStoreName() : null;
+      name === '' ? reloadName() : null;
+      phone === '' ? reloadPhone() : null;
       hasPhoto === false ? reloadImage() : null;
     }, 10000);
-  }, [storeName, hasPhoto]);
+  }, [storeName, name, phone, hasPhoto]);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -120,14 +140,18 @@ const UpdateUmkm = ({ navigation }) => {
 
   const onContinue = async () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
-    if (hasPhoto) {
+    const firstIndex = phone.substring(0, 1);
+    const phoneLength = phone.length;
+    if (hasPhoto && firstIndex !== '0' && phoneLength >= 10) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
-        name: storeName,
+        store_name: storeName,
         photo: photoDB,
         address,
         latitude: profile.latitude,
-        longitude: profile.longitude
+        longitude: profile.longitude,
+        name,
+        phone_number: phone
       };
       service.post('/api/auth/store', data, {
         headers: {
@@ -158,6 +182,12 @@ const UpdateUmkm = ({ navigation }) => {
     } else if (address === '[Belum dilengkapi, klik di atas]') {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('Mohon lengkapi alamat');
+    } else if (firstIndex === '0') {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      showError('No. Telp tidak memakai awalan 0');
+    } else if (phoneLength < 10) {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      showError('Panjang No. Telp Kurang');
     } else {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('photo tidak boleh kosong');
@@ -192,8 +222,8 @@ const UpdateUmkm = ({ navigation }) => {
                 icon="profile"
                 type="inputForm"
                 scope="umkm"
-                value={profile.name}
-                editable={false}
+                value={name}
+                onChangeText={(value) => setName(value)}
               />
               <Gap height={10} />
               <Input
@@ -202,8 +232,8 @@ const UpdateUmkm = ({ navigation }) => {
                 phoneCode="+62"
                 type="inputForm"
                 scope="umkm"
-                value={profile.phone_number}
-                editable={false}
+                value={phone}
+                onChangeText={(value) => setPhone(value)}
               />
               <Gap height={10} />
               <View style={styles.locWrapper}>
