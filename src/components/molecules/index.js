@@ -6,6 +6,7 @@ import List from './List';
 import ListProduct from './ListProduct';
 import Map from './Map';
 import MapCls from './MapCls';
+import MapPoint from './MapPoint';
 import DrawerContent from './DrawerContent';
 import Loading from './Loading';
 import DPicker from './DPicker';
@@ -19,6 +20,7 @@ export {
   ListProduct,
   Map,
   MapCls,
+  MapPoint,
   DrawerContent,
   Loading,
   DPicker,
