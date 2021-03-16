@@ -13,7 +13,7 @@ import { service, storeUser } from '../../../config';
 import { globalAction } from '../../../redux';
 
 const ListProduct = ({
-  source, type, procedure, output, grade, price, id, index
+  source, type, procedure, output, grade, price, id, storeId, index
 }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const ListProduct = ({
     );
   };
   const onUpdate = () => {
-    navigation.navigate('UpdateProduct', { index, id });
+    navigation.navigate('UpdateProduct', { index, id, storeId });
   };
 
   const onDelete = async () => {

@@ -28,7 +28,7 @@ const InputProduct = ({ navigation }) => {
   const [photo, setPhoto] = useState(ILNullPhoto);
   const getImage = () => {
     launchImageLibrary({
-      includeBase64: true, quality: 1, maxWidth: 800, maxHeight: 800
+      includeBase64: true, quality: 0.5, maxWidth: 400, maxHeight: 400
     }, (response) => {
       if (response.didCancel || response.error) {
         showError('oops, sepertinya anda tidak memilih photo');

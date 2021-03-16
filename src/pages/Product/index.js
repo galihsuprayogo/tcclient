@@ -60,6 +60,7 @@ const Product = ({ navigation }) => {
           price={formatNumbro(product.price)}
           id={product.id}
           index={index}
+          storeId={product.store_id}
         />
       ))
     }

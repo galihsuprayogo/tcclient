@@ -14,12 +14,19 @@ const categories = {
   procedure: [
     { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'Fullwash', value: 'Fullwash' },
-    { label: 'Semiwash', value: 'Semiwash' }
+    { label: 'Semiwash', value: 'Semiwash' },
+    { label: 'Natural', value: 'Natural' },
+    { label: 'Wine', value: 'Wine' },
+    { label: 'Honey', value: 'Honey' },
+    { label: 'Kopi Lanang', value: 'Kopi Lanang' },
+    { label: 'Luwak Liar', value: 'Luwak Liar' },
+    { label: 'Luwak Tangkar', value: 'Luwak Tangkar' }
   ],
   output: [
     { label: '-- Pilih --', value: '-- Pilih --' },
     { label: 'Green Bean', value: 'Green Bean' },
-    { label: 'Roasted Bean', value: 'Roasted Bean' }
+    { label: 'Roasted Bean', value: 'Roasted Bean' },
+    { label: 'Bubuk', value: 'Bubuk' }
   ],
   grade: [
     { label: '-- Pilih --', value: '-- Pilih --' },

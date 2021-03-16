@@ -23,6 +23,7 @@ const UpdateProduct = ({ navigation, route }) => {
 
   const [id] = useState(route.params?.id);
   const [index] = useState(route.params?.index);
+  const [storeId] = useState(route.params?.storeId);
   const [photoDB, setPhotoDB] = useState('');
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(ILNullPhoto);
@@ -30,7 +31,7 @@ const UpdateProduct = ({ navigation, route }) => {
 
   const getImage = () => {
     launchImageLibrary({
-      includeBase64: true, quality: 1, maxWidth: 800, maxHeight: 800
+      includeBase64: true, quality: 0.5, maxWidth: 400, maxHeight: 400
     }, (response) => {
       if (response.didCancel || response.error) {
         showError('oops, sepertinya anda tidak memilih photo');
@@ -100,6 +101,7 @@ const UpdateProduct = ({ navigation, route }) => {
       const price = unFormatNumbro(amount);
       const data = {
         id,
+        store_id: storeId,
         type: category.type,
         procedure: category.procedure,
         output: category.output,
