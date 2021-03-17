@@ -45,6 +45,7 @@ const MapPoint = ({ navigation, route }) => {
 
   const [cardFooter, setCardFooter] = useState(false);
   const [cardHeader, setCardHeader] = useState(false);
+  const [flag, setFlag] = useState(false);
   const [addressPosition, setAddressPosition] = useState('');
   const [type] = useState(route.params?.type);
 
@@ -69,6 +70,7 @@ const MapPoint = ({ navigation, route }) => {
       longitudeDelta: LONGITUDE_DELTA,
     };
     setInitialPosition(resetPosition);
+    navigation.goBack();
     console.log('did cancel');
   };
 
@@ -108,6 +110,9 @@ const MapPoint = ({ navigation, route }) => {
   };
 
   const onMapLongPress = async (e) => {
+    setFlag(true);
+    setCardHeader(true);
+    setCardFooter(true);
     const presLocation = {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
@@ -131,8 +136,6 @@ const MapPoint = ({ navigation, route }) => {
     }).catch((err) => {
       setAddressPosition(`${newMarkerPosition.latitude.toString()},${newMarkerPosition.longitude.toString()}`);
     });
-    setCardHeader(true);
-    setCardFooter(true);
   };
 
   const onMapPress = () => {
@@ -143,6 +146,7 @@ const MapPoint = ({ navigation, route }) => {
     setNewMarkerPosition(clearLocation);
     setCardHeader(false);
     setCardFooter(false);
+    setFlag(false);
   };
 
   const backPressInitialPosition = () => {
@@ -179,13 +183,14 @@ const MapPoint = ({ navigation, route }) => {
       getUser('user').then((res) => {
         const data = res;
         data.address = addressPosition;
-        data.latitude = markerPosition.latitude.toString();
-        data.longitude = markerPosition.longitude.toString();
+        data.latitude = newMarkerPosition.latitude.toString();
+        data.longitude = newMarkerPosition.longitude.toString();
         storeUser('user', res);
       });
     }
     setCardHeader(false);
     setCardFooter(false);
+    setFlag(false);
     navigation.goBack();
   };
 
@@ -199,73 +204,76 @@ const MapPoint = ({ navigation, route }) => {
     setInitialPosition(backLocation);
     setCardHeader(false);
     setCardFooter(false);
+    setFlag(false);
   };
 
   return (
-          <View style={styles.container}>
-                    <MapView
-                      provider={PROVIDER_GOOGLE}
-                      showUserLocation
-                      showsMyLocationButton
-                      zoomEnabled
-                      minZoomLevel={17}
-                      maxZoomLevel={30}
-                      style={styles.map}
-                      region={initialPosition}
-                      scrollEnabled
-                      onLongPress={(e) => onMapLongPress(e)}
-                      onPress={(e) => onMapPress(e)}
-                    >
-                              <Marker
-                                coordinate={markerPosition}
-                              >
-                                        <View style={styles.radius}>
-                                                  <View style={styles.marker} />
-                                        </View>
-                              </Marker>
-                              <Marker
-                                coordinate={newMarkerPosition}
-                              >
-                                        <View style={styles.markerWrap}>
-                                                  <Image
-                                                    source={IconMarker}
-                                                    style={styles.markerPoint}
-                                                  />
-                                        </View>
-                              </Marker>
-                    </MapView>
-                    {cardHeader && (
-                    <View style={styles.cardHeaderWrapper}>
-                              <Text style={styles.cardHeaderContent}>
-                              {`${newMarkerPosition.latitude.toString()},${newMarkerPosition.longitude.toString()}`}
-                              </Text>
-                    </View>
-                    )}
-                    <TouchableOpacity
-                      style={styles.buttonDirectWrapper}
-                      onPress={directPressInitialLocation}
-                    >
-                              <Icon icon="icon-to-location" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.buttonInitialWrapper}
-                      onPress={backPressInitialPosition}
-                    >
-                              <Icon icon="icon-back-location" />
-                    </TouchableOpacity>
-                    {cardFooter && (
-                    <View style={styles.cardFooterWrapper}>
-                              <Text style={styles.cardFooterContent}>
-                                        {addressPosition}
-                              </Text>
-                              <View style={styles.buttonModalWrapper}>
-                                        <ButtonModal icon="beenhere" title="Simpan" type="map" height={14} width={10} onPress={onSaveModal} />
-                                        <Gap width={10} />
-                                        <ButtonModal icon="xlight" title="Batal" type="map" height={12} width={10} onPress={onCancelModal} />
-                              </View>
-                    </View>
-                    )}
-          </View>
+    <View style={styles.container}>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        showUserLocation
+        showsMyLocationButton
+        zoomEnabled
+        minZoomLevel={17}
+        maxZoomLevel={30}
+        style={styles.map}
+        region={initialPosition}
+        scrollEnabled
+        onLongPress={(e) => onMapLongPress(e)}
+        onPress={(e) => onMapPress(e)}
+      >
+          <Marker
+            coordinate={markerPosition}
+          >
+            <View style={styles.radius}>
+              <View style={styles.marker} />
+            </View>
+          </Marker>
+          {flag && (
+            <Marker
+              coordinate={newMarkerPosition}
+            >
+              <View style={styles.markerWrap}>
+                   <Image
+                     source={IconMarker}
+                     style={styles.markerPoint}
+                   />
+              </View>
+            </Marker>
+          )}
+      </MapView>
+          {cardHeader && (
+            <View style={styles.cardHeaderWrapper}>
+              <Text style={styles.cardHeaderContent}>
+                {`${newMarkerPosition.latitude.toString()},${newMarkerPosition.longitude.toString()}`}
+              </Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={styles.buttonDirectWrapper}
+            onPress={directPressInitialLocation}
+          >
+              <Icon icon="icon-to-location" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonInitialWrapper}
+            onPress={backPressInitialPosition}
+          >
+              <Icon icon="icon-back-location" />
+          </TouchableOpacity>
+          {cardFooter && (
+            <View style={styles.cardFooterWrapper}>
+                <Text style={styles.cardFooterContent}>
+                    {addressPosition}
+                </Text>
+                <View style={styles.buttonModalWrapper}>
+                    <ButtonModal icon="beenhere" title="Simpan" type="map" height={14} width={10} onPress={onSaveModal} />
+                    <Gap width={10} />
+                    <ButtonModal icon="xlight" title="Batal" type="map" height={12} width={10} onPress={onCancelModal} />
+                </View>
+            </View>
+          )}
+    </View>
   );
 };
 

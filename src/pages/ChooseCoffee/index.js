@@ -104,7 +104,7 @@ const ChooseCoffee = ({ navigation }) => {
           Accept: 'application/json',
         },
       }).then((response) => {
-        storeUser('stores', response.data.stores);
+        storeUser('coffees', response.data.stores);
         showInfo('Silahkan memulai navigasi');
         dispatch({ type: globalAction.SET_LOADING, value: false });
         navigation.navigate('Map');

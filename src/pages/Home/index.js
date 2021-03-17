@@ -22,7 +22,7 @@ const Home = ({ navigation }) => {
         Accept: 'application/json',
       },
     }).then((response) => {
-      const randomId = Math.floor(Math.random() * 100) + 1;
+      const randomId = Math.floor(Math.random() * 1000) + 1;
       if (response.data.minimum === null && response.data.maximum === null) {
         const data = {
           consumerId: randomId,
@@ -57,9 +57,9 @@ const Home = ({ navigation }) => {
         storeUser('consumer', data);
       }
       dispatch({ type: globalAction.SET_LOADING, value: false });
-      navigation.navigate('ChooseCoffee');
-      showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
-      // navigation.navigate('MapPoint');
+      // navigation.navigate('ChooseCoffee');
+      // showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
+      navigation.navigate('Helper');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       console.log(error);

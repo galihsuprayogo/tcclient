@@ -9,6 +9,7 @@ import MapPoint from './MapPoint';
 import DrawerContent from './DrawerContent';
 import Loading from './Loading';
 import DPicker from './DPicker';
+import Helper from './Helper';
 
 export {
   Header,
@@ -22,4 +23,5 @@ export {
   DrawerContent,
   Loading,
   DPicker,
+  Helper
 };

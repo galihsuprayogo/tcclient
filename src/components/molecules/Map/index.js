@@ -9,7 +9,7 @@ import { fonts, colors } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
 import { Button } from '..';
-import { getUser, service } from '../../../config';
+import { getUser, deleteCoffees } from '../../../config';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -20,16 +20,17 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 
-const Map = () => {
+const Map = ({ navigation }) => {
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = async () => {
-      await getUser('stores').then((res) => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('coffees').then((res) => {
         setCoffeeCoordinates(res);
+        console.log(res);
       });
-    };
-    unsubscribe();
+    });
+    return () => clearTimeout(unsubscribe);
   }, []);
 
   const [originCoordinate, setOriginCoordinate] = useState({
@@ -42,7 +43,6 @@ const Map = () => {
   });
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [error, setError] = useState('');
   const [direct, setDirect] = useState(false);
   const [cardFooter, setCardFooter] = useState(true);
   const [cardHeader, setCardHeader] = useState(true);
@@ -65,6 +65,15 @@ const Map = () => {
 
   const onDisable = () => {
     if (cardButton === false && direct === false) {
+      const resetPosition = {
+        latitude: 0,
+        longitude: 0
+      };
+      setOriginCoordinate(resetPosition);
+      setDestinationCoordinate(resetPosition);
+      setCoffeeCoordinates([]);
+      deleteCoffees();
+      navigation.replace('Splash');
       return false;
     }
     if (cardButton === true) {
@@ -92,10 +101,10 @@ const Map = () => {
           longitude: position.coords.longitude
         };
         setOriginCoordinate(changeOriginCoordinate);
-        // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
+        setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
       },
-      (error) => setError(error.message),
-      { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
     );
     return () => Geolocation.clearWatch(watchID);
   };

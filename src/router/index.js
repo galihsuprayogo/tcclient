@@ -18,7 +18,7 @@ import {
   UpdateProduct
 } from '../pages';
 import {
-  Map, MapPoint,
+  Map, MapPoint, Helper,
   BottomNavigator, DrawerContent, DrawItem
 } from '../components';
 
@@ -131,6 +131,11 @@ const Router = () => (
     <Stack.Screen
       name="UpdateProduct"
       component={UpdateProduct}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="Helper"
+      component={Helper}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>
