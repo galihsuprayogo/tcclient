@@ -192,7 +192,7 @@ const ChooseCoffee = ({ navigation }) => {
             <Gap height={10} />
             <View style={styles.locWrapper}>
               <View>
-                <InputLocation type="text1" text="Lokasi Kamu (Deteksi Otomatis)" />
+                <InputLocation type="text1" icon="unVisible" text="Lokasi Kamu (Deteksi Otomatis)" />
               </View>
               <InputLocation type="text2" icon="loc2" text={address} />
             </View>

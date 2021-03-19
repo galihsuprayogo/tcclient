@@ -25,6 +25,27 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 
 const Map = ({ navigation }) => {
+  const consumer = useSelector((state) => state.consumerReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('coffees').then((res) => {
+        setCoffeeCoordinates(res);
+      });
+    });
+    return () => clearTimeout(unsubscribe);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('consumer').then((res) => {
+        dispatch({ type: globalAction.SET_CONSUMER, value: res });
+      });
+    });
+    return () => clearTimeout(unsubscribe);
+  }, []);
+
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
   const [originCoordinate, setOriginCoordinate] = useState({
     latitude: 0,
@@ -34,26 +55,6 @@ const Map = ({ navigation }) => {
     latitude: 0,
     longitude: 0
   });
-  const consumer = useSelector((state) => state.consumerReducer);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const unsubscribe = async () => {
-      await getUser('coffees').then((res) => {
-        setCoffeeCoordinates(res);
-      });
-    };
-    unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = async () => {
-      await getUser('consumer').then((res) => {
-        dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      });
-    };
-    unsubscribe();
-  }, []);
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [direct, setDirect] = useState(false);
@@ -235,7 +236,7 @@ const Map = ({ navigation }) => {
     setDestinationCoordinate({ latitude, longitude });
     setBoxOne(false);
     setBoxTwo(true);
-    setZoom(22);
+    setZoom(20);
     setTimeTraveler();
   };
 
@@ -399,7 +400,6 @@ const Map = ({ navigation }) => {
                 <View style={styles.textContent}>
                   <Text numberOfLines={1} style={styles.cardTitle}>
                     {index + 1}
-                    ).
                     {' '}
                     {marker.name}
                     {' '}
@@ -433,8 +433,8 @@ const Map = ({ navigation }) => {
             { setTimeTraveler().hDisplay + setTimeTraveler().mDisplay + setTimeTraveler().sDisplay }
           </Text>
         </View>
-        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={() => offStart()}>
-            <Button type="icon-button" icon="x" onPress={() => offStart()} />
+        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={offStart}>
+            <Button type="icon-button" icon="x" onPress={offStart} />
         </TouchableOpacity>
       </View>
       )}

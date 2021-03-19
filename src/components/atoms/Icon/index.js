@@ -23,7 +23,8 @@ import {
   IconBackLight,
   IconBack,
   IconBackLocation,
-  IconToLocation
+  IconToLocation,
+  IconUnVisible
 } from '../../../assets';
 
 const Icon = ({
@@ -50,6 +51,8 @@ const Icon = ({
       return <IconLocationLight height={30} width={30} />;
     case 'loc2':
       return <IconLocation height={18} width={18} />;
+    case 'unVisible':
+      return <IconUnVisible height={18} width={18} />;
     case 'near':
       return <IconNearMe height={18} width={18} />;
     case 'marker':

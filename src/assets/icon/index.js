@@ -40,6 +40,7 @@ import IconHelpActive from './icon-help-active.svg';
 import IconForward from './icon-forward.svg';
 import IconBackLocation from './icon-back-location.svg';
 import IconToLocation from './icon-to-location.svg';
+import IconUnVisible from './icon-location-unvisible.svg';
 
 export {
   IconBack,
@@ -83,5 +84,6 @@ export {
   IconHelpActive,
   IconForward,
   IconBackLocation,
-  IconToLocation
+  IconToLocation,
+  IconUnVisible
 };
