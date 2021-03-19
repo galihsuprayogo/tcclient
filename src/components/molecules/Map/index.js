@@ -24,13 +24,12 @@ const Map = ({ navigation }) => {
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = setTimeout(async () => {
+    const unsubscribe = async () => {
       await getUser('coffees').then((res) => {
         setCoffeeCoordinates(res);
-        console.log(res);
       });
-    });
-    return () => clearTimeout(unsubscribe);
+    };
+    unsubscribe();
   }, []);
 
   const [originCoordinate, setOriginCoordinate] = useState({
@@ -72,7 +71,6 @@ const Map = ({ navigation }) => {
       setOriginCoordinate(resetPosition);
       setDestinationCoordinate(resetPosition);
       setCoffeeCoordinates([]);
-      deleteCoffees();
       navigation.replace('Splash');
       return false;
     }

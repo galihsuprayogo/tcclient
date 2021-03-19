@@ -18,6 +18,9 @@ const Helper = () => {
       } else {
         const base64 = `data:${response.type};base64, ${response.base64}`;
         setPhotoDB(base64);
+        const source = { uri: response.uri };
+        setPhoto(source);
+        setHasPhoto(true);
       }
     });
   };
@@ -28,6 +31,8 @@ const Helper = () => {
 
   const onPressButton = () => {
     console.log(photoDB);
+    setPhoto(ILNullPhoto);
+    setHasPhoto(false);
   };
 
   return (
