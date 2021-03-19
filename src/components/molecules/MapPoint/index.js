@@ -25,7 +25,7 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-const MapPoint = ({ navigation, route }) => {
+const MapPoint = ({ navigation }) => {
   const [initialPosition, setInitialPosition] = useState({
     latitude: 0,
     longitude: 0,
@@ -47,7 +47,6 @@ const MapPoint = ({ navigation, route }) => {
   const [cardHeader, setCardHeader] = useState(false);
   const [flag, setFlag] = useState(false);
   const [addressPosition, setAddressPosition] = useState('');
-  const [type] = useState(route.params?.type);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -170,24 +169,13 @@ const MapPoint = ({ navigation, route }) => {
   };
 
   const onSaveModal = () => {
-    if (type === 'dss') {
-      getUser('consumer').then((res) => {
-        const data = res;
-        data.address = addressPosition;
-        data.latitude = markerPosition.latitude.toString();
-        data.longitude = markerPosition.longitude.toString();
-        storeUser('consumer', res);
-      });
-    }
-    if (type === 'umkm') {
-      getUser('user').then((res) => {
-        const data = res;
-        data.address = addressPosition;
-        data.latitude = newMarkerPosition.latitude.toString();
-        data.longitude = newMarkerPosition.longitude.toString();
-        storeUser('user', res);
-      });
-    }
+    getUser('user').then((res) => {
+      const data = res;
+      data.address = addressPosition;
+      data.latitude = newMarkerPosition.latitude.toString();
+      data.longitude = newMarkerPosition.longitude.toString();
+      storeUser('user', res);
+    });
     setCardHeader(false);
     setCardFooter(false);
     setFlag(false);

@@ -3,13 +3,17 @@ import {
   View, StyleSheet, Dimensions, Text, Animated, Image, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 import { fonts, colors } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
 import { Button } from '..';
-import { getUser, deleteCoffees } from '../../../config';
+import {
+  getUser, deleteConsumer, deleteCoffees, service
+} from '../../../config';
+import { globalAction } from '../../../redux';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -22,6 +26,16 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 
 const Map = ({ navigation }) => {
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
+  const [originCoordinate, setOriginCoordinate] = useState({
+    latitude: 0,
+    longitude: 0
+  });
+  const [destinationCoordinate, setDestinationCoordinate] = useState({
+    latitude: 0,
+    longitude: 0
+  });
+  const consumer = useSelector((state) => state.consumerReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = async () => {
@@ -32,14 +46,14 @@ const Map = ({ navigation }) => {
     unsubscribe();
   }, []);
 
-  const [originCoordinate, setOriginCoordinate] = useState({
-    latitude: 0,
-    longitude: 0
-  });
-  const [destinationCoordinate, setDestinationCoordinate] = useState({
-    latitude: 0,
-    longitude: 0
-  });
+  useEffect(() => {
+    const unsubscribe = async () => {
+      await getUser('consumer').then((res) => {
+        dispatch({ type: globalAction.SET_CONSUMER, value: res });
+      });
+    };
+    unsubscribe();
+  }, []);
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [direct, setDirect] = useState(false);
@@ -55,8 +69,8 @@ const Map = ({ navigation }) => {
   const mapAnimation = new Animated.Value(0);
 
   useEffect(() => {
-    onScrollCardToMarker();
     watchPosition();
+    onScrollCardToMarker();
     BackHandler.addEventListener('backPress', onDisable);
     return () =>
       BackHandler.removeEventListener('backPress', onDisable);
@@ -64,13 +78,16 @@ const Map = ({ navigation }) => {
 
   const onDisable = () => {
     if (cardButton === false && direct === false) {
-      const resetPosition = {
+      const resetAllPosition = {
         latitude: 0,
         longitude: 0
       };
-      setOriginCoordinate(resetPosition);
-      setDestinationCoordinate(resetPosition);
       setCoffeeCoordinates([]);
+      setOriginCoordinate(resetAllPosition);
+      setDestinationCoordinate(resetAllPosition);
+      clearProm();
+      deleteConsumer();
+      deleteCoffees();
       navigation.replace('Splash');
       return false;
     }
@@ -84,6 +101,23 @@ const Map = ({ navigation }) => {
     }
   };
 
+  const clearProm = async () => {
+    const data = {
+      consumerId: consumer.consumerId
+    };
+
+    service.post('/api/auth/clear', data, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        Accept: 'application/json',
+      },
+    }).then((response) => {
+      console.log(response.data.message);
+    }).catch((error) => {
+      console.log(error.message);
+    });
+  };
+
   const getMapRegion = () => ({
     latitude: originCoordinate.latitude,
     longitude: originCoordinate.longitude,
@@ -91,20 +125,19 @@ const Map = ({ navigation }) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  const watchPosition = async () => {
-    const watchID = await Geolocation.watchPosition(
+  const watchPosition = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
         const changeOriginCoordinate = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         };
         setOriginCoordinate(changeOriginCoordinate);
-        setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
+        // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
       },
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
     );
-    return () => Geolocation.clearWatch(watchID);
   };
 
   const onReady = (result) => {

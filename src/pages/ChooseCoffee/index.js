@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoder';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
@@ -26,43 +28,64 @@ const ChooseCoffee = ({ navigation }) => {
   const [address, setAddress] = useState('');
   const [minimum, setMinimum] = useState(consumer.minimumLimit);
   const [maximum, setMaximum] = useState(minimum);
+  const [markerPosition, setMarkerPosition] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   useEffect(() => {
-    const unsubscribe = async () => {
-      await getUser('consumer').then((res) => {
-        if (res.address === '') {
-          const data = res;
-          data.address = '[Belum dilengkapi, klik di atas]';
-          setMinimum(res.minimumLimit);
-          setMaximum(minimum);
-          dispatch({ type: globalAction.SET_CONSUMER, value: res });
-          storeUser('consumer', res);
-        } else {
-          setMinimum(res.minimumLimit);
-          setMaximum(minimum);
-          setAddress(res.address);
-          dispatch({ type: globalAction.SET_CONSUMER, value: res });
-        }
-      });
-    };
-    unsubscribe();
+    const unsubscribe = setTimeout(async () => {
+      initialPosition();
+    }, 50);
+    return () => clearTimeout(unsubscribe);
   }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(async () => {
+    const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
-        setAddress(res.address);
+        const data = res;
+        data.address = address;
+        data.latitude = markerPosition.latitude;
+        data.longitude = markerPosition.longitude;
+        setMinimum(res.minimumLimit);
+        setMaximum(minimum);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      }, 2000);
+        storeUser('consumer', res);
+      }, 50);
     });
-    return () => clearTimeout(timeout);
-  }, [consumer]);
+    return () => clearTimeout(unsubscribe);
+  }, []);
 
   useEffect(() => {
     BackHandler.addEventListener('backPress', onBackHandling);
     return () =>
       BackHandler.removeEventListener('backPress', onBackHandling);
   });
+
+  const initialPosition = () => {
+    Geolocation.getCurrentPosition(
+      async (position) => {
+        const newPosition = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+        setMarkerPosition(newPosition);
+        const NY = {
+          id: 1,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        Geocoder.fallbackToGoogle('AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA');
+        await Geocoder.geocodePosition(NY).then((res) => {
+          setAddress(res[1].formattedAddress.toString());
+        }).catch((err) => {
+          setAddress(`${newMarkerPosition.latitude.toString()},${newMarkerPosition.longitude.toString()}`);
+        });
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
+    );
+  };
 
   const onBackHandling = () => {
     resetForm();
@@ -168,9 +191,9 @@ const ChooseCoffee = ({ navigation }) => {
                 />
             <Gap height={10} />
             <View style={styles.locWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('MapPoint', { type: 'dss' })}>
-                <InputLocation type="text1" icon="near" text="Ubah lewat peta [klik]" />
-              </TouchableOpacity>
+              <View>
+                <InputLocation type="text1" text="Lokasi Kamu (Deteksi Otomatis)" />
+              </View>
               <InputLocation type="text2" icon="loc2" text={address} />
             </View>
             <Gap height={20} />

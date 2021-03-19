@@ -28,4 +28,6 @@ export const deleteToken = () => { AsyncStorage.removeItem('@token'); };
 
 export const deleteId = () => { AsyncStorage.removeItem('@id'); };
 
+export const deleteConsumer = () => { AsyncStorage.removeItem('consumer'); };
+
 export const deleteCoffees = () => { AsyncStorage.removeItem('coffees'); };

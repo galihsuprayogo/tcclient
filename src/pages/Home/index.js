@@ -46,8 +46,8 @@ const Home = ({ navigation }) => {
           procedure: '',
           output: '',
           grade: '',
-          minimum: 0,
-          maximum: 0,
+          minimum: response.data.minimum,
+          maximum: response.data.maximum,
           minimumLimit: response.data.minimum,
           maximumLimit: response.data.maximum,
           address: '',
@@ -57,9 +57,9 @@ const Home = ({ navigation }) => {
         storeUser('consumer', data);
       }
       dispatch({ type: globalAction.SET_LOADING, value: false });
-      // navigation.navigate('ChooseCoffee');
-      // showInfo('Pilih kriteria yang tersedia. Jangan lupa lokasi !');
-      navigation.navigate('Helper');
+      navigation.navigate('ChooseCoffee');
+      showInfo('Pilih kriteria yang tersedia');
+      // navigation.navigate('Helper');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       console.log(error);
