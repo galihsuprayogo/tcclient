@@ -7,7 +7,7 @@ import {
   categoriesReducer,
   setCategoryReducer,
   consumerReducer,
-  storeReducer
+  storeReducer,
 } from '../Reducer';
 
 const rootReducer = combineReducers({
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   categoriesReducer,
   setCategoryReducer,
   consumerReducer,
-  storeReducer
+  storeReducer,
 });
 
 export const store = createStore(rootReducer);

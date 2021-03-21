@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, ScrollView
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
-import { Header, ListProduct } from '../../components';
+import { Header, ListProduct, Gap } from '../../components';
 import { getUser } from '../../config';
 import { globalAction } from '../../redux';
 import { colors, fonts, formatNumbro } from '../../utils';
@@ -15,8 +17,7 @@ const Product = ({ navigation }) => {
     const unsubscribe = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-        renderProducts();
-      }, 500);
+      }, 1000);
     });
     return () => clearTimeout(unsubscribe);
   }, []);
@@ -25,47 +26,10 @@ const Product = ({ navigation }) => {
     const timeout = setTimeout(async () => {
       await getUser('products').then((res) => {
         dispatch({ type: globalAction.SET_PRODUCT, value: res });
-      }, 100);
+      }, 500);
     });
     return () => clearTimeout(timeout);
   }, [products.product]);
-
-  const renderPagination = (index, total, context) => (
-      <View style={styles.paginationNumber}>
-        <Text style={{ color: colors.text.default }}>
-          <Text style={styles.paginationText}>{index + 1}</Text>
-          /
-          {total}
-        </Text>
-      </View>
-  );
-
-  const renderProducts = () => (
-    <Swiper
-      showsPagination
-      loop={false}
-      dot={(<View style={styles.dot} />)}
-      activeDot={(<View style={styles.activeDot} />)}
-      renderPagination={renderPagination}
-    >
-     {
-      products.product.map((product, index) => (
-        <ListProduct
-          key={index}
-          source={{ uri: product.image }}
-          type={product.type}
-          procedure={product.procedure}
-          output={product.output}
-          grade={product.grade}
-          price={formatNumbro(product.price)}
-          id={product.id}
-          index={index}
-          storeId={product.store_id}
-        />
-      ))
-    }
-    </Swiper>
-  );
 
   return (
     <View style={styles.container}>
@@ -77,11 +41,35 @@ const Product = ({ navigation }) => {
       onPress={() => navigation.openDrawer()}
     />
     <View style={styles.content}>
-      <View style={styles.subDivContent}>
           {products.product[0].type === null
-           && <Text style={styles.text}> Masukkan Produk Kamu </Text>}
-          {products.product[0].type !== null && renderProducts()}
-      </View>
+          && (
+            <View style={styles.subDivContent}>
+                  <Text style={styles.text}> Masukkan Produk Kamu </Text>
+            </View>
+          )}
+          {products.product[0].type !== null
+            && (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {
+                products.product.map((product, index) => (
+                <View key={index} style={styles.viewScrollWrapper}>
+                  <ListProduct
+                    key={index}
+                    source={{ uri: product.image }}
+                    type={product.type}
+                    procedure={product.procedure}
+                    output={product.output}
+                    grade={product.grade}
+                    price={formatNumbro(product.price)}
+                    id={product.id}
+                    index={index}
+                    storeId={product.store_id}
+                  />
+                </View>
+                ))
+              }
+              </ScrollView>
+            )}
     </View>
     </View>
   );
@@ -111,41 +99,19 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     borderRadius: 10
   },
-  dot: {
-    backgroundColor: 'rgba(0,0,0,0.9)',
-    width: 5,
-    height: 5,
-    borderRadius: 20,
-    marginLeft: 3,
-    marginRight: 3,
-    marginTop: 15,
-    // marginBottom: 6
-  },
-  activeDot: {
-    backgroundColor: 'white',
-    width: 6,
-    height: 6,
-    borderRadius: 5,
-    marginLeft: 3,
-    marginRight: 3,
-    marginTop: 15,
-    // marginBottom: 6
-  },
-  paginationNumber: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10
-  },
-  paginationText: {
-    color: 'white',
-    fontFamily: fonts.Akkurat.normal,
-    fontSize: 18
-  },
   text: {
     fontFamily: fonts.sfProDisplay.heavy,
     color: colors.text.secondary,
     fontSize: 18,
     textAlign: 'center'
   },
+  scrollWrapper: {
+    // marginVertical: 30,
+  },
+  viewScrollWrapper: {
+    flex: 1,
+    marginVertical: 20,
+    marginHorizontal: 10,
+  }
 });
 export default Product;

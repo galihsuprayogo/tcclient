@@ -42,7 +42,7 @@ export const showInfo = (message) => {
     message,
     position: 'top',
     type: 'simple message',
-    duration: 2000,
+    duration: 500,
     color: 'white',
     style: {
       borderRadius: 8,

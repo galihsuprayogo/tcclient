@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    padding: 35
   },
   contentWrapper: {
     flex: 1,
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: 8,
-    left: 10
+    left: 29
   },
   buttonText: {
     fontFamily: fonts.Akkurat.bold,

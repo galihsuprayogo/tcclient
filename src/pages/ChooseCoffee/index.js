@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geocoder from 'react-native-geocoder';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
@@ -17,7 +18,7 @@ import {
   Button,
 } from '../../components';
 import { globalAction } from '../../redux';
-import { getUser, storeUser, service } from '../../config';
+import { getUser, service, storeUser } from '../../config';
 
 const ChooseCoffee = ({ navigation }) => {
   const categories = useSelector((state) => state.categoriesReducer);
@@ -106,11 +107,23 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: false });
   };
 
-  const onContinue = async () => {
+  const getRank = () => {
+    service.post('/api/auth/rank', {
+      consumerId: consumer.consumerId
+    }).then((response) => {
+      AsyncStorage.setItem('coffees', JSON.stringify(response.data.ranking));
+    }).catch((error) => {
+      console.log(error);
+      resetForm();
+      showError('Terjadi kesalahan');
+    });
+  };
+
+  const onContinue = () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
     && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
-      const data = {
+      service.post('/api/auth/index', {
         consumerId: consumer.consumerId,
         type: category.type,
         procedure: category.procedure,
@@ -120,16 +133,10 @@ const ChooseCoffee = ({ navigation }) => {
         longitude: consumer.longitude,
         minimum,
         maximum
-      };
-      service.post('/api/auth/index', data, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          Accept: 'application/json',
-        },
       }).then((response) => {
-        storeUser('coffees', response.data.stores);
-        showInfo('Silahkan memulai navigasi');
+        getRank();
         dispatch({ type: globalAction.SET_LOADING, value: false });
+        showInfo('Silahkan memulai navigasi');
         navigation.navigate('Map');
       }).catch((error) => {
         console.log(error);

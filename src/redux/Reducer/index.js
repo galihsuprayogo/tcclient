@@ -16,8 +16,10 @@ const categories = {
     { label: 'Fullwash', value: 'Fullwash' },
     { label: 'Semiwash', value: 'Semiwash' },
     { label: 'Natural', value: 'Natural' },
-    { label: 'Wine', value: 'Wine' },
+    { label: 'Winey', value: 'Winey' },
     { label: 'Honey', value: 'Honey' },
+    { label: 'Fine', value: 'Fine' },
+    { label: 'Black Honey', value: 'Black Honey' },
     { label: 'Kopi Lanang', value: 'Kopi Lanang' },
     { label: 'Luwak Liar', value: 'Luwak Liar' },
     { label: 'Luwak Tangkar', value: 'Luwak Tangkar' }
