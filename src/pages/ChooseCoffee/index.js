@@ -120,30 +120,60 @@ const ChooseCoffee = ({ navigation }) => {
     });
   };
 
+  const getStatus = () => {
+    service.post('/api/auth/isAvailable', {
+      consumerId: consumer.consumerId,
+      type: category.type,
+      procedure: category.procedure,
+      output: category.output,
+      grade: category.grade,
+      latitude: consumer.latitude,
+      longitude: consumer.longitude,
+      minimum,
+      maximum
+    }).then((response) => {
+      const status = response.data.message;
+      if (status === 'empty') {
+        showError('Produk tidak tersedia');
+      } else if (status === 'unavailable') {
+        showError('Jumlah produk belum mencukupi');
+      } else if (status === 'available') {
+        onPostData();
+      }
+    }).catch((error) => {
+      showError('Terjadi Kesalahan');
+    });
+  };
+
+  const onPostData = () => {
+    dispatch({ type: globalAction.SET_LOADING, value: true });
+    service.post('/api/auth/index', {
+      consumerId: consumer.consumerId,
+      type: category.type,
+      procedure: category.procedure,
+      output: category.output,
+      grade: category.grade,
+      latitude: consumer.latitude,
+      longitude: consumer.longitude,
+      minimum,
+      maximum
+    }).then((response) => {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      showInfo('Silahkan memulai navigasi');
+      getRank();
+      navigation.navigate('Map');
+    }).catch((error) => {
+      console.log(error);
+      resetForm();
+      showError('Terjadi kesalahan');
+    });
+  };
+
   const onContinue = () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
     && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
-      service.post('/api/auth/index', {
-        consumerId: consumer.consumerId,
-        type: category.type,
-        procedure: category.procedure,
-        output: category.output,
-        grade: category.grade,
-        latitude: consumer.latitude,
-        longitude: consumer.longitude,
-        minimum,
-        maximum
-      }).then((response) => {
-        dispatch({ type: globalAction.SET_LOADING, value: false });
-        showInfo('Silahkan memulai navigasi');
-        getRank();
-        navigation.navigate('Map');
-      }).catch((error) => {
-        console.log(error);
-        resetForm();
-        showError('Terjadi kesalahan');
-      });
+      getStatus();
     } else {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('form tidak boleh kosong');
