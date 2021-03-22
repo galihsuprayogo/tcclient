@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geocoder from 'react-native-geocoder';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
@@ -108,10 +107,12 @@ const ChooseCoffee = ({ navigation }) => {
   };
 
   const getRank = () => {
-    service.post('/api/auth/rank', {
-      consumerId: consumer.consumerId
+    service.get('/api/auth/rank', {
+      params: {
+        consumerId: consumer.consumerId
+      }
     }).then((response) => {
-      AsyncStorage.setItem('coffees', JSON.stringify(response.data.ranking));
+      storeUser('coffees', response.data.ranking);
     }).catch((error) => {
       console.log(error);
       resetForm();
@@ -134,9 +135,9 @@ const ChooseCoffee = ({ navigation }) => {
         minimum,
         maximum
       }).then((response) => {
-        getRank();
         dispatch({ type: globalAction.SET_LOADING, value: false });
         showInfo('Silahkan memulai navigasi');
+        getRank();
         navigation.navigate('Map');
       }).catch((error) => {
         console.log(error);
