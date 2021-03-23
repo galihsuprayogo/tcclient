@@ -32,7 +32,7 @@ const Map = ({ navigation }) => {
     const unsubscribe = setTimeout(async () => {
       await getUser('coffees').then((res) => {
         setCoffeeCoordinates(res);
-      });
+      }, 100);
     });
     return () => clearTimeout(unsubscribe);
   }, []);
@@ -41,7 +41,7 @@ const Map = ({ navigation }) => {
     const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      });
+      }, 100);
     });
     return () => clearTimeout(unsubscribe);
   }, []);
@@ -181,8 +181,7 @@ const Map = ({ navigation }) => {
         index = 0;
       }
 
-      clearTimeout(regionTimeout);
-
+      // clearTimeout(regionTimeout);
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
@@ -200,6 +199,7 @@ const Map = ({ navigation }) => {
           _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
         }
       }, 10);
+      return () => clearTimeout(regionTimeout);
     });
   };
 

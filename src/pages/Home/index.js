@@ -26,10 +26,6 @@ const Home = ({ navigation }) => {
       if (response.data.minimum === null && response.data.maximum === null) {
         const data = {
           consumerId: randomId,
-          type: '',
-          procedure: '',
-          output: '',
-          grade: '',
           minimum: 0,
           maximum: 0,
           minimumLimit: 0,
@@ -42,10 +38,6 @@ const Home = ({ navigation }) => {
       } else {
         const data = {
           consumerId: randomId,
-          type: '',
-          procedure: '',
-          output: '',
-          grade: '',
           minimum: response.data.minimum,
           maximum: response.data.maximum,
           minimumLimit: response.data.minimum,

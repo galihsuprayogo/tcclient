@@ -57,6 +57,20 @@ const ChooseCoffee = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('consumer').then((res) => {
+        const data = res;
+        data.address = address;
+        data.latitude = markerPosition.latitude;
+        data.longitude = markerPosition.longitude;
+        dispatch({ type: globalAction.SET_CONSUMER, value: res });
+        storeUser('consumer', res);
+      }, 50);
+    });
+    return () => clearTimeout(unsubscribe);
+  }, [consumer]);
+
+  useEffect(() => {
     BackHandler.addEventListener('backPress', onBackHandling);
     return () =>
       BackHandler.removeEventListener('backPress', onBackHandling);
@@ -112,7 +126,19 @@ const ChooseCoffee = ({ navigation }) => {
         consumerId: consumer.consumerId
       }
     }).then((response) => {
-      storeUser('coffees', response.data.ranking);
+      const data = response.data.ranking.map((coffee) => {
+        const customData = {
+          id: parseInt(coffee.id),
+          name: coffee.name,
+          image: coffee.image,
+          latitude: parseFloat(coffee.latitude),
+          longitude: parseFloat(coffee.longitude),
+          address: coffee.address,
+          score: parseFloat(coffee.score)
+        };
+        return customData;
+      });
+      storeUser('coffees', data);
     }).catch((error) => {
       console.log(error);
       resetForm();
@@ -162,6 +188,7 @@ const ChooseCoffee = ({ navigation }) => {
       showInfo('Silahkan memulai navigasi');
       getRank();
       navigation.navigate('Map');
+      resetForm();
     }).catch((error) => {
       console.log(error);
       resetForm();

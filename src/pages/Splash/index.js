@@ -14,7 +14,7 @@ const Splash = ({ navigation }) => {
       await service.post('/api/auth/session', {
         user_id: id
       }).then((response) => {
-        const sess = response.data.session;
+        const sess = JSON.parse(response.data.session);
         if (sess === 1) {
           navigation.replace('DrawerApp');
         } else {

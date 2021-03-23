@@ -46,10 +46,6 @@ const setCategory = {
 
 const consumer = {
   consumerId: 0,
-  type: '',
-  procedure: '',
-  output: '',
-  grade: '',
   minimum: 0,
   maximum: 0,
   minimumLimit: 0,
