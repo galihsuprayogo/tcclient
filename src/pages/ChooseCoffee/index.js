@@ -27,7 +27,7 @@ const ChooseCoffee = ({ navigation }) => {
 
   const [address, setAddress] = useState('');
   const [minimum, setMinimum] = useState(consumer.minimumLimit);
-  const [maximum, setMaximum] = useState(minimum);
+  const [maximum, setMaximum] = useState(consumer.maximumLimit);
   const [markerPosition, setMarkerPosition] = useState({
     latitude: 0,
     longitude: 0,
@@ -48,7 +48,7 @@ const ChooseCoffee = ({ navigation }) => {
         data.latitude = markerPosition.latitude;
         data.longitude = markerPosition.longitude;
         setMinimum(res.minimumLimit);
-        setMaximum(minimum);
+        setMaximum(res.maximumLimit);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
         storeUser('consumer', res);
       }, 50);
@@ -200,7 +200,11 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
     && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
-      getStatus();
+      // getStatus();
+      console.log(consumer);
+      console.log(minimum);
+      console.log(maximum);
+      dispatch({ type: globalAction.SET_LOADING, value: false });
     } else {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('form tidak boleh kosong');

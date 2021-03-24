@@ -31,8 +31,8 @@ const Home = ({ navigation }) => {
           minimumLimit: 0,
           maximumLimit: 0,
           address: '',
-          latitude: '',
-          longitude: ''
+          latitude: 0,
+          longitude: 0
         };
         storeUser('consumer', data);
       } else {
@@ -43,8 +43,8 @@ const Home = ({ navigation }) => {
           minimumLimit: response.data.minimum,
           maximumLimit: response.data.maximum,
           address: '',
-          latitude: '',
-          longitude: ''
+          latitude: 0,
+          longitude: 0
         };
         storeUser('consumer', data);
       }

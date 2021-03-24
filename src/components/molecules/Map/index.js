@@ -40,6 +40,7 @@ const Map = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
+        console.log(res);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
       }, 100);
     });
