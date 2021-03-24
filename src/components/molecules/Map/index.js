@@ -6,12 +6,13 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
+import { clearWatch } from 'react-native-geolocation-service';
 import { fonts, colors } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
 import { Button } from '..';
 import {
-  getUser, deleteConsumer, deleteCoffees, service
+  getUser, service
 } from '../../../config';
 import { globalAction } from '../../../redux';
 
@@ -32,7 +33,7 @@ const Map = ({ navigation }) => {
     const unsubscribe = setTimeout(async () => {
       await getUser('coffees').then((res) => {
         setCoffeeCoordinates(res);
-      }, 100);
+      }, 200);
     });
     return () => clearTimeout(unsubscribe);
   }, []);
@@ -40,7 +41,11 @@ const Map = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
-        console.log(res);
+        // const initialPosition = {
+        //   latitude: res.latitude,
+        //   longitude: res.longitude
+        // };
+        // setOriginCoordinate(initialPosition);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
       }, 100);
     });
@@ -87,9 +92,10 @@ const Map = ({ navigation }) => {
       setCoffeeCoordinates([]);
       setOriginCoordinate(resetAllPosition);
       setDestinationCoordinate(resetAllPosition);
+      setBoxOne(false);
+      setCardHeader(false);
+      setCardFooter(false);
       clearProm();
-      deleteConsumer();
-      deleteCoffees();
       navigation.replace('Splash');
       return false;
     }
@@ -104,15 +110,8 @@ const Map = ({ navigation }) => {
   };
 
   const clearProm = async () => {
-    const data = {
+    service.post('/api/auth/clear', {
       consumerId: consumer.consumerId
-    };
-
-    service.post('/api/auth/clear', data, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        Accept: 'application/json',
-      },
     }).then((response) => {
       console.log(response.data.message);
     }).catch((error) => {
@@ -128,7 +127,7 @@ const Map = ({ navigation }) => {
   });
 
   const watchPosition = () => {
-    Geolocation.getCurrentPosition(
+    const watchId = Geolocation.watchPosition(
       (position) => {
         const changeOriginCoordinate = {
           latitude: position.coords.latitude,
@@ -140,6 +139,7 @@ const Map = ({ navigation }) => {
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
     );
+    return () => clearWatch(watchId);
   };
 
   const onReady = (result) => {
@@ -182,7 +182,8 @@ const Map = ({ navigation }) => {
         index = 0;
       }
 
-      // clearTimeout(regionTimeout);
+      clearTimeout(regionTimeout);
+
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
@@ -200,7 +201,6 @@ const Map = ({ navigation }) => {
           _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
         }
       }, 10);
-      return () => clearTimeout(regionTimeout);
     });
   };
 

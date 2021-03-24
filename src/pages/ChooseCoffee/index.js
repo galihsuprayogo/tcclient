@@ -5,6 +5,7 @@ import Geocoder from 'react-native-geocoder';
 import {
   View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
+import { clearWatch } from 'react-native-geolocation-service';
 import {
   colors, showError, showInfo
 } from '../../utils';
@@ -99,6 +100,7 @@ const ChooseCoffee = ({ navigation }) => {
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
     );
+    return () => clearWatch(position);
   };
 
   const onBackHandling = () => {
@@ -200,11 +202,7 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     if (category.type !== '-- Pilih --' && category.procedure !== '-- Pilih --'
     && category.output !== '-- Pilih --' && category.grade !== '-- Pilih --' && address !== '[Belum dilengkapi, klik di atas]') {
-      // getStatus();
-      console.log(consumer);
-      console.log(minimum);
-      console.log(maximum);
-      dispatch({ type: globalAction.SET_LOADING, value: false });
+      getStatus();
     } else {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('form tidak boleh kosong');
