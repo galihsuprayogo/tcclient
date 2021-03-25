@@ -226,7 +226,7 @@ const Map = ({ navigation }) => {
   };
 
   const onStart = (latitude, longitude) => {
-    watchPosition();
+    // watchPosition();
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
