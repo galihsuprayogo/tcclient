@@ -32,10 +32,10 @@ const Map = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('coffees').then((res) => {
-        if (res !== 'undefined') {
+        if (typeof res === 'object') {
           setCoffeeCoordinates(res);
         } else {
-          showError('Terjadi Kesalahan, silahkan ulangi kembali');
+          showError('Terjadi kesalahan jaringan, silahkan memulai kembali');
         }
       });
     }, 200);
@@ -58,9 +58,6 @@ const Map = ({ navigation }) => {
 
   useEffect(() => {
     onScrollCardToMarker();
-  });
-
-  useEffect(() => {
     BackHandler.addEventListener('backPress', onDisable);
     return () =>
       BackHandler.removeEventListener('backPress', onDisable);
@@ -122,21 +119,21 @@ const Map = ({ navigation }) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  const watchPosition = () => {
-    const watchId = Geolocation.watchPosition(
-      (position) => {
-        const changeOriginCoordinate = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        };
-        setOriginCoordinate(changeOriginCoordinate);
-        // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
-    );
-    return () => clearWatch(watchId);
-  };
+  // const watchPosition = () => {
+  //   const current = Geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const changeOriginCoordinate = {
+  //         latitude: position.coords.latitude,
+  //         longitude: position.coords.longitude
+  //       };
+  //       setOriginCoordinate(changeOriginCoordinate);
+  //       // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
+  //     },
+  //     (error) => alert(error.message),
+  //     { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
+  //   );
+  //   return () => clearInterval(current);
+  // };
 
   const onReady = (result) => {
     _map.current.fitToCoordinates(result.coordinates, {
@@ -191,12 +188,12 @@ const Map = ({ navigation }) => {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             },
-            100
+            350
           );
           const x = mapIndex;
           _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
         }
-      }, 100);
+      }, 10);
     });
   };
 

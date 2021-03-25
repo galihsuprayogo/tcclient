@@ -31,7 +31,7 @@ const UpdateUmkm = ({ navigation }) => {
 
   const getImage = () => {
     launchImageLibrary({
-      includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200
+      includeBase64: true, quality: 0.5, maxWidth: 400, maxHeight: 400
     }, (response) => {
       console.log('response', response);
       if (response.didCancel || response.error) {
