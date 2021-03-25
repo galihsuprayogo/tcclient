@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
 import { clearWatch } from 'react-native-geolocation-service';
-import { fonts, colors } from '../../../utils';
+import { fonts, colors, showError } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
 import { Button } from '..';
@@ -32,25 +32,39 @@ const Map = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('coffees').then((res) => {
-        setCoffeeCoordinates(res);
-      }, 200);
-    });
+        if (res !== 'undefined') {
+          setCoffeeCoordinates(res);
+        } else {
+          showError('Terjadi Kesalahan, silahkan ulangi kembali');
+        }
+      });
+    }, 200);
     return () => clearTimeout(unsubscribe);
   }, []);
 
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
-        // const initialPosition = {
-        //   latitude: res.latitude,
-        //   longitude: res.longitude
-        // };
-        // setOriginCoordinate(initialPosition);
+        const initialPosition = {
+          latitude: res.latitude,
+          longitude: res.longitude
+        };
+        setOriginCoordinate(initialPosition);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      }, 100);
-    });
+      });
+    }, 100);
     return () => clearTimeout(unsubscribe);
   }, []);
+
+  useEffect(() => {
+    onScrollCardToMarker();
+  });
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onDisable);
+    return () =>
+      BackHandler.removeEventListener('backPress', onDisable);
+  });
 
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
   const [originCoordinate, setOriginCoordinate] = useState({
@@ -75,26 +89,8 @@ const Map = ({ navigation }) => {
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
 
-  useEffect(() => {
-    watchPosition();
-    onScrollCardToMarker();
-    BackHandler.addEventListener('backPress', onDisable);
-    return () =>
-      BackHandler.removeEventListener('backPress', onDisable);
-  });
-
   const onDisable = () => {
     if (cardButton === false && direct === false) {
-      const resetAllPosition = {
-        latitude: 0,
-        longitude: 0
-      };
-      setCoffeeCoordinates([]);
-      setOriginCoordinate(resetAllPosition);
-      setDestinationCoordinate(resetAllPosition);
-      setBoxOne(false);
-      setCardHeader(false);
-      setCardFooter(false);
       clearProm();
       navigation.replace('Splash');
       return false;
@@ -109,7 +105,7 @@ const Map = ({ navigation }) => {
     }
   };
 
-  const clearProm = async () => {
+  const clearProm = () => {
     service.post('/api/auth/clear', {
       consumerId: consumer.consumerId
     }).then((response) => {
@@ -200,7 +196,7 @@ const Map = ({ navigation }) => {
           const x = mapIndex;
           _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
         }
-      }, 10);
+      }, 100);
     });
   };
 
@@ -230,6 +226,7 @@ const Map = ({ navigation }) => {
   };
 
   const onStart = (latitude, longitude) => {
+    watchPosition();
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
@@ -434,8 +431,8 @@ const Map = ({ navigation }) => {
             { setTimeTraveler().hDisplay + setTimeTraveler().mDisplay + setTimeTraveler().sDisplay }
           </Text>
         </View>
-        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={offStart}>
-            <Button type="icon-button" icon="x" onPress={offStart} />
+        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={() => offStart()}>
+            <Button type="icon-button" icon="x" onPress={() => offStart()} />
         </TouchableOpacity>
       </View>
       )}

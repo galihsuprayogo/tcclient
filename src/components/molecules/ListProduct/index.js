@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: 35
+    padding: 15
   },
   contentWrapper: {
     flex: 1,

@@ -105,13 +105,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center'
   },
-  scrollWrapper: {
-    // marginVertical: 30,
-  },
   viewScrollWrapper: {
     flex: 1,
     marginVertical: 20,
-    marginHorizontal: 10,
+    marginHorizontal: -5
   }
 });
 export default Product;

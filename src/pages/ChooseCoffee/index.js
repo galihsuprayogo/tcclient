@@ -118,7 +118,7 @@ const ChooseCoffee = ({ navigation }) => {
     dispatch({ type: globalAction.SET_OUTPUT, value: '-- Pilih --' });
     dispatch({ type: globalAction.SET_GRADE, value: '-- Pilih --' });
     setMinimum(consumer.minimumLimit);
-    setMaximum(minimum);
+    setMaximum(consumer.maximumLimit);
     dispatch({ type: globalAction.SET_LOADING, value: false });
   };
 
