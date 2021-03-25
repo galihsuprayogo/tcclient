@@ -96,7 +96,7 @@ const ListProduct = ({
                       </Text>
                       <Text style={styles.boldText}>
                           {' '}
-                          {'Harga'}
+                          {'Harga (kg)'}
                           {' '}
                       </Text>
                   </View>

@@ -104,7 +104,7 @@ const MapPoint = ({ navigation }) => {
         setMarkerPosition(initialMarker);
       },
       (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
     );
   };
 

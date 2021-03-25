@@ -184,7 +184,7 @@ const UpdateProduct = ({ navigation, route }) => {
             />
             <Gap height={10} />
             <InputNumber
-              title="Harga"
+              title="Harga (kg)"
               keyboardType="phone-pad"
               price={amount}
               setPrice={setAmount}

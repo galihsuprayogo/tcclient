@@ -13,7 +13,7 @@ const PriceSlider = ({
         <View>
           <Text style={styles.textWrapper(type)}>
             {' '}
-            {'Harga Minimum : '}
+            {'Harga Minimum (kg) : '}
             <PriceFormat price={minimum} />
           </Text>
           <Slider
@@ -30,7 +30,7 @@ const PriceSlider = ({
           />
           <Text style={styles.textWrapper('maximum')}>
             {' '}
-            {'Harga Maksimum : '}
+            {'Harga Maksimum (kg) : '}
             <PriceFormat price={maximum} />
           </Text>
         </View>
