@@ -52,8 +52,8 @@ const ChooseCoffee = ({ navigation }) => {
         setMaximum(res.maximumLimit);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
         storeUser('consumer', res);
-      }, 50);
-    });
+      });
+    }, 100);
     return () => clearTimeout(unsubscribe);
   }, []);
 
@@ -66,8 +66,8 @@ const ChooseCoffee = ({ navigation }) => {
         data.longitude = markerPosition.longitude;
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
         storeUser('consumer', res);
-      }, 50);
-    });
+      });
+    }, 100);
     return () => clearTimeout(unsubscribe);
   }, [consumer]);
 
@@ -128,7 +128,7 @@ const ChooseCoffee = ({ navigation }) => {
         consumerId: consumer.consumerId
       }
     }).then((response) => {
-      const data = response.data.ranking.map((coffee) => {
+      const data = response.data.ranking.map((index, coffee) => {
         const customData = {
           id: parseInt(coffee.id),
           name: coffee.name,
@@ -136,7 +136,7 @@ const ChooseCoffee = ({ navigation }) => {
           latitude: parseFloat(coffee.latitude),
           longitude: parseFloat(coffee.longitude),
           address: coffee.address,
-          score: parseFloat(coffee.score)
+          score: coffee.score
         };
         return customData;
       });

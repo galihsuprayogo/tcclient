@@ -6,7 +6,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
-import { clearWatch } from 'react-native-geolocation-service';
+import { clearWatch, watchPosition } from 'react-native-geolocation-service';
 import { fonts, colors, showError } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
@@ -28,40 +28,6 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 const Map = ({ navigation }) => {
   const consumer = useSelector((state) => state.consumerReducer);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const unsubscribe = setTimeout(async () => {
-      await getUser('coffees').then((res) => {
-        if (typeof res === 'object') {
-          setCoffeeCoordinates(res);
-        } else {
-          showError('Terjadi kesalahan jaringan, silahkan memulai kembali');
-        }
-      });
-    }, 200);
-    return () => clearTimeout(unsubscribe);
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = setTimeout(async () => {
-      await getUser('consumer').then((res) => {
-        const initialPosition = {
-          latitude: res.latitude,
-          longitude: res.longitude
-        };
-        setOriginCoordinate(initialPosition);
-        dispatch({ type: globalAction.SET_CONSUMER, value: res });
-      });
-    }, 100);
-    return () => clearTimeout(unsubscribe);
-  }, []);
-
-  useEffect(() => {
-    onScrollCardToMarker();
-    BackHandler.addEventListener('backPress', onDisable);
-    return () =>
-      BackHandler.removeEventListener('backPress', onDisable);
-  });
 
   const [coffeeCoordinates, setCoffeeCoordinates] = useState([]);
   const [originCoordinate, setOriginCoordinate] = useState({
@@ -85,6 +51,46 @@ const Map = ({ navigation }) => {
   const [boxTwo, setBoxTwo] = useState(false);
   let mapIndex = 0;
   const mapAnimation = new Animated.Value(0);
+
+  const _map = React.useRef(null);
+  const _scrollView = React.useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('coffees').then((res) => {
+        if (typeof res === 'object') {
+          setCoffeeCoordinates(res);
+        } else {
+          showError('Terjadi kesalahan jaringan, silahkan memulai kembali');
+        }
+      });
+    }, 100);
+    return () => clearTimeout(unsubscribe);
+  }, []);
+
+  useEffect(() => {
+    onScrollCardToMarker();
+  });
+
+  useEffect(() => {
+    const unsubscribe = setTimeout(async () => {
+      await getUser('consumer').then((res) => {
+        const initialPosition = {
+          latitude: res.latitude,
+          longitude: res.longitude
+        };
+        setOriginCoordinate(initialPosition);
+        dispatch({ type: globalAction.SET_CONSUMER, value: res });
+      });
+    }, 100);
+    return () => clearTimeout(unsubscribe);
+  }, []);
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onDisable);
+    return () =>
+      BackHandler.removeEventListener('backPress', onDisable);
+  });
 
   const onDisable = () => {
     if (cardButton === false && direct === false) {
@@ -119,8 +125,8 @@ const Map = ({ navigation }) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
-  // const watchPosition = () => {
-  //   const current = Geolocation.getCurrentPosition(
+  // const getPosition = () => {
+  //   Geolocation.getCurrentPosition(
   //     (position) => {
   //       const changeOriginCoordinate = {
   //         latitude: position.coords.latitude,
@@ -132,7 +138,6 @@ const Map = ({ navigation }) => {
   //     (error) => alert(error.message),
   //     { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
   //   );
-  //   return () => clearInterval(current);
   // };
 
   const onReady = (result) => {
@@ -188,17 +193,24 @@ const Map = ({ navigation }) => {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             },
-            350
+            300
           );
-          const x = mapIndex;
-          _scrollViewHeader.current.scrollTo({ x, y: 0, animated: true });
+          _scrollView.current.scrollTo({ x: mapIndex, y: 0, animated: true });
         }
       }, 10);
     });
   };
 
-  const onMarkerPress = (e) => {
-    console.log(e.nativeEvent.coordinate.latitude);
+  const onMarkerPress = (mapEventData) => {
+    const markerID = mapEventData._targetInst.return.key;
+
+    let x = (markerID * CARD_WIDTH) + (markerID * 20);
+    if (Platform.OS === 'ios') {
+      x -= SPACING_FOR_CARD_INSET;
+    }
+
+    _scrollView.current.scrollTo({ x, y: 0, animated: true });
+    // console.log(e.nativeEvent.coordinate.latitude);
   };
 
   const interpolations = coffeeCoordinates.map((marker, index) => {
@@ -265,10 +277,6 @@ const Map = ({ navigation }) => {
     };
   };
 
-  const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
-  const _scrollViewHeader = React.useRef(null);
-
   return (
     <View style={styles.container}>
       <MapView
@@ -293,7 +301,7 @@ const Map = ({ navigation }) => {
             ],
           };
           return (
-              <MapView.Marker key={`coordinate_${index}`} coordinate={{ latitude: coordinate.latitude, longitude: coordinate.longitude }} onPress={(e) => onMarkerPress(e)}>
+              <MapView.Marker key={index} coordinate={{ latitude: coordinate.latitude, longitude: coordinate.longitude }} onPress={(e) => onMarkerPress(e)}>
                 <Animated.View style={[styles.markerWrap]}>
                   <Animated.Image
                     source={IconMarker}
@@ -330,7 +338,6 @@ const Map = ({ navigation }) => {
       )}
       {cardHeader && (
       <ScrollView
-        ref={_scrollViewHeader}
         horizontal
         scrollEventThrottle={1}
         showsHorizontalScrollIndicator={false}
@@ -348,7 +355,7 @@ const Map = ({ navigation }) => {
       >
         {coffeeCoordinates.map((coffee, index) => (
           <TouchableOpacity key={index} style={styles.chipsItem}>
-            <Text style={styles.chipsText}>{`${index + 1}). ${coffee.name} : ${coffee.score}`}</Text>
+            <Text style={styles.chipsText}>{`${index + 1}) ${coffee.name} : ${coffee.score}`}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -428,8 +435,8 @@ const Map = ({ navigation }) => {
             { setTimeTraveler().hDisplay + setTimeTraveler().mDisplay + setTimeTraveler().sDisplay }
           </Text>
         </View>
-        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={() => offStart()}>
-            <Button type="icon-button" icon="x" onPress={() => offStart()} />
+        <TouchableOpacity style={styles.labelBoxBottomButton} onPress={offStart}>
+            <Button type="icon-button" icon="x" onPress={offStart} />
         </TouchableOpacity>
       </View>
       )}
@@ -445,6 +452,7 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
+    width: '100%'
   },
   button: {
     flexDirection: 'row',
