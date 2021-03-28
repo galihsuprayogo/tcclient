@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   View, StyleSheet, Dimensions, Text, Animated, Image, ScrollView, TouchableOpacity, BackHandler
 } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
-import Geolocation from '@react-native-community/geolocation';
 import MapViewDirections from 'react-native-maps-directions';
-import { clearWatch, watchPosition } from 'react-native-geolocation-service';
+import Carousel from 'react-native-snap-carousel';
 import { fonts, colors, showError } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
 import { Gap, ButtonModal } from '../..';
@@ -25,7 +24,7 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
 
-const Map = ({ navigation }) => {
+const MapCenter = ({ navigation }) => {
   const consumer = useSelector((state) => state.consumerReducer);
   const dispatch = useDispatch();
 
@@ -37,6 +36,12 @@ const Map = ({ navigation }) => {
   const [destinationCoordinate, setDestinationCoordinate] = useState({
     latitude: 0,
     longitude: 0
+  });
+  const [regionCoordinate, setRegionCoordinate] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0,
+    longitudeDelta: 0
   });
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -51,9 +56,7 @@ const Map = ({ navigation }) => {
   const [boxTwo, setBoxTwo] = useState(false);
 
   const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
-  let mapIndex = 0;
-  const mapAnimation = new Animated.Value(0);
+  const _carousel = React.useRef(null);
 
   useEffect(() => {
     const unsubscribe = setTimeout(async () => {
@@ -69,17 +72,20 @@ const Map = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    onScrollCardToMarker();
-  });
-
-  useEffect(() => {
     const unsubscribe = setTimeout(async () => {
       await getUser('consumer').then((res) => {
         const initialPosition = {
           latitude: res.latitude,
           longitude: res.longitude
         };
+        const initialRegion = {
+          latitude: res.latitude,
+          longitude: res.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        };
         setOriginCoordinate(initialPosition);
+        setRegionCoordinate(initialRegion);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
       });
     }, 100);
@@ -118,28 +124,6 @@ const Map = ({ navigation }) => {
     });
   };
 
-  const getMapRegion = () => ({
-    latitude: originCoordinate.latitude,
-    longitude: originCoordinate.longitude,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  });
-
-  // const getPosition = () => {
-  //   Geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const changeOriginCoordinate = {
-  //         latitude: position.coords.latitude,
-  //         longitude: position.coords.longitude
-  //       };
-  //       setOriginCoordinate(changeOriginCoordinate);
-  //       // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
-  //     },
-  //     (error) => alert(error.message),
-  //     { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
-  //   );
-  // };
-
   const onReady = (result) => {
     _map.current.fitToCoordinates(result.coordinates, {
       edgePadding: {
@@ -170,76 +154,85 @@ const Map = ({ navigation }) => {
     />
   );
 
-  const onScrollCardToMarker = () => {
-    mapAnimation.addListener(({ value }) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3);
-      if (index >= coffeeCoordinates.length) {
-        index = coffeeCoordinates.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
+  const renderCarouselItem = ({ item, index }) => (
+          <View style={styles.card} key={index}>
+                    <Image
+                      source={{ uri: item.image }}
+                      style={styles.cardImage}
+                      resizeMode="cover"
+                    />
+                    <View style={styles.textContent}>
+                      <Text numberOfLines={1} style={styles.cardTitle}>
+                        {index + 1}
+                        {' '}
+                        {item.name}
+                        {' '}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.cardAddress}>
+                        {' '}
+                        {item.address }
+                        {' '}
+                      </Text>
+                      <View style={styles.button}>
+                        <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(item.latitude, item.longitude)} />
+                        <Gap width={5} />
+                        <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart(item.latitude, item.longitude)} />
+                      </View>
+                    </View>
+          </View>
+  );
 
-      clearTimeout(regionTimeout);
-
-      const regionTimeout = setTimeout(() => {
-        if (mapIndex !== index) {
-          mapIndex = index;
-          const { coordinate } = coffeeCoordinates[index];
-          _map.current.animateToRegion(
-            {
-              ...coordinate,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            },
-            350
-          );
-          // _scrollView.current.scrollTo({ x: mapIndex, y: 0, animated: true });
-        }
-      }, 10);
+  const onCarouselItemChange = (index) => {
+    _map.current.animateToRegion({
+      latitude: coffeeCoordinates[index].latitude,
+      longitude: coffeeCoordinates[index].longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
     });
+    const changeRegion = {
+      latitude: coffeeCoordinates[index].latitude,
+      longitude: coffeeCoordinates[index].longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
+    setRegionCoordinate(changeRegion);
   };
 
-  const onMarkerPress = (mapEventData) => {
-    const markerID = mapEventData._targetInst.return.key;
-
-    let x = (markerID * CARD_WIDTH) + (markerID * 20);
-    if (Platform.OS === 'ios') {
-      x -= SPACING_FOR_CARD_INSET;
-    }
-
-    _scrollView.current.scrollTo({ x, y: 0, animated: true });
-    // console.log(e.nativeEvent.coordinate.latitude);
+  const onMarkerPress = (e, index) => {
+    _map.current.animateToRegion({
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    });
+    const changeRegion = {
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    };
+    setRegionCoordinate(changeRegion);
+    _carousel.current.snapToItem(index);
   };
 
-  const interpolations = coffeeCoordinates.map((marker, index) => {
-    const inputRange = [
-      (index - 1) * CARD_WIDTH,
-      index * CARD_WIDTH,
-      ((index + 1) * CARD_WIDTH),
-    ];
-
-    const scale = mapAnimation.interpolate({
-      inputRange,
-      outputRange: [1, 1.5, 1],
-      extrapolate: 'clamp'
-    });
-
-    return { scale };
-  });
-
-  const onDirection = (coordinate) => {
+  const onDirection = (latitude, longitude) => {
+    const changeRegion = {
+      latitude: originCoordinate.latitude,
+      longitude: originCoordinate.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    };
     setDirect(true);
-    setDestinationCoordinate(coordinate);
+    setDestinationCoordinate({ latitude, longitude });
+    setRegionCoordinate(changeRegion);
   };
 
-  const onStart = (coordinate) => {
-    // watchPosition();
+  const onStart = (latitude, longitude) => {
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
     setDirect(true);
-    setDestinationCoordinate(coordinate);
+    setDestinationCoordinate({ latitude, longitude });
     setBoxOne(false);
     setBoxTwo(true);
     setZoom(20);
@@ -282,35 +275,27 @@ const Map = ({ navigation }) => {
         ref={_map}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        region={getMapRegion()}
+        region={regionCoordinate}
         showUserLocation
         showsMyLocationButton
         zoomEnabled
         minZoomLevel={zoom}
         maxZoomLevel={30}
-        followUserLocation
-        loadingEnabled
+        scrollEnabled
       >
-        {coffeeCoordinates.map((coordinate, index) => {
-          const scaleStyle = {
-            transform: [
-              {
-                scale: interpolations[index].scale,
-              },
-            ],
-          };
-          return (
-              <MapView.Marker key={index} coordinate={coordinate.coordinate} onPress={(e) => onMarkerPress(e)}>
-                <Animated.View style={[styles.markerWrap]}>
-                  <Animated.Image
+        {coffeeCoordinates.map((coordinate, index) => (
+              <Marker key={index} coordinate={{ latitude: coordinate.latitude, longitude: coordinate.longitude }} onPress={(e) => onMarkerPress(e, index)}>
+                <View style={styles.markerWrap}>
+                  <Image
                     source={IconMarker}
-                    style={[styles.marker, scaleStyle]}
-                    resizeMode="cover"
+                    style={styles.marker}
                   />
-                </Animated.View>
-              </MapView.Marker>
-          );
-        })}
+                   <Callout>
+                      <Text>{coordinate.name}</Text>
+                   </Callout>
+                </View>
+              </Marker>
+        ))}
 
       <Marker coordinate={originCoordinate}>
           <View style={styles.radiusOrigin}>
@@ -360,65 +345,15 @@ const Map = ({ navigation }) => {
       </ScrollView>
       )}
       {cardFooter && (
-      <Animated.ScrollView
-        ref={_scrollView}
-        horizontal
-        scrollEventThrottle={1}
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        pagingEnabled
-        snapToInterval={CARD_WIDTH + 20}
-        snapToAlignment="center"
-        contentInset={{
-          top: 0,
-          left: SPACING_FOR_CARD_INSET,
-          bottom: 0,
-          right: SPACING_FOR_CARD_INSET
-        }}
-        contentContainerStyle={{
-          paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0
-        }}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: mapAnimation,
-                }
-              },
-            },
-          ],
-          { useNativeDriver: true }
-        )}
-      >
-            {coffeeCoordinates.map((marker, index) => (
-              <View style={styles.card} key={index}>
-                <Image
-                  source={{ uri: marker.image }}
-                  style={styles.cardImage}
-                  resizeMode="cover"
-                />
-                <View style={styles.textContent}>
-                  <Text numberOfLines={1} style={styles.cardTitle}>
-                    {index + 1}
-                    {' '}
-                    {marker.name}
-                    {' '}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.cardAddress}>
-                    {' '}
-                    {marker.address }
-                    {' '}
-                  </Text>
-                  <View style={styles.button}>
-                    <ButtonModal icon="direction" title="Petunjuk Arah" type="map" height={14} width={14} onPress={() => onDirection(marker.coordinate)} />
-                    <Gap width={5} />
-                    <ButtonModal icon="navigation" title="Mulai" type="map" height={12} width={15} onPress={() => onStart(marker.coordinate)} />
-                  </View>
-                </View>
-              </View>
-            ))}
-      </Animated.ScrollView>
+      <Carousel
+        ref={_carousel}
+        data={coffeeCoordinates}
+        renderItem={renderCarouselItem}
+        sliderWidth={width}
+        itemWidth={300}
+        containerCustomStyle={styles.carousel}
+        onSnapToItem={(index) => onCarouselItemChange(index)}
+      />
       )}
       { cardButton && (
       <View style={styles.labelBoxBottom}>
@@ -443,12 +378,15 @@ const Map = ({ navigation }) => {
   );
 };
 
+export default MapCenter;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     ...StyleSheet.absoluteFillObject,
   },
   map: {
+    flex: 1,
     ...StyleSheet.absoluteFillObject,
     height: '100%',
     width: '100%'
@@ -457,6 +395,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // alignItems: 'center',
     marginTop: 5
+  },
+  carousel: {
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 30
   },
   card: {
     // padding: 10,
@@ -543,8 +486,8 @@ const styles = StyleSheet.create({
     height: 50,
   },
   marker: {
-    width: 19,
-    height: 25,
+    width: 25,
+    height: 33,
   },
   labelBox: {
     position: 'absolute',
@@ -629,16 +572,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: fonts.Akkurat.bold
   },
-  scrollView: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingVertical: 10,
-  },
   textContent: {
     flex: 2,
     padding: 10,
   },
 });
-export default Map;

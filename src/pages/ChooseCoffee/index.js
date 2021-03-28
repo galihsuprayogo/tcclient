@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoder';
 import {
-  View, StyleSheet, ScrollView, TouchableOpacity, BackHandler
+  View, StyleSheet, ScrollView, BackHandler
 } from 'react-native';
-import { clearWatch } from 'react-native-geolocation-service';
 import {
   colors, showError, showInfo
 } from '../../utils';
@@ -100,7 +99,6 @@ const ChooseCoffee = ({ navigation }) => {
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
     );
-    return () => clearWatch(position);
   };
 
   const onBackHandling = () => {
@@ -123,20 +121,18 @@ const ChooseCoffee = ({ navigation }) => {
   };
 
   const getRank = () => {
-    service.get('/api/auth/rank', {
-      params: {
-        consumerId: consumer.consumerId
-      }
+    service.post('/api/auth/rank', {
+      consumerId: consumer.consumerId
     }).then((response) => {
-      const data = response.data.ranking.map((index, coffee) => {
+      const data = response.data.ranking.map((coffee) => {
         const customData = {
-          id: parseInt(coffee.id),
+          id: Number(coffee.id),
           name: coffee.name,
           image: coffee.image,
-          latitude: parseFloat(coffee.latitude),
-          longitude: parseFloat(coffee.longitude),
+          latitude: Number(coffee.latitude),
+          longitude: Number(coffee.longitude),
           address: coffee.address,
-          score: coffee.score
+          score: coffee.score,
         };
         return customData;
       });
@@ -189,7 +185,7 @@ const ChooseCoffee = ({ navigation }) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showInfo('Silahkan memulai navigasi');
       getRank();
-      navigation.navigate('Map');
+      navigation.navigate('MapCenter');
       resetForm();
     }).catch((error) => {
       console.log(error);

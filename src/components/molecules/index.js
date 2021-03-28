@@ -5,7 +5,7 @@ import Profile from './Profile';
 import List from './List';
 import ListProduct from './ListProduct';
 import Map from './Map';
-import MapPoint from './MapPoint';
+import MapCenter from './MapCenter';
 import DrawerContent from './DrawerContent';
 import Loading from './Loading';
 import DPicker from './DPicker';
@@ -19,7 +19,7 @@ export {
   List,
   ListProduct,
   Map,
-  MapPoint,
+  MapCenter,
   DrawerContent,
   Loading,
   DPicker,
