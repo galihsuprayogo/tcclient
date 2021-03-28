@@ -18,7 +18,7 @@ import {
   UpdateProduct
 } from '../pages';
 import {
-  Map, MapCenter, Helper,
+  MapPoint, MapCenter, Helper,
   BottomNavigator, DrawerContent, DrawItem
 } from '../components';
 
