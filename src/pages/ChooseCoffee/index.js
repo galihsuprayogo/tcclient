@@ -97,7 +97,7 @@ const ChooseCoffee = ({ navigation }) => {
         });
       },
       (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
     );
   };
 

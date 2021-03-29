@@ -5,6 +5,7 @@ import {
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import MapViewDirections from 'react-native-maps-directions';
+import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
 import { fonts, colors, showError } from '../../../utils';
 import { IconMarker, IconGoogle } from '../../../assets';
@@ -33,6 +34,10 @@ const MapCenter = ({ navigation }) => {
     latitude: 0,
     longitude: 0
   });
+  const [swipeCoordinate, setSwipeCoordinate] = useState({
+    latitude: 0,
+    longitude: 0
+  });
   const [destinationCoordinate, setDestinationCoordinate] = useState({
     latitude: 0,
     longitude: 0
@@ -54,6 +59,7 @@ const MapCenter = ({ navigation }) => {
   const [zoom, setZoom] = useState(15);
   const [boxOne, setBoxOne] = useState(true);
   const [boxTwo, setBoxTwo] = useState(false);
+  const [watchId, setWatchId] = useState(null);
 
   const _map = React.useRef(null);
   const _carousel = React.useRef(null);
@@ -85,6 +91,7 @@ const MapCenter = ({ navigation }) => {
           longitudeDelta: LONGITUDE_DELTA
         };
         setOriginCoordinate(initialPosition);
+        setSwipeCoordinate(initialPosition);
         setRegionCoordinate(initialRegion);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
       });
@@ -164,7 +171,7 @@ const MapCenter = ({ navigation }) => {
                     <View style={styles.textContent}>
                       <Text numberOfLines={1} style={styles.cardTitle}>
                         {index + 1}
-                        {' '}
+                        {') '}
                         {item.name}
                         {' '}
                       </Text>
@@ -227,7 +234,31 @@ const MapCenter = ({ navigation }) => {
     setRegionCoordinate(changeRegion);
   };
 
+  const watchPosition = async () => {
+    const watchId = await Geolocation.watchPosition(
+      (position) => {
+        const changeOriginCoordinate = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+        const changeRegion = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        };
+        setOriginCoordinate(changeOriginCoordinate);
+        setRegionCoordinate(changeRegion);
+        // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
+    );
+    setWatchId(watchId);
+  };
+
   const onStart = (latitude, longitude) => {
+    watchPosition();
     setCardFooter(false);
     setCardHeader(false);
     setCardButton(true);
@@ -240,6 +271,15 @@ const MapCenter = ({ navigation }) => {
   };
 
   const offStart = () => {
+    const rootCoordinate = {
+      latitude: swipeCoordinate.latitude,
+      longitude: swipeCoordinate.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    };
+    setOriginCoordinate(swipeCoordinate);
+    setRegionCoordinate(rootCoordinate);
+    Geolocation.clearWatch(watchId);
     setCardFooter(true);
     setCardHeader(true);
     setCardButton(false);
