@@ -142,7 +142,7 @@ const UpdateUmkm = ({ navigation }) => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     const firstIndex = phone.substring(0, 1);
     const phoneLength = phone.length;
-    if (hasPhoto && firstIndex !== '0' && phoneLength >= 10) {
+    if (hasPhoto && firstIndex !== '0' && phoneLength >= 10 && /^\d+$/.test(phone)) {
       const token = await AsyncStorage.getItem('@token');
       const data = {
         store_name: storeName,
@@ -187,7 +187,10 @@ const UpdateUmkm = ({ navigation }) => {
       showError('No. Telp tidak memakai awalan 0');
     } else if (phoneLength < 10) {
       dispatch({ type: globalAction.SET_LOADING, value: false });
-      showError('Panjang No. Telp Kurang');
+      showError('No. Telp minimal 10 angka');
+    } else if (!/^\d+$/.test(phone)) {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      showError('Terdapat huruf atau karakter pada No. Telp');
     } else {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('photo tidak boleh kosong');
