@@ -34,10 +34,6 @@ const MapCenter = ({ navigation }) => {
     latitude: 0,
     longitude: 0
   });
-  const [swipeCoordinate, setSwipeCoordinate] = useState({
-    latitude: 0,
-    longitude: 0
-  });
   const [destinationCoordinate, setDestinationCoordinate] = useState({
     latitude: 0,
     longitude: 0
@@ -59,7 +55,6 @@ const MapCenter = ({ navigation }) => {
   const [zoom, setZoom] = useState(15);
   const [boxOne, setBoxOne] = useState(true);
   const [boxTwo, setBoxTwo] = useState(false);
-  const [watchId, setWatchId] = useState(null);
 
   const _map = React.useRef(null);
   const _carousel = React.useRef(null);
@@ -91,7 +86,6 @@ const MapCenter = ({ navigation }) => {
           longitudeDelta: LONGITUDE_DELTA
         };
         setOriginCoordinate(initialPosition);
-        setSwipeCoordinate(initialPosition);
         setRegionCoordinate(initialRegion);
         dispatch({ type: globalAction.SET_CONSUMER, value: res });
       });
@@ -235,7 +229,7 @@ const MapCenter = ({ navigation }) => {
   };
 
   const watchPosition = async () => {
-    const watchId = await Geolocation.watchPosition(
+    await Geolocation.watchPosition(
       (position) => {
         const changeOriginCoordinate = {
           latitude: position.coords.latitude,
@@ -252,9 +246,8 @@ const MapCenter = ({ navigation }) => {
         // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
       },
       (error) => alert(error.message),
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
     );
-    setWatchId(watchId);
   };
 
   const onStart = (latitude, longitude) => {
@@ -272,14 +265,12 @@ const MapCenter = ({ navigation }) => {
 
   const offStart = () => {
     const rootCoordinate = {
-      latitude: swipeCoordinate.latitude,
-      longitude: swipeCoordinate.longitude,
+      latitude: originCoordinate.latitude,
+      longitude: originCoordinate.longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     };
-    setOriginCoordinate(swipeCoordinate);
     setRegionCoordinate(rootCoordinate);
-    Geolocation.clearWatch(watchId);
     setCardFooter(true);
     setCardHeader(true);
     setCardButton(false);

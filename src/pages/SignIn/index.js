@@ -23,8 +23,12 @@ const SignIn = ({ navigation }) => {
     if (form.phone_number === '') {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       setForm('reset');
-      showError('nomor HP tidak boleh kosong');
-    } else {
+      showError('No. HP tidak boleh kosong');
+    } else if (form.phone_number.length < 10) {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      setForm('reset');
+      showError('No. HP minimal 10 angka');
+    } else if (/^\d+$/.test(form.phone_number)) {
       const firstIndex = form.phone_number.substring(0, 1);
       if (firstIndex === '0') {
         dispatch({ type: globalAction.SET_LOADING, value: false });
@@ -41,9 +45,13 @@ const SignIn = ({ navigation }) => {
         }).catch(() => {
           dispatch({ type: globalAction.SET_LOADING, value: false });
           setForm('reset');
-          showError('nomor HP salah atau belum terdaftar');
+          showError('No. HP salah atau belum terdaftar');
         });
       }
+    } else {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      setForm('reset');
+      showError('Terdapat huruf atau karakter');
     }
   };
 

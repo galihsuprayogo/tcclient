@@ -93,11 +93,11 @@ const ChooseCoffee = ({ navigation }) => {
         await Geocoder.geocodePosition(NY).then((res) => {
           setAddress(res[1].formattedAddress.toString());
         }).catch((err) => {
-          setAddress(`${newMarkerPosition.latitude.toString()},${newMarkerPosition.longitude.toString()}`);
+          setAddress(`${markerPosition.latitude.toString()},${markerPosition.longitude.toString()}`);
         });
       },
       (error) => alert(error.message),
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
     );
   };
 

@@ -25,8 +25,12 @@ const Verify = ({ navigation }) => {
     if (form.phone_otp === '') {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       setForm('reset');
-      showError('kode otp tidak boleh kosong');
-    } else {
+      showError('Kode otp tidak boleh kosong');
+    } else if (form.phone_otp.length > 4 || form.phone_otp.length < 4) {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      setForm('reset');
+      showError('Kode otp harus 4 angka');
+    } else if (/^\d+$/.test(form.phone_otp)) {
       service.post('/api/auth/verify', {
         phone_otp: form.phone_otp
       }).then((response) => {
@@ -52,8 +56,12 @@ const Verify = ({ navigation }) => {
       }).catch(() => {
         dispatch({ type: globalAction.SET_LOADING, value: false });
         setForm('reset');
-        showError('kode otp tidak cocok');
+        showError('Kode otp tidak cocok');
       });
+    } else {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      setForm('reset');
+      showError('Terdapat huruf atau karakter');
     }
   };
   return (

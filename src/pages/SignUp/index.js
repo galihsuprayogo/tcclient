@@ -24,7 +24,11 @@ const SignUp = ({ navigation }) => {
       setForm('reset');
       dispatch({ type: 'SET_LOADING', value: false });
       showError('form tidak boleh kosong');
-    } else {
+    } else if (form.phone_number.length < 10) {
+      dispatch({ type: globalAction.SET_LOADING, value: false });
+      setForm('reset');
+      showError('No. HP minimal 10 angka');
+    } else if (/^\d+$/.test(form.phone_number)) {
       const firstIndex = form.phone_number.substring(0, 1);
       if (firstIndex === '0') {
         dispatch({ type: 'SET_LOADING', value: false });
@@ -45,6 +49,10 @@ const SignUp = ({ navigation }) => {
           showError('Terjadi kesalahan jaringan');
         });
       }
+    } else {
+      dispatch({ type: 'SET_LOADING', value: false });
+      setForm('reset');
+      showError('Terdapat huruf atau karakter pada No. HP');
     }
   };
   return (
