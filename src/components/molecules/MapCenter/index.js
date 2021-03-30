@@ -246,7 +246,7 @@ const MapCenter = ({ navigation }) => {
         // setRouteCoordinates(routeCoordinates.concat([changeOriginCoordinate]));
       },
       (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 3000 },
     );
   };
 
