@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, BackHandler
 } from 'react-native';
-import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
 import { Header, ListProduct } from '../../components';
 import { getUser } from '../../config';
