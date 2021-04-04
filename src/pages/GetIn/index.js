@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Image,
+  View, Text, StyleSheet, BackHandler,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { ILLogo } from '../../assets';
 import { Button, Gap } from '../../components';
 import { colors, fonts } from '../../utils';
 
-const GetIn = ({ navigation }) => (
-  <View style={styles.container}>
+const GetIn = ({ navigation }) => {
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
+  };
+
+  return (
+    <View style={styles.container}>
     <View style={styles.content}>
       <View style={styles.headerContent}>
         <Animatable.Image
@@ -33,8 +44,9 @@ const GetIn = ({ navigation }) => (
         </View>
       </Animatable.View>
     </View>
-  </View>
-);
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  View, Text, Image, StyleSheet, TouchableOpacity
+  View, Text, Image, StyleSheet, TouchableOpacity, BackHandler
 } from 'react-native';
 import { Gap, Header } from '../../components';
 import {
@@ -57,6 +57,16 @@ const Home = ({ navigation }) => {
       console.log(error);
       showError('Terjadi kesalahan');
     });
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
   };
 
   return (

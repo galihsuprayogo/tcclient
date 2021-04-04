@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import {
-  StyleSheet, Text, View, ScrollView
+  StyleSheet, Text, View, ScrollView, BackHandler
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useDispatch, useSelector } from 'react-redux';
-import { Header, ListProduct, Gap } from '../../components';
+import { Header, ListProduct } from '../../components';
 import { getUser } from '../../config';
 import { globalAction } from '../../redux';
 import { colors, fonts, formatNumbro } from '../../utils';
@@ -30,6 +30,16 @@ const Product = ({ navigation }) => {
     });
     return () => clearTimeout(timeout);
   }, [products.product]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
+  };
 
   return (
     <View style={styles.container}>

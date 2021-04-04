@@ -1,9 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View, Text, StyleSheet, BackHandler
+} from 'react-native';
 import { Header } from '../../components';
 import { colors, fonts } from '../../utils';
 
-const Help = ({ navigation }) => (
+const Help = ({ navigation }) => {
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
+  };
+  return (
     <View style={styles.container}>
          <Header
            title="Bantuan"
@@ -16,7 +28,8 @@ const Help = ({ navigation }) => (
             <Text style={styles.text}> Halaman belum tersedia </Text>
          </View>
     </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

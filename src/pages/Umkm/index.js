@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import {
+  View, StyleSheet, ScrollView, BackHandler
+} from 'react-native';
 import {
   Profile, List, Header, Gap
 } from '../../components';
@@ -51,6 +53,16 @@ const Umkm = ({ navigation }) => {
     });
     return () => clearTimeout(timeout);
   }, [profile]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
+  };
 
   return (
     <View style={styles.container}>

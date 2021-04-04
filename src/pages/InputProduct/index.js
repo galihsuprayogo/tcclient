@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  ScrollView, StyleSheet, View, BackHandler
+} from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { ILNullPhoto } from '../../assets';
@@ -104,6 +106,16 @@ const InputProduct = ({ navigation }) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
       showError('photo tidak boleh kosong');
     }
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('backPress', onBackHandling);
+    return () =>
+      BackHandler.removeEventListener('backPress', onBackHandling);
+  });
+
+  const onBackHandling = () => {
+    BackHandler.exitApp();
   };
 
   return (

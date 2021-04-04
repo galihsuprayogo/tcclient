@@ -103,6 +103,7 @@ const ChooseCoffee = ({ navigation }) => {
 
   const onBackHandling = () => {
     resetForm();
+    navigation.goBack();
   };
 
   const onBackPressHandling = () => {
@@ -138,7 +139,6 @@ const ChooseCoffee = ({ navigation }) => {
       });
       storeUser('coffees', data);
     }).catch((error) => {
-      console.log(error);
       resetForm();
       showError('Terjadi kesalahan');
     });
@@ -159,8 +159,10 @@ const ChooseCoffee = ({ navigation }) => {
       const status = response.data.message;
       if (status === 'empty') {
         showError('Produk tidak tersedia');
+        resetForm();
       } else if (status === 'unavailable') {
         showError('Jumlah produk belum mencukupi');
+        resetForm();
       } else if (status === 'available') {
         onPostData();
       }
