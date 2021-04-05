@@ -9,6 +9,7 @@ import PriceFormat from './PriceFormat';
 import InputLocation from './InputLocation';
 import ButtonModal from './ButtonModal';
 import DrawItem from './DrawItem';
+import DataIntro from './DataIntro';
 
 export {
   Gap,
@@ -22,4 +23,5 @@ export {
   InputLocation,
   ButtonModal,
   DrawItem,
+  DataIntro
 };

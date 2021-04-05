@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {
   View, Text, Image, StyleSheet, TouchableOpacity, BackHandler
 } from 'react-native';
-import { Gap, Header, Dialog } from '../../components';
+import { Gap, Header } from '../../components';
 import {
   colors, fonts, showInfo, showError
 } from '../../utils';
@@ -14,14 +14,6 @@ import { globalAction } from '../../redux';
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const [setSwiper, swiper] = useState(true);
-
-  // useEffect(() => {
-  //   const unsubscribe = setTimeout(() => {
-  //     <Dialog isVisible={swiper} />;
-  //   }, 100);
-  //   return () => clearTimeout(unsubscribe);
-  // });
-
   const onContinue = () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     service.get('/api/auth/minMax', {
@@ -99,9 +91,6 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      { swiper && (
-      <Dialog />
-      )}
     </View>
   );
 };

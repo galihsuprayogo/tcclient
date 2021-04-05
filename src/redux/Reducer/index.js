@@ -5,6 +5,10 @@ const initialState = {
   loading: false
 };
 
+const introState = {
+  status: false
+};
+
 const categories = {
   type: [
     { label: '-- Pilih --', value: '-- Pilih --' },
@@ -112,6 +116,16 @@ export const consumerReducer = (state = consumer, action) => {
     return {
       ...state,
       ...action.value
+    };
+  }
+  return state;
+};
+
+export const introReducer = (state = introState, action) => {
+  if (action.type === globalAction.SET_INTRO) {
+    return {
+      ...state,
+      status: action.value
     };
   }
   return state;

@@ -5,7 +5,7 @@ import FlashMessage from 'react-native-flash-message';
 import { Provider, useSelector } from 'react-redux';
 import { store } from './redux';
 import Router from './router';
-import { Loading } from './components';
+import { Loading, Intro } from './components';
 
 const MainApp = () => {
   const stateGlobal = useSelector((state) => state.loadingReducer);
@@ -21,10 +21,18 @@ const MainApp = () => {
   );
 };
 
+const SecondApp = () => {
+  const stateGlobalIntro = useSelector((state) => state.introReducer);
+  if (stateGlobalIntro.status) {
+    return <MainApp />;
+  }
+  return <Intro />;
+};
+
 const App = () => (
-    <Provider store={store}>
-      <MainApp />
-    </Provider>
+  <Provider store={store}>
+    <SecondApp />
+  </Provider>
 );
 
 export default App;

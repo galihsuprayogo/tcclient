@@ -10,7 +10,7 @@ import DrawerContent from './DrawerContent';
 import Loading from './Loading';
 import DPicker from './DPicker';
 import Helper from './Helper';
-import Dialog from './Dialog';
+import Intro from './Intro';
 
 export {
   Header,
@@ -25,5 +25,5 @@ export {
   Loading,
   DPicker,
   Helper,
-  Dialog
+  Intro
 };
