@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Gap, Header } from '../../components';
 import {
-  colors, fonts, showInfo, showError
+  colors, fonts, showInfoSecond, showError
 } from '../../utils';
 import { ILLogo } from '../../assets';
 import { storeUser, service } from '../../config';
@@ -13,7 +13,6 @@ import { globalAction } from '../../redux';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [setSwiper, swiper] = useState(true);
   const onContinue = () => {
     dispatch({ type: globalAction.SET_LOADING, value: true });
     service.get('/api/auth/minMax', {
@@ -50,7 +49,7 @@ const Home = ({ navigation }) => {
       }
       dispatch({ type: globalAction.SET_LOADING, value: false });
       navigation.navigate('ChooseCoffee');
-      showInfo('Pilih kriteria yang tersedia');
+      showInfoSecond('Silahkan pilih kriteria yang kamu inginkan');
       // navigation.navigate('Helper');
     }).catch((error) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });

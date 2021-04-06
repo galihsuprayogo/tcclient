@@ -56,3 +56,23 @@ export const showInfo = (message) => {
     }
   });
 };
+
+export const showInfoSecond = (message) => {
+  showMessage({
+    message,
+    position: 'top',
+    type: 'simple message',
+    duration: 500,
+    color: 'white',
+    style: {
+      borderRadius: 8,
+      marginHorizontal: 10,
+      width: '80%'
+    },
+    titleStyle: {
+      fontFamily: fonts.sfProDisplay.medium,
+      fontSize: 15,
+      textAlign: 'left'
+    }
+  });
+};

@@ -24,7 +24,7 @@ const ChooseCoffee = ({ navigation }) => {
   const category = useSelector((state) => state.setCategoryReducer);
   const consumer = useSelector((state) => state.consumerReducer);
   const dispatch = useDispatch();
-
+  const pesan = 'TCoffee App menampilkan peta lokasi petani berupa petunjuk arah dan navigasi. Klik Petunjuk arah untuk mengetahui rute, lalu klik navigasi untuk memulai';
   const [address, setAddress] = useState('');
   const [minimum, setMinimum] = useState(consumer.minimumLimit);
   const [maximum, setMaximum] = useState(consumer.maximumLimit);
@@ -185,7 +185,7 @@ const ChooseCoffee = ({ navigation }) => {
       maximum
     }).then((response) => {
       dispatch({ type: globalAction.SET_LOADING, value: false });
-      showInfo('Silahkan memulai navigasi');
+      showInfo(pesan);
       getRank();
       navigation.navigate('MapCenter');
       resetForm();
