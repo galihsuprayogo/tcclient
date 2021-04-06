@@ -73,7 +73,7 @@ const Umkm = ({ navigation }) => {
       width={24}
       onPress={() => navigation.openDrawer()}
     />
-    <ScrollView showVerticalScrollIndicator={false} style={styles.content}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
       <View style={styles.subDivContent}>
         <View style={{ alignItems: 'center' }}>
           <Profile source={photo.photo} />
