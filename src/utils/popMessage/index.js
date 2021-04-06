@@ -40,13 +40,14 @@ export const showSuccess = (message) => {
 export const showInfo = (message) => {
   showMessage({
     message,
-    position: 'top',
+    position: 'center',
     type: 'simple message',
-    duration: 500,
+    duration: 5000,
     color: 'white',
     style: {
       borderRadius: 8,
       marginHorizontal: 10,
+      width: '80%'
     },
     titleStyle: {
       fontFamily: fonts.sfProDisplay.medium,

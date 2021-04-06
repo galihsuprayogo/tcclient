@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { PERMISSIONS, request, openSettings } from 'react-native-permissions';
 import { useDispatch } from 'react-redux';
 import {
   View, Text, StyleSheet, TouchableOpacity, Image, ScrollView
 } from 'react-native';
-import { colors, fonts } from '../../../utils';
+import {
+  colors, fonts, showError, showInfo
+} from '../../../utils';
 import { globalAction } from '../../../redux';
 import { DataIntro, Gap } from '../..';
 
@@ -65,8 +68,17 @@ const Intro = () => {
     </View>
   );
 
-  const onDone = () => {
-    dispatch({ type: globalAction.SET_INTRO, value: true });
+  const onDone = async () => {
+    var response = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    if (response === 'granted') {
+      dispatch({ type: globalAction.SET_INTRO, value: true });
+    }
+    if (response === 'denied') {
+      response = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+    }
+    if (response === 'blocked') {
+      openSettings().catch(() => showError('Tidak dapat membuka pengaturan'));
+    }
   };
 
   const nextButton = () => (

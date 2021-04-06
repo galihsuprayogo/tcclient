@@ -75,6 +75,8 @@ const Icon = ({
       return <IconOpenDrawer height={20} width={20} />;
     case 'icon-back':
       return <IconBack />;
+    case 'icon-back-map':
+      return <IconBack height={20} width={20} />;
     case 'icon-back-light':
       return <IconBackLight />;
     case 'icon-back-location':

@@ -3,18 +3,16 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  Platform,
   Text,
   BackHandler,
   Image,
   TouchableOpacity
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { PERMISSIONS, request } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoder';
 import { getUser, storeUser } from '../../../config';
-import { fonts } from '../../../utils';
+import { fonts, showInfo, colors } from '../../../utils';
 import { IconMarker } from '../../../assets';
 import {
   Icon, ButtonModal, Gap,
@@ -45,12 +43,14 @@ const MapPoint = ({ navigation }) => {
 
   const [cardFooter, setCardFooter] = useState(false);
   const [cardHeader, setCardHeader] = useState(false);
+  const [backHeader, setBackHeader] = useState(true);
   const [flag, setFlag] = useState(false);
   const [addressPosition, setAddressPosition] = useState('');
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
-      requestLocationPermission();
+      showInfo('TCoffee App mengumpulkan informasi lokasi anda. Tahan pada area lokasi yang ingin di simpan, lalu lepas untuk menyimpan.');
+      currentLocation();
     });
     return () => clearTimeout(timeout);
   }, []);
@@ -71,20 +71,6 @@ const MapPoint = ({ navigation }) => {
     setInitialPosition(resetPosition);
     navigation.goBack();
     console.log('did cancel');
-  };
-
-  const requestLocationPermission = async () => {
-    if (Platform.OS === 'android') {
-      var response = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-      if (response === 'granted') {
-        currentLocation();
-      }
-    } else {
-      var response = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-      if (response === 'granted') {
-        currentLocation();
-      }
-    }
   };
 
   const currentLocation = () => {
@@ -178,6 +164,7 @@ const MapPoint = ({ navigation }) => {
     });
     setCardHeader(false);
     setCardFooter(false);
+    setBackHeader(false);
     setFlag(false);
     navigation.goBack();
   };
@@ -193,6 +180,7 @@ const MapPoint = ({ navigation }) => {
     setCardHeader(false);
     setCardFooter(false);
     setFlag(false);
+    setBackHeader(true);
   };
 
   return (
@@ -230,6 +218,14 @@ const MapPoint = ({ navigation }) => {
             </Marker>
           )}
       </MapView>
+          {backHeader && (
+                <TouchableOpacity style={styles.cardBackWrapper} onPress={() => navigation.goBack()}>
+                  <Icon icon="icon-back-map" />
+                  <Text style={styles.cardBackContent}>
+                   Kembali
+                  </Text>
+                </TouchableOpacity>
+          )}
           {cardHeader && (
             <View style={styles.cardHeaderWrapper}>
               <Text style={styles.cardHeaderContent}>
@@ -296,9 +292,32 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
   },
+  cardBackWrapper: {
+    position: 'absolute',
+    top: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#fff',
+    width: '25%',
+    alignSelf: 'center',
+    borderRadius: 5,
+    padding: 8,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+    left: 10
+  },
   cardHeaderContent: {
     fontSize: 14,
     fontFamily: fonts.sfProDisplay.medium,
+  },
+  cardBackContent: {
+    fontSize: 14,
+    fontFamily: fonts.sfProDisplay.bold,
+    color: colors.text.default
   },
   cardFooterWrapper: {
     position: 'absolute',
