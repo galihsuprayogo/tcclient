@@ -23,7 +23,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
-const GOOGLE_MAPS_APIKEY = 'AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA';
+const GOOGLE_MAPS_APIKEY = '';
 
 const MapCenter = ({ navigation }) => {
   const consumer = useSelector((state) => state.consumerReducer);

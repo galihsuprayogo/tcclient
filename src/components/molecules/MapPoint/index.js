@@ -115,7 +115,7 @@ const MapPoint = ({ navigation }) => {
     };
     setInitialPosition(presRegion);
     setNewMarkerPosition(presLocation);
-    Geocoder.fallbackToGoogle('AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA');
+    Geocoder.fallbackToGoogle('');
     await Geocoder.geocodePosition(NY).then((res) => {
       setAddressPosition(res[1].formattedAddress.toString());
     }).catch((err) => {

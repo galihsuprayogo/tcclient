@@ -89,7 +89,7 @@ const ChooseCoffee = ({ navigation }) => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        Geocoder.fallbackToGoogle('AIzaSyA3KMhK3xy20XzhcHcr6A4dosPEix4SRZA');
+        Geocoder.fallbackToGoogle('');
         await Geocoder.geocodePosition(NY).then((res) => {
           setAddress(res[1].formattedAddress.toString());
         }).catch((err) => {
